@@ -1,23 +1,21 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import Badge from '@material-ui/core/Badge';
+import { makeStyles,withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems } from './listItems';
-import IconButton from '@material-ui/core/IconButton';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
+import GradeOutlinedIcon from '@material-ui/icons/GradeOutlined';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HomeIcon from '@material-ui/icons/Home';
+import { MenuList,Menu,IconButton,MenuItem,Typography,Divider,AppBar,Drawer,Toolbar,CssBaseline,List,Badge,ListItemText,ListItemIcon} from '@material-ui/core';
+
+
 
 const drawerWidth = 240;
 
@@ -97,46 +95,101 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
-
 }));
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '0.5px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
 
 export default function Dashboard() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setDrawerOpen] = React.useState(false);
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setDrawerOpen(true);
   };
   const handleDrawerClose = () => {
-    setOpen(false);
+    setDrawerOpen(false);
   };
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
+
 
   const menuId = 'primary-search-account-menu';
-  
-
-  
-
+  const renderMenu = (
+    <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <StyledMenuItem>
+          <HomeIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Trang chủ" />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <PersonOutlineRoundedIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Hồ sơ của bạn" />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <GradeOutlinedIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Bảng điểm con em" />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <MessageIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Tin nhắn" />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <HelpOutlineOutlinedIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Trợ giúp" />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <SettingsIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Cài đặt" />
+        </StyledMenuItem>
+        <StyledMenuItem>
+          <ExitToAppIcon style={{minWidth: '40px'}}/>
+          <ListItemText primary="Thoát"  />
+        </StyledMenuItem>
+      </StyledMenu>
+  );
 
   return (
     <div className={classes.root}>
@@ -152,18 +205,18 @@ export default function Dashboard() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
-            EDUVN
+          <Typography className={classes.title} variant="h4" noWrap>
+            Hệ thống học tập hỗ trợ phụ huynh
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton color="inherit">
+              <Badge badgeContent={5} color="secondary">
                 <MessageIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+            <IconButton color="inherit">
+              <Badge badgeContent={10} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -175,12 +228,15 @@ export default function Dashboard() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
+             <Typography  variant="h7" component="span" color="#ffffff"> Trần Thị Quỳnh Như </Typography>
+
+              <AccountCircle />       
             </IconButton>
           </div>
          
         </Toolbar>
       </AppBar>
+      {renderMenu}
       <Drawer
         variant="permanent"
         classes={{
