@@ -1,15 +1,13 @@
 //import logo from './logo.svg';
 
 import React from 'react';
-
-
-import Dashboard  from "./components/Dashboard"
-import './App.css';
+import SignIn  from "./pages/Signin"
+//import './App.css';
 
 function App() {
   return (
     <div className = "App"> 
-        <Dashboard/>
+        <SignIn/>
     </div>
   );
 }
