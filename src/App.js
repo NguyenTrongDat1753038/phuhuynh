@@ -1,14 +1,21 @@
-//import logo from './logo.svg';
 
 import React from 'react';
-import SignIn  from "./pages/Signin"
-//import './App.css';
-
+import Login  from "./pages/Authen/Login"
+import {CssBaseline } from "@material-ui/core";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import RouterMD from "./routes/routes"
 function App() {
   return (
-    <div className = "App"> 
-        <SignIn/>
-    </div>
+    /*<BrowserRouter>
+      <CssBaseline />
+        <Switch>
+          <Route path="/">*/
+          <div>
+            <RouterMD />
+            </div>
+         /* </Route>
+        </Switch>
+  </BrowserRouter>*/
   );
 }
 

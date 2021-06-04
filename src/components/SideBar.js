@@ -10,7 +10,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import Divider from '@material-ui/core/Divider';
 
 
-export const mainListItems = (
+ export  const SideBar = (
   <div >
     <ListItem button >
       <ListItemIcon>

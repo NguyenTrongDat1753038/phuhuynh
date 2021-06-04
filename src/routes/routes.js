@@ -4,31 +4,22 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import Signin from "../pages/Signin";
+import Login from "../pages/Authen/Login";
 import Homepage from "../pages/Homepage";
+import { Select } from '@material-ui/core';
 
 
 
-export default function Routing(){
-        return (
-            <Router>
-                <div>
-                    {}
-
-
-                    <Switch>
-                        <Route path="/homepage">
-                            <Homepage />
-                        </Route>
-                        <Route path="/"> 
-                             <Signin />
-                        </Route>
-                       
-
-                    </Switch>
-                </div>
-            </Router>
-        );
-    }
-
-
+const ReactRouter = () => {
+    return (
+            <Select>
+                <Switch>
+                    <Route exact path="/" component={Homepage} />
+                    <Route path="/home" component={Homepage} />
+                    <Route path="/login" component={Login} />
+                </Switch>
+            </Select>
+    
+       )
+     }
+export default ReactRouter;

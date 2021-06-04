@@ -4,7 +4,7 @@ import { makeStyles,withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems } from './listItems';
+import {SideBar} from './SideBar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
@@ -13,7 +13,7 @@ import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
-import { MenuList,Menu,IconButton,MenuItem,Typography,Divider,AppBar,Drawer,Toolbar,CssBaseline,List,Badge,ListItemText,ListItemIcon} from '@material-ui/core';
+import {Menu,IconButton,MenuItem,Typography,Divider,AppBar,Drawer,Toolbar,CssBaseline,List,Badge,ListItemText} from '@material-ui/core';
 
 
 
@@ -127,7 +127,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function Dashboard() {
+export default function NavBar() {
   const classes = useStyles();
   const [open, setDrawerOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -250,7 +250,7 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider style={{ color: 'white' }} />
-        <List style={{ color: 'white' }}>{mainListItems}</List>
+        <List style={{ color: 'white' }}>{SideBar}</List>
         <Divider />
       </Drawer>
       
