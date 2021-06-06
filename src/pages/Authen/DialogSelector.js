@@ -1,7 +1,7 @@
 import React, { useState, useCallback, Fragment } from "react";
 import PropTypes from "prop-types";
 import ChangePasswordDialog from "./ChangePasswordDialog";
-import ModalBackdrop from "../../components/ModalBackdrop";
+import ModalBackdrop from "../../components/shared/ModalBackdrop";
 
 function DialogSelector(props) {
   const {

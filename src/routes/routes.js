@@ -14,7 +14,7 @@ const ReactRouter = () => {
     return (
             <Select>
                 <Switch>
-                    <Route exact path="/" component={Homepage} />
+                    <Route exact path="/" component={Login} />
                     <Route path="/home" component={Homepage} />
                     <Route path="/login" component={Login} />
                 </Switch>

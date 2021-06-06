@@ -14,9 +14,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeIcon from '@material-ui/icons/Home';
 import {Menu,IconButton,MenuItem,Typography,Divider,AppBar,Drawer,Toolbar,CssBaseline,List,Badge,ListItemText} from '@material-ui/core';
-
-
-
+import Notifications from "react-notifications-menu";
+import logo from "../images/logo.jpg"
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -127,7 +126,16 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem);
 
-export default function NavBar() {
+export default function NavBar(props) {
+  const { selectedTab, messages, width, openAddBalanceDialog } = props;
+  const data = [
+    {
+      image : logo ,
+      message : 'Google tuyển dụng',
+      detailPage : 'wwww.google.com.vn', 
+      receivedTime:'30-04-2020'
+    }
+ ];
   const classes = useStyles();
   const [open, setDrawerOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -140,11 +148,19 @@ export default function NavBar() {
 
   const isMenuOpen = Boolean(anchorEl);
 
-  const handleProfileMenuOpen = (event) => {
+  const handleMenuProfileOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuProfileClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleMenuNotiOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuNotiClose = () => {
     setAnchorEl(null);
   };
 
@@ -157,7 +173,7 @@ export default function NavBar() {
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
+        onClose={handleMenuProfileClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <StyledMenuItem>
@@ -205,7 +221,7 @@ export default function NavBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h4" noWrap>
+          <Typography className={classes.title} display = "flex" variant="h4" noWrap>
             Hệ thống học tập hỗ trợ phụ huynh
           </Typography>
           <div className={classes.grow} />
@@ -215,17 +231,34 @@ export default function NavBar() {
                 <MessageIcon />
               </Badge>
             </IconButton>
-            <IconButton color="inherit">
-              <Badge badgeContent={10} color="secondary">
-                <NotificationsIcon />
+            <IconButton 
+            color="inherit"
+            edge="end"
+            aria-label="notification of current user"
+            color="inherit"
+            >
+              <Badge color="white">
+                    <Notifications
+                   data={data}
+                   width = '200px' 
+                   viewAllbtn={{ text: 'see all', linkTo: '/seeAll' }}
+                   markAsRead={data => console.log(data)}
+                   header={
+                    {
+                      title: 'Notifications',
+                      option: { text: 'View All', onClick: () => {} }
+                    }
+                  }
+                    />
               </Badge>
+              
             </IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              onClick={handleMenuProfileOpen}
               color="inherit"
             >
              <Typography  variant="h7" component="span" color="#ffffff"> Trần Thị Quỳnh Như </Typography>

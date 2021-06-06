@@ -9,13 +9,13 @@ import {
   withStyles,
   withWidth,
   isWidthUp,
-  TextField
+  TextField,
+  Button
 } from "@material-ui/core";
 import PhoneIcon from "@material-ui/icons/Phone";
 import MailIcon from "@material-ui/icons/Mail";
-import WaveBorder from "../WaveBorder";
+import WaveBorder from "../shared/WaveBorder";
 import transitions from "@material-ui/core/styles/transitions";
-import ColoredButton from "../ColoredButton";
 
 const styles = theme => ({
   footerInner: {
@@ -96,22 +96,6 @@ const socialIcons = [
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <title>GitHub</title>
-        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-      </svg>
-    ),
-    label: "Github",
-    href: "https://github.com/dunky11/react-saas-template"
-  },
-  {
-    icon: (
-      <svg
-        role="img"
-        width="24px"
-        height="24px"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
         <title>Facebook</title>
         <path d="M23.9981 11.9991C23.9981 5.37216 18.626 0 11.9991 0C5.37216 0 0 5.37216 0 11.9991C0 17.9882 4.38789 22.9522 10.1242 23.8524V15.4676H7.07758V11.9991H10.1242V9.35553C10.1242 6.34826 11.9156 4.68714 14.6564 4.68714C15.9692 4.68714 17.3424 4.92149 17.3424 4.92149V7.87439H15.8294C14.3388 7.87439 13.8739 8.79933 13.8739 9.74824V11.9991H17.2018L16.6698 15.4676H13.8739V23.8524C19.6103 22.9522 23.9981 17.9882 23.9981 11.9991Z" />
       </svg>
@@ -171,7 +155,7 @@ function Footer(props) {
                   <TextField
                     variant="outlined"
                     multiline
-                    placeholder="Get in touch with us"
+                    placeholder="Nhập góp ý ở đây"
                     inputProps={{ "aria-label": "Get in Touch" }}
                     InputProps={{
                       className: classes.whiteBg
@@ -181,53 +165,28 @@ function Footer(props) {
                     required
                   />
                 </Box>
-                <ColoredButton
-                  color={theme.palette.common.white}
+                <Button
+                  color= "orange"
                   variant="outlined"
                   type="submit"
                 >
-                  Send Message
-                </ColoredButton>
+                  GỬI TIN NHẮN
+                </Button>
               </Box>
             </form>
           </Grid>
           <Hidden mdDown>
             <Grid item xs={12} md={6} lg={4}>
-              <Box display="flex" justifyContent="center">
-                <div>
-                  {infos.map((info, index) => (
-                    <Box display="flex" mb={1} key={index}>
-                      <Box mr={2}>
-                        <IconButton
-                          className={classes.infoIcon}
-                          tabIndex={-1}
-                          disabled
-                        >
-                          {info.icon}
-                        </IconButton>
-                      </Box>
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                      >
-                        <Typography variant="h6" className="text-white">
-                          {info.description}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </div>
-              </Box>
+              
             </Grid>
           </Hidden>
           <Grid item xs={12} md={6} lg={4}>
             <Typography variant="h6" paragraph className="text-white">
-              About the Company
+             Thông tin liên lạc
             </Typography>
             <Typography style={{ color: "#8f9296" }} paragraph>
-              Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce
-              euismod convallis velit, eu auctor lacus vehicula sit amet.
+                Email:  1753038@student.hcmus.edu.vn 
+                <br/> SDT: 19001981
             </Typography>
             <Box display="flex">
               {socialIcons.map((socialIcon, index) => (

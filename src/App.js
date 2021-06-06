@@ -1,21 +1,19 @@
 
 import React from 'react';
-import Login  from "./pages/Authen/Login"
 import {CssBaseline } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import RouterMD from "./routes/routes"
+import Main  from "./pages/Profile";
+
 function App() {
   return (
-    /*<BrowserRouter>
+    <BrowserRouter>
       <CssBaseline />
         <Switch>
-          <Route path="/">*/
-          <div>
-            <RouterMD />
-            </div>
-         /* </Route>
+          <Route path="/">
+            <Main />
+          </Route>
         </Switch>
-  </BrowserRouter>*/
+  </BrowserRouter>
   );
 }
 

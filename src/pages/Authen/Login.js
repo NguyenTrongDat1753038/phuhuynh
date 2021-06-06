@@ -14,8 +14,8 @@ import Box from '@material-ui/core/Box';
 import SchoolIcon from '@material-ui/icons/School';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import VisibilityPasswordTextField from "../../components/VisibilityPasswordTextField";
-import ButtonCircularProgress from "../../components/ButtonCircularProgress"
+import VisibilityPasswordTextField from "../../components/shared/VisibilityPasswordTextField";
+import ButtonCircularProgress from "../../components/shared/ButtonCircularProgress"
 import Container from '@material-ui/core/Container';
 
 
@@ -152,6 +152,10 @@ function LogIn(props) {
             color="primary"
             disabled={isLoading}
             className={classes.submit}
+            onSubmit ={(e) => {
+              e.preventDefault();
+              login();
+            }}
           >
           <link_nav to="/"> Đăng nhập</link_nav>
           {isLoading && <ButtonCircularProgress />}

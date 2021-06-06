@@ -9,7 +9,7 @@ import {
   withStyles
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import ColoredButton from "../ColoredButton";
+import ColoredButton from "../shared/ColoredButton";
 
 const styles = theme => ({
   dialogActions: {

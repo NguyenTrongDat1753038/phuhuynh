@@ -9,7 +9,7 @@ import {
   Typography,
   withStyles,
 } from "@material-ui/core";
-import ButtonCircularProgress from "../../components/ButtonCircularProgress";
+import ButtonCircularProgress from "../../components/shared/ButtonCircularProgress";
 
 const styles = (theme) => ({
   dialogContent: {
