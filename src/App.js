@@ -2,7 +2,7 @@
 import React from 'react';
 import {CssBaseline } from "@material-ui/core";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Main  from "./pages/Profile";
+import Main  from "./pages/Homepage/Homepage";
 
 function App() {
   return (

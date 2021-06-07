@@ -3,19 +3,15 @@ import clsx from 'clsx';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import {SideBar} from './SideBar';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
-import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
-import GradeOutlinedIcon from '@material-ui/icons/GradeOutlined';
-import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import HomeIcon from '@material-ui/icons/Home';
-import {Menu,IconButton,MenuItem,Typography,Divider,AppBar,Drawer,Toolbar,CssBaseline,List,Badge,ListItemText} from '@material-ui/core';
+import {Menu,IconButton,Typography,Divider,AppBar,Drawer,Toolbar,CssBaseline,List,Badge} from '@material-ui/core';
 import Notifications from "react-notifications-menu";
+import AlignItemsList from "./Message"
+import AccountMenu from "./Account"
 import logo from "../images/logo.jpg"
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -115,16 +111,7 @@ const StyledMenu = withStyles({
     {...props}
   />
 ));
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
+
 
 export default function NavBar(props) {
   const { selectedTab, messages, width, openAddBalanceDialog } = props;
@@ -134,7 +121,43 @@ export default function NavBar(props) {
       message : 'Google tuyển dụng',
       detailPage : 'wwww.google.com.vn', 
       receivedTime:'30-04-2020'
-    }
+    },
+    {
+      image : logo ,
+      message : 'Lazada sale',
+      detailPage : 'wwww.lazada.vn', 
+      receivedTime:'16-05-2020'
+    },
+    {
+      image : logo ,
+      message : 'Shopee sale',
+      detailPage : 'wwww.shopee.vn', 
+      receivedTime:'16-05-2020'
+    },
+    {
+      image : logo ,
+      message : 'Shopee sale',
+      detailPage : 'wwww.shopee.vn', 
+      receivedTime:'16-05-2020'
+    },
+    {
+      image : logo ,
+      message : 'Shopee sale',
+      detailPage : 'wwww.shopee.vn', 
+      receivedTime:'16-05-2020'
+    },
+    {
+      image : logo ,
+      message : 'Shopee sale',
+      detailPage : 'wwww.shopee.vn', 
+      receivedTime:'16-05-2020'
+    },
+    {
+      image : logo ,
+      message : 'Shopee sale',
+      detailPage : 'wwww.shopee.vn', 
+      receivedTime:'16-05-2020'
+    },
  ];
   const classes = useStyles();
   const [open, setDrawerOpen] = React.useState(false);
@@ -156,12 +179,15 @@ export default function NavBar(props) {
     setAnchorEl(null);
   };
 
-  const handleMenuNotiOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const [message_anchorEl, message_setAnchorEl] = React.useState(null);
+  const isMessageOpen = Boolean(message_anchorEl);
+
+  const handleMessageOpen = (event) => {
+    message_setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuNotiClose = () => {
-    setAnchorEl(null);
+  const handleMessageClose = () => {
+    message_setAnchorEl(null);
   };
 
 
@@ -176,37 +202,19 @@ export default function NavBar(props) {
         onClose={handleMenuProfileClose}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <StyledMenuItem>
-          <HomeIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Trang chủ" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <PersonOutlineRoundedIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Hồ sơ của bạn" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <GradeOutlinedIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Bảng điểm con em" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <MessageIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Tin nhắn" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <HelpOutlineOutlinedIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Trợ giúp" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <SettingsIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Cài đặt" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ExitToAppIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Thoát"  />
-        </StyledMenuItem>
+      <AccountMenu/>
       </StyledMenu>
   );
-
+  const messageMenu = (<StyledMenu
+    id="customized-menu"
+    anchorEl={message_anchorEl}
+    keepMounted
+    open={Boolean(message_anchorEl)}
+    onClose={handleMessageClose}
+    anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+  >
+    <AlignItemsList/>
+    </StyledMenu>);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -226,27 +234,36 @@ export default function NavBar(props) {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton color="inherit">
+            <IconButton 
+            edge="end"
+            aria-label="message of current user"
+            className = "message_btn"
+            aria-haspopup="true"
+            onClick={handleMessageOpen}
+            color="inherit"
+            >
               <Badge badgeContent={5} color="secondary">
                 <MessageIcon />
               </Badge>
             </IconButton>
             <IconButton 
-            color="inherit"
+            color="red"
             edge="end"
             aria-label="notification of current user"
-            color="inherit"
+            className = "notifi_btn"
             >
               <Badge color="white">
                     <Notifications
                    data={data}
-                   width = '200px' 
+                   width = '300px' 
+                   height = '400px'
                    viewAllbtn={{ text: 'see all', linkTo: '/seeAll' }}
                    markAsRead={data => console.log(data)}
+                   
                    header={
                     {
-                      title: 'Notifications',
-                      option: { text: 'View All', onClick: () => {} }
+                      title: 'Thông báo',
+                      option: { text: 'Xem tất cả', onClick: () => {window.location("/notifications");} }
                     }
                   }
                     />
@@ -270,6 +287,7 @@ export default function NavBar(props) {
         </Toolbar>
       </AppBar>
       {renderMenu}
+      {messageMenu}
       <Drawer
         variant="permanent"
         classes={{

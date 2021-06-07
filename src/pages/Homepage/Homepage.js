@@ -1,7 +1,7 @@
 //import logo from './logo.svg';
 
 import React from 'react';
-import NavBar from '../Navigation/NavBar'
+import NavBar from '../../Navigation/NavBar'
 
 function Homepage() {
   return (
