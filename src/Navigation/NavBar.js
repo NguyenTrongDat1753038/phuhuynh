@@ -11,6 +11,7 @@ import Notifications from "react-notifications-menu";
 import AlignItemsList from "./Message"
 import AccountMenu from "./Account"
 import logo from "../images/logo.jpg"
+import NotificationsIcon from '../images/notification.jpg';
 
 const drawerWidth = 240;
 
@@ -252,14 +253,14 @@ export default function NavBar(props) {
             aria-label="notification of current user"
             className = "notifi_btn"
             >
-              <Badge color="white">
                     <Notifications
+                   icon = {NotificationsIcon}
                    data={data}
                    width = '300px' 
                    height = '400px'
-                   viewAllbtn={{ text: 'see all', linkTo: '/seeAll' }}
                    markAsRead={data => console.log(data)}
-                   
+                   headerBackgroundColor	= "orange"
+                   cardOption = "false"
                    header={
                     {
                       title: 'Thông báo',
@@ -267,7 +268,8 @@ export default function NavBar(props) {
                     }
                   }
                     />
-              </Badge>
+                  
+
               
             </IconButton>
             <IconButton
