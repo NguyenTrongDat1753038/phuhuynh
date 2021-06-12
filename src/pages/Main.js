@@ -8,6 +8,8 @@ import CookieRulesDialog from "../components/cookies/CookieRulesDialog";
 import CookieConsent from "../components/cookies/CookieConsent";
 import DialogSelector from "../pages/Authen/DialogSelector";
 import SignIn from "../pages/Authen/Login"
+import smoothScrollTop from "../components/functions/smoothScrollTop";
+
 AOS.init({ once: true });
 
 const styles = (theme) => ({
@@ -19,10 +21,19 @@ const styles = (theme) => ({
 
 function Main(props) {
   const { classes } = props;
+  const [selectedTab, setSelectedTab] = useState(null);
+
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(null);
 
   const [isCookieRulesDialogOpen, setIsCookieRulesDialogOpen] = useState(false);
+
+  const selectHome = useCallback(() => {
+    smoothScrollTop();
+    document.title =
+      "Hệ thống học tập con em";
+    setSelectedTab("Home");
+  }, [setSelectedTab]);
 
   const handleMobileDrawerOpen = useCallback(() => {
     setIsMobileDrawerOpen(true);

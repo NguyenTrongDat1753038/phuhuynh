@@ -17,7 +17,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import VisibilityPasswordTextField from "../../components/shared/VisibilityPasswordTextField";
 import ButtonCircularProgress from "../../components/shared/ButtonCircularProgress"
 import Container from '@material-ui/core/Container';
-
+import Signup from "./Signup"
+import ChangePassword from "./ChangePasswordDialog"
 
 function Copyright() {
   return (
@@ -64,12 +65,32 @@ function LogIn(props) {
     history,
     onClose,
     openChangePasswordDialog,
+    openSignUpDiaglog,
     status,
   } = props;
   const [isLoading, setIsLoading] = useState(false);
+  const [changePassword, setchangePassword] = React.useState(null);
+  const ischangePassword = Boolean(changePassword);
+  const [signUp, setSignup] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   const loginEmail = useRef();
   const loginPassword = useRef();
+  const handlechangePasswordOpen = (event) => {
+    setchangePassword(event.currentTarget);
+  };
+
+  const handlechangePasswordClose = () => {
+    setchangePassword(null);
+  };
+
+  const handlesignupOpen = (event) => {
+    setSignup(event.currentTarget);
+  };
+
+  const handlesignupClose = () => {
+    setSignup(null);
+  };
 
   const login = useCallback(() => {
     setIsLoading(true);
@@ -90,7 +111,18 @@ function LogIn(props) {
       }, 150);
     }
   }, [setIsLoading, loginEmail, loginPassword, history, setStatus]);
-
+ 
+  const renderChangePassword = (   
+    <div
+    id="customized-change"
+    anchorEl={changePassword}
+    open={Boolean(changePassword)}
+    onClose={handlechangePasswordClose}
+    anchorOrigin={{ vertical: "center", horizontal: "center" }}
+    >
+   <ChangePassword/>
+  </div>
+  );
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -103,15 +135,26 @@ function LogIn(props) {
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="Username"
-            label="Nhập tài khoản"
-            name="username"
-            //autoComplete="email"
-            autoFocus
+           variant="outlined"
+           margin="normal"
+           error={status === "invalidEmail"}
+           required
+           fullWidth
+           label="Địa chỉ email đăng nhập"
+           inputRef={loginEmail}
+           autoFocus
+           autoComplete="off"
+           type="email"
+           onChange={() => {
+             if (status === "invalidEmail") {
+               setStatus(null);
+             }
+           }}
+           helperText={
+             status === "invalidEmail" &&
+             "Email này chưa có trong hệ thống. Vui lòng đăng ký."
+           }
+           FormHelperTextProps={{ error: true }}
           />
           <VisibilityPasswordTextField
             variant="outlined"
@@ -119,7 +162,7 @@ function LogIn(props) {
             required
             fullWidth
             error={status === "invalidPassword"}
-            label="Password"
+            label="Mật khẩu đăng nhập"
             inputRef={loginPassword}
             autoComplete="off"
             onChange={() => {
@@ -165,25 +208,34 @@ function LogIn(props) {
             id= "forgot_btn">
               <Link 
               variant="body2"
-              href = "#">       
+              to = ""
+              onClick = {handlechangePasswordOpen}
+              >       
                 Quên mật khẩu
               </Link>
             </Grid>
             <Grid item
              id= "SignUp_btn">
               <Link 
-              href="#" 
+              align="center"
+              className = "signup_class"
+              role="button" 
+              onClick = {handlesignupOpen}
               variant="body2"
              >
                 {"Không có tài khoản ? Đăng ký ngay"}
               </Link>
             </Grid>
           </Grid>
+         
         </form>
+      
       </div>
+      {renderChangePassword}
       <Box mt={8}>
         <Copyright className={classes.footer} />
       </Box>
+
     </Container>
   );
 }
