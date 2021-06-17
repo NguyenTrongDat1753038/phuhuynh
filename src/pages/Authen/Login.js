@@ -231,7 +231,6 @@ function LogIn(props) {
         </form>
       
       </div>
-      {renderChangePassword}
       <Box mt={8}>
         <Copyright className={classes.footer} />
       </Box>
