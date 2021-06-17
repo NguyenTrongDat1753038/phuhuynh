@@ -9,6 +9,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {ListItemText,MenuItem,List} from '@material-ui/core'
 import MessageIcon from '@material-ui/icons/Message';
+import {Link,Route,BrowserRouter as Router, Switch} from 'react-router-dom'
 
 const StyledMenuItem = withStyles((theme) => ({
     root: {
@@ -22,6 +23,7 @@ const StyledMenuItem = withStyles((theme) => ({
   }))(MenuItem);
   export default function AccountMenu() {  
     return (
+    <Router>
     <List className= "Account_btn">
     <StyledMenuItem>
           <HomeIcon style={{minWidth: '40px'}}/>
@@ -30,6 +32,7 @@ const StyledMenuItem = withStyles((theme) => ({
         <StyledMenuItem>
           <PersonOutlineRoundedIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Hồ sơ của bạn" />
+          <Link to="/profile"></Link>
         </StyledMenuItem>
         <StyledMenuItem>
           <GradeOutlinedIcon style={{minWidth: '40px'}}/>
@@ -52,4 +55,5 @@ const StyledMenuItem = withStyles((theme) => ({
           <ListItemText primary="Thoát"  />
         </StyledMenuItem>
         </List>
+        </Router>
 );}
