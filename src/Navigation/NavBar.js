@@ -12,6 +12,7 @@ import AlignItemsList from "./Message"
 import AccountMenu from "./Account"
 import logo from "../images/logo.jpg"
 import NotificationsIcon from '../images/notification.jpg';
+import {Link,Route,BrowserRouter as Router, Switch} from 'react-router-dom'
 
 const drawerWidth = 240;
 

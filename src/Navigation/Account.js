@@ -24,8 +24,8 @@ const StyledMenuItem = withStyles((theme) => ({
   export default function AccountMenu() {  
     return (
     <Router>
-    <List className= "Account_btn">
-    <StyledMenuItem>
+      <List className= "Account_btn">
+        <StyledMenuItem>
           <HomeIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Trang chủ" />
         </StyledMenuItem>
@@ -54,6 +54,7 @@ const StyledMenuItem = withStyles((theme) => ({
           <ExitToAppIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Thoát"  />
         </StyledMenuItem>
-        </List>
-        </Router>
+      </List>
+      
+    </Router>
 );}
