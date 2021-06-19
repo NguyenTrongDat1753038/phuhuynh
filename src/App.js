@@ -7,6 +7,7 @@ import LogIn from './pages/Authen/Login';
 import UserProfile from "./pages/UserProfile";
 import SignUp from "./pages/Authen/Signup"
 import UniversityInfo from "./pages/UniversityInfo"
+import News from "./pages/News"
 function App() {
   return (
     <BrowserRouter>
@@ -16,7 +17,8 @@ function App() {
           <Route path="/Login" exact component = {LogIn}/>
           <Route path="/profile" exact component = {UserProfile}/>
           <Route path="/signup" exact component = {SignUp}/>
-          <Route path = "/contact"exac component = {UniversityInfo} />
+          <Route path = "/contact" exact component = {UniversityInfo} />
+          <Route paht = "/news" exact component = {News}  />
         </Switch>
   </BrowserRouter>
   );
