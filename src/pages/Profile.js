@@ -60,7 +60,7 @@ export default function Profile() {
   return (
     <div className={classes.root}>
         <NavBar></NavBar>
-        
+       
     </div>
   );
 }

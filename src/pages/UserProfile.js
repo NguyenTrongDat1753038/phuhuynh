@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../Navigation/NavBar"
+import clsx from "clsx";
+
 import {
   Grid,
   Paper,
@@ -48,6 +50,7 @@ const mapInformation = {
   Sex: "Giới tính",
   Address: "Địa chỉ"
 };
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -92,8 +95,19 @@ const useStyles = makeStyles((theme) => ({
       width:"85%",
       backgroundColor:"#78AB46",
       top:"5px"
-    }
-
+    },
+  toolbar: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      padding: theme.spacing(0, 1),
+      // necessary for content to be below app bar
+      ...theme.mixins.toolbar,
+    },
+  content: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
+    },
 }));
 
 const UserInfoFormItem = (formState, onChange, propt, index) => {
@@ -179,8 +193,9 @@ export default function Profile() {
   
   return (
     <div>
-    <NavBar className = {classes.floatingMenu}/>
-    <Toolbar /> 
+    <main
+        className={classes.content}
+      >
       <MuiThemeProvider theme={theme}>
         <Grid container spacing={2}>
           <Grid item xs={12} container spacing={2}>
@@ -215,6 +230,7 @@ export default function Profile() {
           </Grid>
         </Grid>
       </MuiThemeProvider>
+      </main>
     </div>
   );
 }
