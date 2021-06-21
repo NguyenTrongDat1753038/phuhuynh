@@ -5,7 +5,6 @@ import NavBar from '../../Navigation/NavBar'
 import {makeStyles, Toolbar,Typography} from "@material-ui/core"
 import clsx from 'clsx'
 import { CropLandscapeSharp } from '@material-ui/icons';
-const drawerWidth = 200
 const useStyles = makeStyles((theme)=>({
   root: {
     marginLeft: "200px",
@@ -40,6 +39,7 @@ function Homepage() {
         <NavBar/>
         <main className={classes.content}>
         <div className={classes.toolbar} />
+        <div> {localStorage.getItem("token")}</div>
       </main>
     </div>
   );

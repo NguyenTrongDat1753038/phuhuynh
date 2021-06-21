@@ -1,241 +1,412 @@
-import React, { useState } from "react";
-import NavBar from "../Navigation/NavBar"
-import clsx from "clsx";
+import React, { Component } from 'react';
+import NavBar from '../Navigation/NavBar';
+import {makeStyles, withStyles} from "@material-ui/styles"
+import {Toolbar} from "@material-ui/core"
+import PropTypes from 'prop-types';
+import { c } from 'bowser';
 
-import {
-  Grid,
-  Paper,
-  Typography,
-  IconButton,
-  createMuiTheme,
-  MuiThemeProvider,
-  makeStyles,
-  TextField,
-  Button,
-  Toolbar 
-} from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import { CallMissedSharp } from "@material-ui/icons";
+const useStyles = makeStyles(() => ({
+  center: {
+    display: "flex", 
+    justifyContent: "center", 
+    alignItems: "center", 
+    height: "100vh"
+  },
+  root:  {
+    marginLeft: "200px",
+    flexGrow: 1,
+  },
+  info_profile: {
+    width: "80vw", 
+    margin: "76px 17.5vw", 
+    background: "#fff", 
+    padding: "20px", 
+    borderRadius: "10px", 
+    boxShadow: "0px 1px 2px grey"
+  },
+  info_profile_hr: {
+    borderTop: "1px solid gray"
+  },
+  info_profile_table: {
+    borderCollapse: "collapse", 
+    width: "100%"
+  },
+  info_profile_th: {
+    fontSize: "14px", 
+    padding: "8px", 
+    textAlign: "left", 
+    borderBottom: "1px solid #ddd"
+  },
+  info_profile_td: {
+    padding: "15px 0px 15px 5px"
+  },
+  info_profile__firstcol: {
+    fontWeight: "bold", 
+    paddingLeft: "20px"
+  },
+  info_profile__tb_row_hover: {
+    background: "rgb(243, 243, 243)", 
+    cursor: "pointer"
+  },
+  info_profile__edit: {
+    color: "rgb(71, 71, 194)"
+  },
+  info_profile__confirm: {
+    margin: "2px", 
+    padding: "5px", 
+    background: "#304f8d", 
+    color: "white"
+  },
+  info_profile__cancel: {
+    margin: "2px", 
+    padding: "4px", 
+    background: "#ffffff", 
+    border: "1px solid"
+  },
+  info_profile__image: {
+    borderRadius: "100px"
+  },
+  info_profile_input: {
+    width: "45vw"
+  },
 
-let theme = createMuiTheme();
-theme.typography.h6 = {
-  fontSize: "1rem",
-  "@media (min-width:900px)": {
-    fontSize: "1.05rem"
-  },
-  "@media (min-width:1000px)": {
-    fontSize: "1.1rem"
-  },
-  "@media (min-width:1200px)": {
-    fontSize: "1.2rem"
-  },
-  "@media (min-width:1300px)": {
-    fontSize: "1.25rem"
-  }
-};
-
-// dummy data
-const user = {
-  Name: "Nguyễn Trọng Đạt",
-  email: "1753038@student.hcmus.edu.vn",
-  phone: "123456789",
-  Sex: "Nam",
-  Address: "TP Thủ Đức , TP HCM "
-};
-
-const mapInformation = {
-  Name:"Họ tên",
-  email: "Email",
-  phone: "Số điện thoại",
-  Sex: "Giới tính",
-  Address: "Địa chỉ"
-};
-const drawerWidth = 240;
-
-const useStyles = makeStyles((theme) => ({
-  root:{
-    marginLeft: "200px"
-  },
-  paper: {
-    backgroundColor: "#594f8d",
-    color: "white",
-    padding: "1em",
-    width: "60%",
-    [theme.breakpoints.down(1200)]: {
-      width: "70%"
-    },
-    [theme.breakpoints.down(1000)]: {
-      width: "80%"
-    },
-    [theme.breakpoints.down(900)]: {
-      width: "90%"
-    },
-    [theme.breakpoints.down(800)]: {
-      width: "100%"
-    }
-  },
-  form: {
-    backgroundColor: "white",
-    color: "#594f8d ",
-    padding: "1em",
-    width: "60%",
-    [theme.breakpoints.down(1200)]: {
-      width: "70%"
-    },
-    [theme.breakpoints.down(1000)]: {
-      width: "80%"
-    },
-    [theme.breakpoints.down(900)]: {
-      width: "90%"
-    },
-    [theme.breakpoints.down(800)]: {
-      width: "100%"
-    }
-  },
-  floatingMenu:{
-      clear:"both",
-      position:"fixed",
-      width:"85%",
-      backgroundColor:"#78AB46",
-      top:"5px"
-    },
-  toolbar: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: theme.spacing(0, 1),
-      // necessary for content to be below app bar
-      ...theme.mixins.toolbar,
-    },
-  content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
 }));
+class Profile extends Component {
+   
+    constructor(props) {
+        super(props);
+        this.state = {
+            name: "",
+            email: "",
+            university: "",
+            fac: "",
+            
+            listuniversity:[],
+            listfaculty:[],
 
-const UserInfoFormItem = (formState, onChange, propt, index) => {
-  const classes = useStyles();
-  return (
-    <Grid
-      item
-      xs={6}
-      key={`display-${index}`}
-      container
-      direction="column"
-      alignItems="center"
-    >
-      <Paper className={classes.form}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle1">{mapInformation[propt]}</Typography>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <TextField
-            defaultValue={formState[propt]}
-            name={Object.keys(user)[index]}
-            onChange={onChange}
-          />
-        </Grid>
-      </Paper>
-    </Grid>
-  );
-};
+            uniselected: "",
+            facselected: "",
 
-const UserInfoGridItem = (formState, propt, index) => {
-  const classes = useStyles();
-  return (
-    <Grid
-      item
-      xs={6}
-      key={`display-${index}`}
-      container
-      direction="column"
-      alignItems="center"
-    >
-      <Paper className={classes.paper}>
-        <Grid item xs={12}>
-          <Typography variant="subtitle1">{mapInformation[propt]}</Typography>
-        </Grid>
-        <Grid item xs={12} align="center">
-          <Typography variant="h6">{formState[propt]}</Typography>
-        </Grid>
-      </Paper>
-    </Grid>
-  );
-};
+            editname: 0,
+            editimg: 0,
+            edituni: 0,
+            editfac:0,
 
-export default function Profile() {
-  const [isForm, setIsForm] = useState(false);
-  const [formInput, setFormInput] = useState(user);
-  const classes = useStyles()
-  const handleEdit = () => setIsForm(true);
+            loading: 0,                                      
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setFormInput((prev) => ({
-      ...prev,
-      [e.target.name]: value
-    }));
-  };
+            picture: "",
+            imgData: process.env.PUBLIC_URL + 'uploadimg.png'
+        }
 
-  const handleSubmit = () => {
-    setFormInput(formInput);
-    setIsForm(false);
-  };
-
-  const toggleRender = () => {
-    if (isForm) {
-      return Object.keys(user).map((key, index) =>
-        UserInfoFormItem(formInput, handleChange, key, index)
-      );
     }
 
-    return Object.keys(user).map((key, index) =>
-      UserInfoGridItem(formInput, key, index)
-    );
-  };
-  
-  return (
-    <div className = {classes.root}>
-    <NavBar/>
-    <Toolbar/>
-    <main
-        className={classes.content}
-      >
-      <MuiThemeProvider theme={theme}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} container spacing={2}>
-            <Grid item sm={6} md={12} align="center">
-                <Paper 
-                zDepth={1}
-                circle={true}
-                style={{ border: "2px solid", height: "200px", width: "200px", borderRadius:'50%' }}
-          >
-              <img src = "https://picsum.photos/800/450"  style={{width:'100%', height:'100%',borderRadius:'50%'}} ></img>
-        </Paper>
-        <Typography variant="h4">{`${user.Name}`}</Typography>
-        <IconButton
-            style={{ backgroundColor: "#594f8d", marginLeft: "1rem" }}
-            onClick={handleEdit}>
-            <EditIcon style={{ color: "white" }} />
-        </IconButton>
-            </Grid>
-          </Grid>
-          {toggleRender()}
-          <Grid item xs={12} align="center">
-            {!isForm ? (
-              <div></div>
-            ) : (
-              <Button
-                style={{ color: "white", backgroundColor: "#594f8d" }}
-                onClick={handleSubmit}
-              >
-                Cập nhật thông tin cá nhân
-              </Button>
-            )}
-          </Grid>
-        </Grid>
-      </MuiThemeProvider>
-      </main>
-    </div>
-  );
+
+    async componentDidMount() {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("https://hcmusemu.herokuapp.com/profile/view", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                this.setState({
+                    name: result[0].HoTen,
+                    email: result[0].Email,
+                    university: result[0].TenTruongDH,
+                    fac: result[0].TenKhoa,
+                    loading: 1,
+                    facselected:result[0].MaKhoa,
+                    uniselected:result[0].MaTruong
+                })
+                console.log(this.state.name)
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    onChangePicture = e => {
+        if (e.target.files[0]) {
+            console.log("picture: ", e.target.files);
+            this.setState({
+                picture: e.target.files[0]
+            });
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                this.setState({
+                    imgData: reader.result
+                });
+            });
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    };
+
+    EditName = () => {
+        this.setState({ editname: 1 })
+    }
+
+    CancelEdit = () => {
+        this.setState({ editname: 0,edituni:0,editfac:0 })
+    }
+
+    updateProfile = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("HoTen", this.state.name);
+        urlencoded.append("MaTruong", this.state.uniselected);
+        urlencoded.append("MaKhoa", this.state.facselected);
+        urlencoded.append("AnhSV", "");
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        await fetch("https://hcmusemu.herokuapp.com/profile/edit", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                if (result.message === "profile edited") {
+                    window.location.reload();
+                    // alert("Đổi thành công");
+                }
+                this.CancelEdit();
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    
+    changeName = () => {
+        if (this.state.editname === 0) {
+            return <tr className="tb-row" onClick={this.EditName}>
+                <td className="firstcol">Tên</td>
+                <td>{this.state.name}</td>
+                <td className="edit" >Chỉnh sửa</td>
+            </tr>
+        }
+        else {
+            return <tr>
+                <td className="firstcol">Tên</td>
+                <td><input name="name" value={this.state.name} onChange={this.setParams}></input></td>
+                <td><span className="confirm" type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+            </tr>
+        }
+    }
+
+    loadUni = () => {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow'
+        };
+
+        fetch("https://hcmusemu.herokuapp.com/university/getname", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                var uni = result.map((value, index) => {
+                    return <option key={index} value={value.MaTruong}>{value.TenTruongDH}</option>;
+                })
+                console.log(uni)
+                this.setState({ listuniversity: uni })
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    loadingFaculty = () => {
+        // console.log(this.state.uniselected)
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("MaTruong", this.state.uniselected);
+        // console.log(this.state.uniselected)
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("https://hcmusemu.herokuapp.com/faculty/getname", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                var fa = result.map((value, index) => {
+                    return <option key={index} value={value.MaKhoa}>{value.TenKhoa}</option>;
+                })
+                // console.log(fa)
+                this.setState({ listfaculty: fa })
+            })
+            .catch(error => console.log('error', error));
+    }
+
+
+
+    EditUni = () => {
+        this.setState({
+            edituni: 1
+        })
+        this.loadUni();
+    }
+
+    EditFac = () => {
+        this.setState({
+            editfac: 1
+        })
+        this.loadingFaculty();
+    }
+
+    changeUni = () => {
+        if (this.state.edituni === 0) {
+
+            return <tr className="tb-row" onClick={this.EditUni}>
+                <td className="firstcol">Trường</td>
+                <td>{this.state.university}</td>
+                <td className="edit" >Chỉnh sửa</td>
+            </tr>
+        }
+        else {
+            return <tr>
+                <td className="firstcol">Trường</td>
+                <td><select className="form-control" name="uniselected" onChange={this.setParams} value={this.state.uniselected}>
+                    {/* <option>Chọn trường</option> */}
+                    {this.state.listuniversity}
+                </select></td>
+                <td><span className="confirm" type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+            </tr>
+        }
+    }
+
+    changeFac = () => {
+        if (this.state.editfac === 0) {
+            return <tr className="tb-row" onClick={this.EditFac}>
+                <td className="firstcol">Khoa</td>
+                <td>{this.state.fac}</td>
+                <td className="edit" >Chỉnh sửa</td>
+            </tr>
+        }
+        else {
+            return <tr>
+                <td className="firstcol">Khoa</td>
+                <td><select className="form-control" name="facselected" onChange={this.setParams} value={this.state.facselected}>
+                    {/* <option>Chọn khoa</option> */}
+                    {this.state.listfaculty}
+                </select></td>
+                <td><span className="confirm" type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+            </tr>
+        }
+    }
+
+
+
+    setParams = (event) => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
+    checkPopup = () => {
+        if (this.state.editimg === 0) {
+            return <></>
+        }
+        else {
+            return this.popupBox();
+        }
+    }
+
+    changeIMG = () => {
+        if (this.state.editimg === 0) {
+            this.setState({
+                editimg: 1
+            })
+        }
+        else {
+            this.setState({
+                editimg: 0
+            })
+        }
+    }
+
+    popupBox = () => 
+    { 
+        return (
+
+            <div className= "popup-box">
+                <div className="header">
+                    <div className="title">Chọn ảnh hồ sơ</div>
+                    {/* <div className="tag">Tải ảnh lên</div>
+                    <div className="tag">Ảnh của bạn</div> */}
+                </div>
+                <div className="body">
+                    <img width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
+                    <label className="custom-file-upload">
+                        <input type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />Chọn ảnh từ máy tính của bạn
+                    </label>
+                </div>
+                <div className="footer">
+                    <div className="btnchange" type="button">Đặt ảnh đại diện</div>
+                    <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
+                </div>
+            </div>
+        );
+    }
+
+
+    render() {
+        const {classes} = this.props
+        if (this.state.loading === 0) {
+            console.log(this.state.name)
+            return <></>
+        }
+        return (
+            <div className={classes.center}>
+               <NavBar/>
+               <Toolbar/>
+               <div className={classes.center}>
+                {this.checkPopup()}
+                <div className={classes.info_profile}>
+                    <h3>Thông tin cá nhân</h3>
+                    <hr />
+
+                    <table>
+                        <colgroup>
+                            <col style={{ width: "25%" }} />
+                            <col style={{ width: "65%" }} />
+                            <col style={{ width: "15%" }} />
+                        </colgroup>
+                        <tbody>
+                            <tr className="tb-row" onClick={this.changeIMG}>
+                                <td className="firstcol">Ảnh</td>
+                                <td style={{ color: "grey" }}>Thêm hình ảnh để cá nhân hóa tài khoản</td>
+                                <td><img className="image" width="50vw" height="50vh" src="https://i.pinimg.com/originals/a4/f8/f9/a4f8f91b31d2c63a015ed34ae8c13bbd.jpg" alt=""></img></td>
+                            </tr>
+
+                            {this.changeName()}
+
+                            <tr className="tb-row">
+                                <td className="firstcol">Email</td>
+                                <td>{this.state.email}</td>
+                                <td></td>
+                            </tr>
+                            {this.changeUni()}
+                            {this.changeFac()}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        );
+    }
 }
+
+
+Profile.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+
+export default withStyles(useStyles)(Profile);
