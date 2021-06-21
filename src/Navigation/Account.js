@@ -10,6 +10,8 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {ListItemText,MenuItem,List} from '@material-ui/core'
 import MessageIcon from '@material-ui/icons/Message';
 import {Link,Route,BrowserRouter as Router, Switch} from 'react-router-dom'
+import {useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const StyledMenuItem = withStyles((theme) => ({
     root: {
@@ -22,17 +24,20 @@ const StyledMenuItem = withStyles((theme) => ({
     },
   }))(MenuItem);
   export default function AccountMenu() {  
+    let history = useHistory();
+    let logout = () => {
+        localStorage.removeItem("token");
+        history.replace("/");
+    }
     return (
-    <Router>
       <List className= "Account_btn">
-        <StyledMenuItem>
+        <StyledMenuItem onClick={()=> history.push("/homepage")}>
           <HomeIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Trang chủ" />
         </StyledMenuItem>
-        <StyledMenuItem>
+        <StyledMenuItem onClick={()=> history.push("/profile")}>
           <PersonOutlineRoundedIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Hồ sơ của bạn" />
-          <Link to="/profile"></Link>
         </StyledMenuItem>
         <StyledMenuItem>
           <GradeOutlinedIcon style={{minWidth: '40px'}}/>
@@ -50,11 +55,10 @@ const StyledMenuItem = withStyles((theme) => ({
           <SettingsIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Cài đặt" />
         </StyledMenuItem>
-        <StyledMenuItem>
+        <StyledMenuItem  onClick = {logout}>
           <ExitToAppIcon style={{minWidth: '40px'}}/>
           <ListItemText primary="Thoát"  />
         </StyledMenuItem>
       </List>
       
-    </Router>
 );}

@@ -53,6 +53,9 @@ const mapInformation = {
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
+  root:{
+    marginLeft: "200px"
+  },
   paper: {
     backgroundColor: "#594f8d",
     color: "white",
@@ -192,7 +195,9 @@ export default function Profile() {
   };
   
   return (
-    <div>
+    <div className = {classes.root}>
+    <NavBar/>
+    <Toolbar/>
     <main
         className={classes.content}
       >
