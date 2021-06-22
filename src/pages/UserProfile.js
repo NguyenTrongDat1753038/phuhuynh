@@ -5,7 +5,7 @@ import {Toolbar} from "@material-ui/core"
 import PropTypes from 'prop-types';
 import { c } from 'bowser';
 
-const useStyles = makeStyles(() => ({
+const useStyles = () => ({
   center: {
     display: "flex", 
     justifyContent: "center", 
@@ -70,7 +70,7 @@ const useStyles = makeStyles(() => ({
     width: "45vw"
   },
 
-}));
+});
 class Profile extends Component {
    
     constructor(props) {
@@ -114,7 +114,6 @@ class Profile extends Component {
         fetch("https://hcmusemu.herokuapp.com/profile/view", requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
                 this.setState({
                     name: result[0].HoTen,
                     email: result[0].Email,
@@ -124,14 +123,12 @@ class Profile extends Component {
                     facselected:result[0].MaKhoa,
                     uniselected:result[0].MaTruong
                 })
-                console.log(this.state.name)
             })
             .catch(error => console.log('error', error));
     }
 
     onChangePicture = e => {
         if (e.target.files[0]) {
-            console.log("picture: ", e.target.files);
             this.setState({
                 picture: e.target.files[0]
             });
@@ -176,7 +173,6 @@ class Profile extends Component {
                 console.log(result)
                 if (result.message === "profile edited") {
                     window.location.reload();
-                    // alert("Đổi thành công");
                 }
                 this.CancelEdit();
             })
@@ -185,11 +181,12 @@ class Profile extends Component {
 
     
     changeName = () => {
+      const {classes} = this.props
         if (this.state.editname === 0) {
             return <tr className="tb-row" onClick={this.EditName}>
                 <td className="firstcol">Tên</td>
                 <td>{this.state.name}</td>
-                <td className="edit" >Chỉnh sửa</td>
+                <td className={classes.EditName}>Chỉnh sửa</td>
             </tr>
         }
         else {
@@ -220,13 +217,11 @@ class Profile extends Component {
     }
 
     loadingFaculty = () => {
-        // console.log(this.state.uniselected)
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
         var urlencoded = new URLSearchParams();
         urlencoded.append("MaTruong", this.state.uniselected);
-        // console.log(this.state.uniselected)
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -240,7 +235,6 @@ class Profile extends Component {
                 var fa = result.map((value, index) => {
                     return <option key={index} value={value.MaKhoa}>{value.TenKhoa}</option>;
                 })
-                // console.log(fa)
                 this.setState({ listfaculty: fa })
             })
             .catch(error => console.log('error', error));
@@ -333,25 +327,25 @@ class Profile extends Component {
 
     popupBox = () => 
     { 
+        const {classes } = this.props;
         return (
-
-            <div className= "popup-box">
-                <div className="header">
-                    <div className="title">Chọn ảnh hồ sơ</div>
-                    {/* <div className="tag">Tải ảnh lên</div>
-                    <div className="tag">Ảnh của bạn</div> */}
+                <div style={{marginLeft: "300px"}} className= "popup-box">
+                    <div className="header">
+                        <div className="title">Chọn ảnh hồ sơ</div>
+                        {/* <div className="tag">Tải ảnh lên</div>
+                        <div className="tag">Ảnh của bạn</div> */}
+                    </div>
+                    <div className="body">
+                        <img width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
+                        <label className="custom-file-upload">
+                            <input type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />Chọn ảnh từ máy tính của bạn
+                        </label>
+                    </div>
+                    <div className="footer">
+                        <div className="btnchange" type="button">Đặt ảnh đại diện</div>
+                        <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
+                    </div>
                 </div>
-                <div className="body">
-                    <img width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
-                    <label className="custom-file-upload">
-                        <input type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />Chọn ảnh từ máy tính của bạn
-                    </label>
-                </div>
-                <div className="footer">
-                    <div className="btnchange" type="button">Đặt ảnh đại diện</div>
-                    <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
-                </div>
-            </div>
         );
     }
 
@@ -363,10 +357,10 @@ class Profile extends Component {
             return <></>
         }
         return (
-            <div className={classes.center}>
+            <div>
                <NavBar/>
                <Toolbar/>
-               <div className={classes.center}>
+               <div>
                 {this.checkPopup()}
                 <div className={classes.info_profile}>
                     <h3>Thông tin cá nhân</h3>

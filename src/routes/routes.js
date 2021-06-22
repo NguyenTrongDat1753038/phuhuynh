@@ -9,7 +9,7 @@ import NavBar from "../Navigation/NavBar";
 import { Toolbar } from "@material-ui/core";
 import Main  from "../pages/Homepage/Homepage";
 import LogIn from '../pages/Authen/Login';
-import UserProfile from "../pages/UserProfile";
+import Profile from "../pages/UserProfile";
 import SignUp from "../pages/Authen/Signup"
 import UniversityInfo from "../pages/UniversityInfo"
 import News from "../pages/News"
@@ -36,7 +36,7 @@ class ReactRouter extends Component {
         <CssBaseline />
           <Switch>
             <Route exact path = "/homepage"> <Homepage/> </Route>
-            <Route exact path="/profile">  <UserProfile/> </Route> 
+            <Route exact path="/profile">  <Profile/> </Route> 
             <Route exact path="/signup"> <SignUp/> </Route>
             <Route exact path = "/contact" > <UniversityInfo/> </Route>
             <Route exact path = "/news" > <News/> /</Route>
