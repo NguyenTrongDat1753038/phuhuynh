@@ -39,7 +39,7 @@ function Homepage() {
         <NavBar/>
         <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div> {localStorage.getItem("token")}</div>
+        <div>Đây là trang chủ</div>
       </main>
     </div>
   );

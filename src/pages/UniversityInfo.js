@@ -7,11 +7,8 @@ import {
   createMuiTheme,
   MuiThemeProvider,
   makeStyles,
-  TextField,
-  Button,
   Toolbar 
 } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
 
 let theme = createMuiTheme();
 theme.typography.h6 = {

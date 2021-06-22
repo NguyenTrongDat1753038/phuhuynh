@@ -1,7 +1,7 @@
 import React from 'react';
 
 import HomeIcon from '@material-ui/icons/Home';
-import {withStyles,useStyles } from '@material-ui/core/styles';
+import {withStyles } from '@material-ui/core/styles';
 import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
 import GradeOutlinedIcon from '@material-ui/icons/GradeOutlined';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
@@ -9,9 +9,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import {ListItemText,MenuItem,List} from '@material-ui/core'
 import MessageIcon from '@material-ui/icons/Message';
-import {Link,Route,BrowserRouter as Router, Switch} from 'react-router-dom'
 import {useHistory } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
 
 const StyledMenuItem = withStyles((theme) => ({
     root: {

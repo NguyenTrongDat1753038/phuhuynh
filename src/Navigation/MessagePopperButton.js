@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useCallback } from "react";
+import React, { Fragment, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import {
   Popover,
@@ -39,7 +39,7 @@ const styles = (theme) => ({
 
 function MessagePopperButton(props) {
   const { classes, messages } = props;
-  const anchorEl = useRef();
+  const [anchorEl, setAnchorEl] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = useCallback(() => {
@@ -55,7 +55,7 @@ function MessagePopperButton(props) {
     <Fragment>
       <IconButton
         onClick={handleClick}
-        buttonRef={anchorEl}
+        anchorEl={anchorEl}
         aria-label="Open Messages"
         aria-describedby={id}
         color="primary"
@@ -66,7 +66,7 @@ function MessagePopperButton(props) {
         disableScrollLock
         id={id}
         open={isOpen}
-        anchorEl={anchorEl.current}
+        anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",

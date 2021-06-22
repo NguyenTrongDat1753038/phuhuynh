@@ -1,13 +1,10 @@
-import React, { Component,useState,useEffect } from 'react';
+import React, { Component} from 'react';
 import {
     BrowserRouter,
     Switch,
     Route,
     Redirect
 } from "react-router-dom";
-import NavBar from "../Navigation/NavBar";
-import { Toolbar } from "@material-ui/core";
-import Main  from "../pages/Homepage/Homepage";
 import LogIn from '../pages/Authen/Login';
 import Profile from "../pages/UserProfile";
 import SignUp from "../pages/Authen/Signup"
@@ -15,7 +12,6 @@ import UniversityInfo from "../pages/UniversityInfo"
 import News from "../pages/News"
 import Homepage from "../pages/Homepage/Homepage"
 import {CssBaseline } from "@material-ui/core";
-import { exact } from 'prop-types';
 
 class ReactRouter extends Component {
   render() {

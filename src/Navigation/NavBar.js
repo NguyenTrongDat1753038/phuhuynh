@@ -134,30 +134,6 @@ function NavBar(props) {
       detailPage : 'wwww.shopee.vn', 
       receivedTime:'16-05-2020'
     },
-    {
-      image : logo ,
-      message : 'Shopee sale',
-      detailPage : 'wwww.shopee.vn', 
-      receivedTime:'16-05-2020'
-    },
-    {
-      image : logo ,
-      message : 'Shopee sale',
-      detailPage : 'wwww.shopee.vn', 
-      receivedTime:'16-05-2020'
-    },
-    {
-      image : logo ,
-      message : 'Shopee sale',
-      detailPage : 'wwww.shopee.vn', 
-      receivedTime:'16-05-2020'
-    },
-    {
-      image : logo ,
-      message : 'Shopee sale',
-      detailPage : 'wwww.shopee.vn', 
-      receivedTime:'16-05-2020'
-    },
  ];
   const [open, setDrawerOpen] = React.useState(false);
   const handleDrawerOpen = () => {
@@ -321,7 +297,7 @@ function NavBar(props) {
               </Badge>
             </IconButton>
             <IconButton 
-            color="red"
+            color="primary"
             edge="end"
             aria-label="notification of current user"
             className = "notifi_btn"
@@ -333,7 +309,6 @@ function NavBar(props) {
                    height = '400px'
                    markAsRead={data => console.log(data)}
                    headerBackgroundColor	= "orange"
-                   cardOption = "false"
                    header={
                     {
                       title: 'Thông báo',
@@ -353,7 +328,7 @@ function NavBar(props) {
               onClick={handleMenuProfileOpen}
               color="inherit"
             >
-             <Typography  variant="h7" component="span" color="#ffffff"> Trần Thị Quỳnh Như </Typography>
+             <Typography  variant="h6" adjustsFontSizeToFit component="span" color="inherit"> Trần Thị Quỳnh Như </Typography>
 
               <AccountCircle />       
             </IconButton>

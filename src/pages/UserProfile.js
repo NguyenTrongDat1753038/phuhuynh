@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import NavBar from '../Navigation/NavBar';
-import {makeStyles, withStyles} from "@material-ui/styles"
+import {withStyles} from "@material-ui/styles"
 import {Toolbar} from "@material-ui/core"
 import PropTypes from 'prop-types';
-import { c } from 'bowser';
+import clsx from 'clsx';
 
 const useStyles = () => ({
   center: {
@@ -119,6 +119,7 @@ class Profile extends Component {
                     email: result[0].Email,
                     university: result[0].TenTruongDH,
                     fac: result[0].TenKhoa,
+                    picture: result[0].AnhSV,
                     loading: 1,
                     facselected:result[0].MaKhoa,
                     uniselected:result[0].MaTruong
@@ -147,7 +148,7 @@ class Profile extends Component {
     }
 
     CancelEdit = () => {
-        this.setState({ editname: 0,edituni:0,editfac:0 })
+        this.setState({ editname: 0,edituni:0,editfac:0, editimg: 0 })
     }
 
     updateProfile = async () => {
@@ -158,7 +159,7 @@ class Profile extends Component {
         urlencoded.append("HoTen", this.state.name);
         urlencoded.append("MaTruong", this.state.uniselected);
         urlencoded.append("MaKhoa", this.state.facselected);
-        urlencoded.append("AnhSV", "");
+        urlencoded.append("AnhSV", this.state.picture);
 
         var requestOptions = {
             method: 'POST',
@@ -183,17 +184,17 @@ class Profile extends Component {
     changeName = () => {
       const {classes} = this.props
         if (this.state.editname === 0) {
-            return <tr className="tb-row" onClick={this.EditName}>
-                <td className="firstcol">Tên</td>
-                <td>{this.state.name}</td>
-                <td className={classes.EditName}>Chỉnh sửa</td>
+            return <tr className={classes.info_profile__tb_row_hover} onClick={this.EditName}>
+                <td className={clsx(classes.info_profile__firstcol,classes.info_profile_td)}>Tên</td>
+                <td className={classes.info_profile_td}>{this.state.name}</td>
+                <td className={clsx(classes.info_profile__edit,classes.info_profile_td)}>Chỉnh sửa</td>
             </tr>
         }
         else {
             return <tr>
-                <td className="firstcol">Tên</td>
-                <td><input name="name" value={this.state.name} onChange={this.setParams}></input></td>
-                <td><span className="confirm" type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+                <td className={clsx(classes.info_profile__firstcol,classes.info_profile_td)}>Tên</td>
+                <td className={classes.info_profile_td}><input className={classes.info_profile_input} name="name" value={this.state.name} onChange={this.setParams}></input></td>
+                <td className={classes.info_profile_td}><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className={classes.info_profile__cancel} type="button" onClick={this.CancelEdit}>Hủy</span></td>
             </tr>
         }
     }
@@ -257,42 +258,44 @@ class Profile extends Component {
     }
 
     changeUni = () => {
+        const {classes} = this.props
         if (this.state.edituni === 0) {
 
-            return <tr className="tb-row" onClick={this.EditUni}>
-                <td className="firstcol">Trường</td>
-                <td>{this.state.university}</td>
-                <td className="edit" >Chỉnh sửa</td>
+            return <tr className= {classes.info_profile__tb_row_hover} onClick={this.EditUni}>
+                <td className={clsx(classes.info_profile_td,classes.info_profile__firstcol)}>Trường</td>
+                <td className={classes.info_profile_td}>{this.state.university}</td>
+                <td className={clsx(classes.info_profile__edit,classes.info_profile_td)} >Chỉnh sửa</td>
             </tr>
         }
         else {
             return <tr>
-                <td className="firstcol">Trường</td>
-                <td><select className="form-control" name="uniselected" onChange={this.setParams} value={this.state.uniselected}>
-                    {/* <option>Chọn trường</option> */}
+                <td className={clsx(classes.info_profile__tb_row_hover,classes.info_profile_td)}>Trường</td>
+                <td className={classes.info_profile_td}><select className="form-control" name="uniselected" onChange={this.setParams} value={this.state.uniselected}>
+                    {}
                     {this.state.listuniversity}
                 </select></td>
-                <td><span className="confirm" type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+                <td className={classes.info_profile_td}><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
             </tr>
         }
     }
 
     changeFac = () => {
+        const {classes} = this.props
         if (this.state.editfac === 0) {
-            return <tr className="tb-row" onClick={this.EditFac}>
-                <td className="firstcol">Khoa</td>
-                <td>{this.state.fac}</td>
-                <td className="edit" >Chỉnh sửa</td>
+            return <tr className={classes.info_profile__tb_row_hover} onClick={this.EditFac}>
+                <td className={clsx(classes.info_profile_td,classes.info_profile__firstcol)}>Khoa</td>
+                <td className={classes.info_profile_td}>{this.state.fac}</td>
+                <td className={clsx(classes.info_profile_td,classes.info_profile__edit)} >Chỉnh sửa</td>
             </tr>
         }
         else {
             return <tr>
-                <td className="firstcol">Khoa</td>
-                <td><select className="form-control" name="facselected" onChange={this.setParams} value={this.state.facselected}>
-                    {/* <option>Chọn khoa</option> */}
+                <td className={clsx(classes.info_profile_td,classes.info_profile__firstcol)}>Khoa</td>
+                <td className={classes.info_profile_td}><select className="form-control" name="facselected" onChange={this.setParams} value={this.state.facselected}>
+                    {}
                     {this.state.listfaculty}
                 </select></td>
-                <td><span className="confirm" type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+                <td className={classes.info_profile_td}><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className={classes.info_profile__cancel} type="button" onClick={this.CancelEdit}>Hủy</span></td>
             </tr>
         }
     }
@@ -330,15 +333,15 @@ class Profile extends Component {
         const {classes } = this.props;
         return (
                 <div style={{marginLeft: "300px"}} className= "popup-box">
-                    <div className="header">
+                    <div className={classes.header}>
                         <div className="title">Chọn ảnh hồ sơ</div>
-                        {/* <div className="tag">Tải ảnh lên</div>
-                        <div className="tag">Ảnh của bạn</div> */}
+                        {}
                     </div>
-                    <div className="body">
+                    <div className={classes.body}>
                         <img width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
                         <label className="custom-file-upload">
-                            <input type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />Chọn ảnh từ máy tính của bạn
+                            <input className={classes.info_profile_input} type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />
+                            Chọn ảnh từ máy tính của bạn
                         </label>
                     </div>
                     <div className="footer">
@@ -364,27 +367,27 @@ class Profile extends Component {
                 {this.checkPopup()}
                 <div className={classes.info_profile}>
                     <h3>Thông tin cá nhân</h3>
-                    <hr />
+                    <hr className={classes.info_profile_hr} />
 
-                    <table>
+                    <table className= {classes.info_profile_table}>
                         <colgroup>
                             <col style={{ width: "25%" }} />
                             <col style={{ width: "65%" }} />
                             <col style={{ width: "15%" }} />
                         </colgroup>
                         <tbody>
-                            <tr className="tb-row" onClick={this.changeIMG}>
-                                <td className="firstcol">Ảnh</td>
-                                <td style={{ color: "grey" }}>Thêm hình ảnh để cá nhân hóa tài khoản</td>
-                                <td><img className="image" width="50vw" height="50vh" src="https://i.pinimg.com/originals/a4/f8/f9/a4f8f91b31d2c63a015ed34ae8c13bbd.jpg" alt=""></img></td>
+                            <tr className={classes.info_profile__tb_row_hover} onClick={this.changeIMG}>
+                                <td className={clsx(classes.info_profile_td,classes.info_profile__firstcol)}>Ảnh</td>
+                                <td className={classes.info_profile_td} style={{ color: "grey" }}>Thêm hình ảnh để cá nhân hóa tài khoản</td>
+                                <td className={classes.info_profile_td}><img className={classes.info_profile__image} width="50vw" height="50vh" src="https://i.pinimg.com/originals/a4/f8/f9/a4f8f91b31d2c63a015ed34ae8c13bbd.jpg" alt=""></img></td>
                             </tr>
 
                             {this.changeName()}
 
-                            <tr className="tb-row">
-                                <td className="firstcol">Email</td>
-                                <td>{this.state.email}</td>
-                                <td></td>
+                            <tr className={classes.info_profile__tb_row_hover}>
+                                <td className={clsx(classes.info_profile__firstcol,classes.info_profile_td)}>Email</td>
+                                <td className={classes.info_profile_td}>{this.state.email}</td>
+                                <td className={classes.info_profile_td}></td>
                             </tr>
                             {this.changeUni()}
                             {this.changeFac()}

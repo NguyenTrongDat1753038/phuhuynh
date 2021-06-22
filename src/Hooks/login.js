@@ -3,6 +3,8 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import clsx from "clsx"
 import { makeStyles } from '@material-ui/core';
+import { Grid, FormControl,FormLabel,FormControlLabel,FormHelperText,Input,InputLabel, FormGroup,CssBaseline} from '@material-ui/core';
+
 const useStyles = makeStyles(() => ({
     login_container: {
         marginTop: "10%", 
@@ -87,7 +89,6 @@ export default function LoginButton() {
                     return response.json()
                 }
                 throw Error(response.status)
-                // return response.json();
             })
             .then(result => {
                 console.log(result.token)
@@ -119,27 +120,33 @@ export default function LoginButton() {
     }
 
     return (
-        <div className={clsx(classes.login_container,'container')}>
-            <div className="row">
-                <div className={clsx(classes.info,"col-md-8")}>
-                    <img className="row" width="30%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png" alt="logo"></img>
-                    <h3 className="row">Ứng dụng kết nối và quản lý cổng học tập</h3>
-                </div>
-                <div className={clsx('col-md-4',classes.login_form_1)}>
-                    <form>
-                        <h3>Đăng nhập</h3>
-                        <div className="form-group">
-                            <input  type="text" className="form-control" name="username" placeholder="Tài khoản" onChange={(e) => setEmail(e.target.value)}/>
-                        </div>
-                        <div className="form-group">
-                            <input  type="password" className="form-control" name="password" placeholder="Mật khẩu" onChange={(e) => setPassword(e.target.value)}/>
-                        </div>
-                        <div className="form-group">
+        <div className={clsx(classes.login_container,classes.login_container)}>
+            <Grid  container  direction="row" spacing={2} justify="center">
+                <Grid  className={classes.info} item xs={8} md={8}>
+                    <Grid >
+                        <img width="50%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png" alt="logo"></img>
+                    </Grid>
+                    <Grid >
+                        <h1 className={classes.login_form_1_h3}>Ứng dụng kết nối và quản lý cổng học tập</h1>
+                    </Grid>
+                </Grid>
+                <Grid className={classes.login_form_1} item xs={4} md={4} >
+                        <h1 className={classes.login_form_1_h3}>Đăng nhập</h1>
+                        <FormGroup height="50%">
+                            <FormControl>
+                                <Input className={classes.login_input} name="username" placeholder="Tài khoản" onChange={(e) => setEmail(e.target.value)}/>
+                            </FormControl>
+                        </FormGroup>
+                        <FormGroup>
+                            <FormControl>
+                                <Input type="password" className={classes.login_input} name="password" placeholder="Mật khẩu" onChange={(e) => setPassword(e.target.value)}/>
+                            </FormControl>
+                        </FormGroup>
+                       <br/>
                             {loaddingButton()}
                             <Link to="/signup" className={classes.btnForgetPwd}>Đăng kí</Link>
-                        </div></form>
-                </div>
-            </div>
+                </Grid>
+            </Grid>
         </div>
     )
 }
