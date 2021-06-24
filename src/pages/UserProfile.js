@@ -159,7 +159,7 @@ class Profile extends Component {
         urlencoded.append("HoTen", this.state.name);
         urlencoded.append("MaTruong", this.state.uniselected);
         urlencoded.append("MaKhoa", this.state.facselected);
-        urlencoded.append("AnhSV", this.state.picture);
+        urlencoded.append("AnhSV", "");
 
         var requestOptions = {
             method: 'POST',
@@ -320,12 +320,61 @@ class Profile extends Component {
             this.setState({
                 editimg: 1
             })
+            this.deleteIMG();
+            this.uploadIMG();
         }
         else {
             this.setState({
                 editimg: 0
             })
         }
+    }
+    deleteIMG = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+
+       var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        await fetch("https://hcmusemu.herokuapp.com/profile/deleteimg", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                if (result.message === "profile edited") {
+                    window.location.reload();
+                }
+                this.CancelEdit();
+            })
+            .catch(error => console.log('error', error));
+    }
+
+
+    uploadIMG = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/form-data");
+        
+        let formdata = new FormData();
+        formdata.append("image",this.state.imgData);
+       var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            body: formdata,
+            redirect: 'follow'
+        };
+
+        await fetch("https://hcmusemu.herokuapp.com/profile/uploadimg", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                if (result.message === "profile edited") {
+                    window.location.reload();
+                }
+                this.CancelEdit();
+            })
+            .catch(error => console.log('error', error));
     }
 
     popupBox = () => 
@@ -340,12 +389,12 @@ class Profile extends Component {
                     <div className={classes.body}>
                         <img width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
                         <label className="custom-file-upload">
-                            <input className={classes.info_profile_input} type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />
+                            <input className={classes.info_profile_input} name="imgSelected" type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />
                             Chọn ảnh từ máy tính của bạn
                         </label>
                     </div>
                     <div className="footer">
-                        <div className="btnchange" type="button">Đặt ảnh đại diện</div>
+                        <div className="btnchange" type="button" >Đặt ảnh đại diện</div>
                         <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
                     </div>
                 </div>
