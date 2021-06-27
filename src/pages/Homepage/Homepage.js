@@ -5,10 +5,12 @@ import NavBar from '../../Navigation/NavBar'
 import {makeStyles, Toolbar,Typography} from "@material-ui/core"
 import clsx from 'clsx'
 import { CropLandscapeSharp } from '@material-ui/icons';
+const border = 200;
 const useStyles = makeStyles((theme)=>({
   root: {
-    marginLeft: "200px",
-    flexGrow: 1,
+    marginLeft: `${border}`,
+    display: "flex",
+    width: `100%-${border}`,
   },
   toolbar: {
     display: 'flex',

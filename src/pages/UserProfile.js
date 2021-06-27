@@ -194,7 +194,7 @@ class Profile extends Component {
             return <tr>
                 <td className={clsx(classes.info_profile__firstcol,classes.info_profile_td)}>Tên</td>
                 <td className={classes.info_profile_td}><input className={classes.info_profile_input} name="name" value={this.state.name} onChange={this.setParams}></input></td>
-                <td className={classes.info_profile_td}><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className={classes.info_profile__cancel} type="button" onClick={this.CancelEdit}>Hủy</span></td>
+                <td><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className={classes.info_profile__cancel} type="button" onClick={this.CancelEdit}>Hủy</span></td>
             </tr>
         }
     }

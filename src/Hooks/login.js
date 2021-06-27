@@ -9,7 +9,8 @@ const useStyles = makeStyles(() => ({
     login_container: {
         marginTop: "10%", 
         marginBottom: "10%", 
-        maxHeight: "300px"
+        maxHeight: "300px",
+        width: "90%"
       },
       info: {
         paddingTop: "5%", 
@@ -133,9 +134,10 @@ export default function LoginButton() {
                 <Grid className={classes.login_form_1} item xs={4} md={4} >
                         <h1 className={classes.login_form_1_h3}>Đăng nhập</h1>
                         <FormGroup height="50%">
-                            <FormControl>
+                            <FormControl borderRadius = "50%">
                                 <Input className={classes.login_input} name="username" placeholder="Tài khoản" onChange={(e) => setEmail(e.target.value)}/>
                             </FormControl>
+                            <br></br>
                         </FormGroup>
                         <FormGroup>
                             <FormControl>
