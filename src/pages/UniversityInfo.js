@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { useState } from "react";
 import NavBar from "../Navigation/NavBar"
 import {
   Grid,
@@ -7,9 +7,11 @@ import {
   createMuiTheme,
   MuiThemeProvider,
   makeStyles,
-  Toolbar,
-  withStyles
+  TextField,
+  Button,
+  Toolbar 
 } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 
 let theme = createMuiTheme();
 theme.typography.h6 = {
@@ -89,187 +91,67 @@ const useStyles = makeStyles((theme) => ({
       position:"fixed",
       width:"85%",
       backgroundColor:"#78AB46",
-      top:"5px"
+      top:"5px",
+    },
+    root:{
+        marginLeft: "200px"
     }
 
 }));
 
 
-class Deadline extends Component {
-  constructor(props) {
-      super(props);
-      this.state = {
-          loadding: 1,
-          loaddingnewsuni: 1,
-          loaddingnewsfac: 1,
-
-          newsuni: [],
-          newsfac: [],
-
-          tag: 0
-      }
-  }
-
-  getNewsUniversity = () => {
-      var myHeaders = new Headers();
-      myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
-
-      var requestOptions = {
-          method: 'GET',
-          headers: myHeaders,
-          redirect: 'follow'
-      };
-
-      fetch("https://hcmusemu.herokuapp.com/info/newsuniversity", requestOptions)
-          .then(response => response.json())
-          .then(result => {
-              console.log(result)
-              this.setState({
-                  newsuni: result,
-                  loaddingnewsuni: 0
-              })
-          })
-          .catch(error => console.log('error', error));
-  }
-
-  getNewsFaculty = () => {
-      var myHeaders = new Headers();
-      myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
-
-      var requestOptions = {
-          method: 'GET',
-          headers: myHeaders,
-          redirect: 'follow'
-      };
-
-      fetch("https://hcmusemu.herokuapp.com/info/newsfaculty", requestOptions)
-          .then(response => response.json())
-          .then(result => {
-              console.log(result)
-              this.setState({
-                  newsfac: result,
-                  loaddingnewsfac: 0
-              })
-          })
-          .catch(error => console.log('error', error));
-  }
+const DataInfoGridItem = (formState,propt, index) => {
+  const classes = useStyles();
+  return (
+    <Grid
+      item
+      xs={6}
+      key={`display-${index}`}
+      container
+      direction="column"
+      alignItems="center"
+    >
+      <Paper className={classes.paper}>
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">{mapInformation[propt]}</Typography>
+        </Grid>
+        <Grid item xs={12} align="stretch">
+            <Typography variant="h6">{formState[propt]}</Typography>
+        </Grid>
+      </Paper>
+    </Grid>
+  );
+};
 
 
-  convertMonth = (m) => {
-      var months = ['một', 'hai', 'ba', 'bốn', 'năm', 'sáu', 'bảy', 'tám', 'chín', 'mười', 'mười một', 'mười hai'];
-      return months[m - 1];
-  }
-
-  convertTime = (UNIX_timestamp) => {
-      var a = new Date(UNIX_timestamp * 1000);
-      var months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '20', '11', '12'];
-      var year = a.getFullYear();
-      var month = months[a.getMonth()];
-      var date = a.getDate();
-      var hour = a.getHours();
-      var min = a.getMinutes();
-      var sec = a.getSeconds();
-      var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec;
-      return time;
-  }
-
-  getCurrenDate = () => {
-      var today = new Date();
-
-      this.setState({
-          month: today.getMonth() + 1,
-          year: today.getFullYear()
-      })
-  }
-
-  LoaddingIcon = () => {
-      if (this.state.loadding === 1) {
-          return <i className="loadding fa fa-circle-o-notch fa-spin fa-3x"></i>
-      }
-  }
-
-
-  clickTag = async (numtag) => {
-      await this.setState({
-          tag: numtag
-      })
-      if (this.state.tag===1 && this.state.loaddingnewsuni===1)
-      this.getNewsUniversity();
-      if (this.state.tag==2 && this.state.loaddingnewsfac===1)
-      this.getNewsFaculty();
-
-  }
-
-  renderTag = () => {
-     if (this.state.tag === 1 && this.state.loaddingnewsuni === 0) {
-          return (
-              <div className="news-page">
-
-                  {
-                      this.state.newsuni.map((news) => {
-                          return (<a href={"https://www.hcmus.edu.vn/" + news.Link} target="_blank" rel="noopener noreferrer"><div className="news">
-                              <div className="title">
-                                  {news.Title}
-                              </div>
-                              <div className="time">
-                                  {news.Date}
-                              </div>
-
-                          </div>
-                              {/* <hr/> */}
-                          </a>
-                          )
-                      })
-                  }
-
-              </div>
-          )
-      }
-
-      else if (this.state.tag === 2 && this.state.loaddingnewsfac === 0) {
-          return (
-              <div className="news-page">
-
-                  {
-                      this.state.newsfac.map((news) => {
-                          return (<a href={"https://www.hcmus.edu.vn/" + news.Link} target="_blank" rel="noopener noreferrer"><div className="news">
-                              <div className="title">
-                                  {news.Title}
-                              </div>
-                              <div className="time">
-                                  {news.Date}
-                              </div>
-
-                          </div>
-                              {/* <hr/> */}
-                          </a>
-                          )
-                      })
-                  }
-
-              </div>
-          )
-      }
-  }
-
-  render() {
-      var university = this.state.tag === 1 ? "university" : "";
-      var faculty = this.state.tag === 2 ? "faculty" : "";
-      return (
-          <div>
-              <NavBar />
-              <div className="deadline-tag">
-                  <div className="tag">
-                      <div type="button" className={"btn-deadline " + university} onClick={() => this.clickTag(1)}>Tin tức trường
-                      </div>
-                      <div type="button" className={"btn-deadline " + faculty} onClick={() => this.clickTag(2)}>Tin tức khoa
-                      </div>
-                  </div>
-              </div>
-              {this.renderTag()}
-          </div>
-      );
-  }
+export default function UniversityInfo() {
+ const [formInput, setFormInput] = useState(data);
+  const classes = useStyles()
+  const toggleRender = () => {
+    return Object.keys(data).map((key, index) =>
+      DataInfoGridItem(formInput,key, index)
+    );
+  };
+  return (
+    <div className={classes.root}>
+    <NavBar className = {classes.floatingMenu}/>
+    <Toolbar /> 
+      <MuiThemeProvider theme={theme}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} container spacing={2}>
+            <Grid item sm={6} md={12} align="center">
+                <Paper 
+                circle= "true"
+                style={{ border: "2px solid", height: "200px", width: "200px", borderRadius:'50%' }}
+          >
+              <img src = "" alt=""  style={{width:'100%', height:'100%',borderRadius:'50%'}} ></img>
+        </Paper>
+        <Typography variant="h4">{`${data.Name}`}</Typography>
+            </Grid>
+          </Grid>
+          {toggleRender()}
+        </Grid>
+      </MuiThemeProvider>
+    </div>
+  );
 }
-
-export default withStyles(useStyles)(Deadline);

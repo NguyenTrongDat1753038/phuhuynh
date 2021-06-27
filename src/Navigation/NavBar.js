@@ -34,8 +34,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import logo from "../images/logo.jpg"
 import NotificationsIcon from '../images/notification.jpg';
-import {Link,Route,BrowserRouter as Router, Switch} from 'react-router-dom'
-import { render } from '@testing-library/react';
+import {useHistory} from "react-router-dom"
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
@@ -107,6 +106,7 @@ const StyledMenu = withStyles({
 
 function NavBar(props) {
   const { window } = props;
+  let history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -258,6 +258,13 @@ function NavBar(props) {
       <ListItemText primary="Quiz" />
     </ListItem>
     <Divider light />
+    <ListItem button onClick={()=> history.push("/contact")}>
+      <ListItemIcon >
+        <SchoolIcon style={{ color: 'dark' }}/>
+      </ListItemIcon>
+      <ListItemText primary="Thông tin trường" />
+    </ListItem>
+    <Divider light />
       </List>
       
     </div>
@@ -328,7 +335,7 @@ function NavBar(props) {
               onClick={handleMenuProfileOpen}
               color="inherit"
             >
-             <Typography  variant="h6" adjustsFontSizeToFit component="span" color="inherit"> Trần Thị Quỳnh Như </Typography>
+             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> Trần Thị Quỳnh Như </Typography>
 
               <AccountCircle />       
             </IconButton>

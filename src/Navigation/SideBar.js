@@ -77,6 +77,13 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
       <ListItemText primary="Quiz" />
     </ListItem>
     <Divider light />
+    <ListItem button>
+      <ListItemIcon>
+        <SchoolIcon style={{ color: 'white' }} />
+      </ListItemIcon>
+      <ListItemText primary="Thông tin trường" />
+    </ListItem>
+    <Divider light />
   </div>
 );
 

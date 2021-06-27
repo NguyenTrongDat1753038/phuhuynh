@@ -103,7 +103,7 @@ class Profile extends Component {
 
     async componentDidMount() {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") + " tC");
 
         var requestOptions = {
             method: 'GET',
