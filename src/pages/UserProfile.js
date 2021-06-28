@@ -69,6 +69,65 @@ const useStyles = () => ({
   info_profile_input: {
     width: "45vw"
   },
+  popup_box_image: {
+    position: "fixed", 
+    width: "50vw", 
+    height: "70vh", 
+    top: "50%", 
+    left: "50%", 
+    marginTop: "-30vh", 
+    marginLeft: "-20vw", 
+    background: "white", 
+    border: "1px solid gray", 
+    boxShadow: "2px 2px 10px 0px rgb(197, 197, 197)", 
+    overflow: "hidden"
+  },
+  popup_box_image__header: {
+    boxShadow: "0px 1px 2px 0px rgb(197, 197, 197)"
+  },
+  popup_box_image__btnchange: {
+    padding: "5px", 
+    color: "white", 
+    background: "#4a8cf8"
+  },
+  btncancel: {
+    display: "inline-block", 
+    border: "1px solid gray", 
+    margin: "0 0 1px 10px", 
+    fontSize: "12px", 
+    fontWeight: "600"
+  },
+  popup_box_image__btncancel: {
+    padding: "5px 20px"
+  },
+  popup_box_image__title: {
+    padding: "15px", 
+    fontSize: "18px", 
+    fontWeight: "400"
+  },
+  popup_box_image_input_type__file: {
+    display: "none"
+  },
+  popup_box_image__custom_file_upload: {
+    border: "1px solid #ccc", 
+    padding: "3px 6px", 
+    cursor: "pointer"
+  },
+  popup_box_image__body: {
+    height: "50vh", 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    flexDirection: "column", 
+    overflow: "hidden", 
+    borderBottom: "1px solid grey"
+  },
+  popup_box_image__body_img: {
+    margin: "10px"
+  },
+  popup_box_image__footer: {
+    margin: "10px"
+  }
 
 });
 class Profile extends Component {
@@ -320,8 +379,6 @@ class Profile extends Component {
             this.setState({
                 editimg: 1
             })
-            this.deleteIMG();
-            this.uploadIMG();
         }
         else {
             this.setState({
@@ -331,7 +388,7 @@ class Profile extends Component {
     }
     deleteIMG = async () => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") + "tC");
 
        var requestOptions = {
             method: 'GET',
@@ -341,13 +398,7 @@ class Profile extends Component {
 
         await fetch("https://hcmusemu.herokuapp.com/profile/deleteimg", requestOptions)
             .then(response => response.json())
-            .then(result => {
-                console.log(result)
-                if (result.message === "profile edited") {
-                    window.location.reload();
-                }
-                this.CancelEdit();
-            })
+            .then(result => console.log(result))
             .catch(error => console.log('error', error));
     }
 
@@ -357,7 +408,7 @@ class Profile extends Component {
         myHeaders.append("Content-Type", "application/form-data");
         
         let formdata = new FormData();
-        formdata.append("image",this.state.imgData);
+        formdata.append("image",this.state.picture);
        var requestOptions = {
             method: 'GET',
             headers: myHeaders,
@@ -369,35 +420,36 @@ class Profile extends Component {
             .then(response => response.json())
             .then(result => {
                 console.log(result)
-                if (result.message === "profile edited") {
-                    window.location.reload();
-                }
-                this.CancelEdit();
+                this.setState({editimg:0})
             })
             .catch(error => console.log('error', error));
     }
-
+    
+    updateImage = async () => {
+        await this.deleteIMG();
+        await this.uploadIMG();
+        window.location.reload();
+    }
     popupBox = () => 
     { 
         const {classes } = this.props;
         return (
-                <div style={{marginLeft: "300px"}} className= "popup-box">
-                    <div className={classes.header}>
-                        <div className="title">Chọn ảnh hồ sơ</div>
-                        {}
-                    </div>
-                    <div className={classes.body}>
-                        <img width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
-                        <label className="custom-file-upload">
-                            <input className={classes.info_profile_input} name="imgSelected" type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />
-                            Chọn ảnh từ máy tính của bạn
-                        </label>
-                    </div>
-                    <div className="footer">
-                        <div className="btnchange" type="button" >Đặt ảnh đại diện</div>
-                        <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
-                    </div>
-                </div>
+            <div className={classes.popup_box_image}>
+            <div className={classes.popup_box_image__header}>
+                <div className={classes.popup_box_image__title}>Chọn ảnh hồ sơ</div>
+                {}
+            </div>
+            <div className={classes.popup_box_image__body}>
+                <img className={classes.popup_box_image__body_img} width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
+                <label className={classes.popup_box_image__custom_file_upload}>
+                    <input className={classes.popup_box_image_input_type__file} type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />Chọn ảnh từ máy tính của bạn
+                </label>
+            </div>
+            <div className= {classes.popup_box_image__footer}>
+                <div className="btnchange" type="button" onClick={this.updateImage}>Đặt ảnh đại diện</div>
+                <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
+            </div>
+        </div>
         );
     }
 
