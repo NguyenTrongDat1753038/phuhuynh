@@ -135,13 +135,7 @@ function NavBar(props) {
       receivedTime:'16-05-2020'
     },
  ];
-  const [open, setDrawerOpen] = React.useState(false);
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -195,63 +189,49 @@ function NavBar(props) {
       <div className={classes.toolbar} />
       <Divider />
       <List>
-      <ListItem button >
+      <ListItem button onClick={()=> history.push("/")} >
       <ListItemIcon>
         <HomeIcon style={{ color: 'dark' }}  />
       </ListItemIcon>
       <ListItemText  primary="Trang chủ" />
     </ListItem>
     <Divider light />
-    <ListItem button>
+    <ListItem button onClick={()=> history.push("/news")}>
       <ListItemIcon>
         <DateRangeIcon style={{ color: 'dark' }} />
       </ListItemIcon>
-      <ListItemText  primary="Sự kiện" />
+      <ListItemText  primary="Tin tức" />
     </ListItem>
     <Divider light />
-    <ListItem button>
+    <ListItem button onClick={()=> history.push("/course")} >
       <ListItemIcon>
         <SchoolIcon style={{ color: 'dark' }} />
       </ListItemIcon>
       <ListItemText primary="Môn học" />
     </ListItem>
     <Divider light />
-    <ListItem button>
+    <ListItem button  onClick={()=> history.push("/forum")}>
       <ListItemIcon>
         <ForumIcon style={{ color: 'dark' }} />
       </ListItemIcon>
       <ListItemText primary="Diễn đàn" />
     </ListItem>
     <Divider  light />
-    <ListItem button>
-      <ListItemIcon>
-        <EmailIcon style={{ color: 'dark' }} />
-      </ListItemIcon>
-      <ListItemText primary="Thư điện tử" />
-    </ListItem>
-    <Divider light />
-    <ListItem button>
+    <ListItem button onClick={()=> history.push("/calendar")}>
       <ListItemIcon>
         <CalendarTodayIcon style={{ color: 'dark' }} />
       </ListItemIcon>
       <ListItemText primary="Lịch" />
     </ListItem>
     <Divider light />
-    <ListItem button>
-      <ListItemIcon>
-        <ClassIcon style={{ color: 'dark' }} />
-      </ListItemIcon>
-      <ListItemText primary="Lớp dạy" />
-    </ListItem>
-    <Divider light />
-    <ListItem button>
+    <ListItem button onClick={()=> history.push("/document")}>
       <ListItemIcon>
         <SubjectIcon style={{ color: 'dark' }} />
       </ListItemIcon>
       <ListItemText primary="Tài liệu" />
     </ListItem>
     <Divider light />
-    <ListItem button>
+    <ListItem button onClick={()=> history.push("/quiz")}>
       <ListItemIcon>
         <QuestionAnswerIcon style={{ color: 'dark' }} />
       </ListItemIcon>

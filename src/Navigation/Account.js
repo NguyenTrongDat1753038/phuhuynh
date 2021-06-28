@@ -35,11 +35,7 @@ const StyledMenuItem = withStyles((theme) => ({
         </StyledMenuItem>
         <StyledMenuItem onClick={()=> history.push("/profile")}>
           <PersonOutlineRoundedIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Hồ sơ của bạn" />
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <GradeOutlinedIcon style={{minWidth: '40px'}}/>
-          <ListItemText primary="Bảng điểm con em" />
+          <ListItemText primary="Hồ sơ cá nhân" />
         </StyledMenuItem>
         <StyledMenuItem>
           <MessageIcon style={{minWidth: '40px'}}/>

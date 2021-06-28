@@ -18,14 +18,14 @@ const useStyles = makeStyles((theme) =>({
         padding: theme.spacing(3),
       },
 }));
-export default function  Calendar(){{
+export default function Document(){{
     const classes = useStyles();
     return (
         <div className= {classes.root}>
             <NavBar/>
             <main className={classes.content}>
             <div className={classes.toolbar} />
-            <Typography> Calendar </Typography>
+            <Typography> Document </Typography>
             </main>
         </div>
     )

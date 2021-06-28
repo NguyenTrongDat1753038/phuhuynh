@@ -3,8 +3,6 @@
 import React from 'react';
 import NavBar from '../../Navigation/NavBar'
 import {makeStyles, Toolbar,Typography} from "@material-ui/core"
-import clsx from 'clsx'
-import { CropLandscapeSharp } from '@material-ui/icons';
 const border = 200;
 const useStyles = makeStyles((theme)=>({
   root: {
