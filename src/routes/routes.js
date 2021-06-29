@@ -9,12 +9,11 @@ import LogIn from '../pages/Authen/Login';
 import Profile from "../pages/UserProfile";
 import SignUp from "../pages/Authen/Signup"
 import UniversityInfo from "../pages/UniversityInfo"
-import News from "../pages/News"
+import News from "../pages/News/News"
 import Homepage from "../pages/Homepage/Homepage"
 import Calendar from '../pages/Calendar';
 import Forum from '../pages/Forum';
 import Course from '../pages/Course';
-import Document from '../pages/Document';
 import {CssBaseline } from "@material-ui/core";
 
 class ReactRouter extends Component {
@@ -43,7 +42,6 @@ class ReactRouter extends Component {
             <Route exact path = "/calendar"> <Calendar/></Route>
             <Route exact path = "/course"> <Course/></Route>
             <Route exact path = "/forum"> <Forum/></Route>
-            <Route exact path = "/document"> <Document/> </Route>
           </Switch>
     </BrowserRouter>
     

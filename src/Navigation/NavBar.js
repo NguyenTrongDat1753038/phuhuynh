@@ -224,20 +224,6 @@ function NavBar(props) {
       <ListItemText primary="Lịch" />
     </ListItem>
     <Divider light />
-    <ListItem button onClick={()=> history.push("/document")}>
-      <ListItemIcon>
-        <SubjectIcon style={{ color: 'dark' }} />
-      </ListItemIcon>
-      <ListItemText primary="Tài liệu" />
-    </ListItem>
-    <Divider light />
-    <ListItem button onClick={()=> history.push("/quiz")}>
-      <ListItemIcon>
-        <QuestionAnswerIcon style={{ color: 'dark' }} />
-      </ListItemIcon>
-      <ListItemText primary="Quiz" />
-    </ListItem>
-    <Divider light />
     <ListItem button onClick={()=> history.push("/contact")}>
       <ListItemIcon >
         <SchoolIcon style={{ color: 'dark' }}/>

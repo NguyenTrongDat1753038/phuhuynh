@@ -3,7 +3,6 @@ import React from 'react';
 import HomeIcon from '@material-ui/icons/Home';
 import {withStyles } from '@material-ui/core/styles';
 import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
-import GradeOutlinedIcon from '@material-ui/icons/GradeOutlined';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';

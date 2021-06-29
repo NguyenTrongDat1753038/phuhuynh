@@ -86,7 +86,7 @@ export default function LoginButton() {
         await fetch("https://hcmusemu.herokuapp.com/account/signin", requestOptions)
             .then(response => {
                 console.log(response.clone)
-                if (response.ok) {
+                if (response.ok && response.status==200) {
                     return response.json()
                 }
                 throw Error(response.status)

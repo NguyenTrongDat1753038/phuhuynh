@@ -127,8 +127,8 @@ const useStyles = () => ({
   },
   popup_box_image__footer: {
     margin: "10px"
-  }
-
+  },
+  
 });
 class Profile extends Component {
    
