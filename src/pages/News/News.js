@@ -20,71 +20,9 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       padding: theme.spacing(3),
     },
-    news_page: {
-      margin: "10px 0 0 16vw", 
-      background: "white", 
-      width: "82vw", 
-      boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px"
-    },
-    news_page_a: {
-      textDecoration: "none"
-    },
-    news_page__news: {
-      padding: "20px 20px 0 20px"
-    },
-    news_page__news_hover__title: {
-      color: "#3e50b5"
-    },
-    news_page__title: {
-      fontSize: "18px", 
-      fontWeight: "500", 
-      color: "black"
-    },
-    news_page__time: {
-      color: "gray", 
-      fontSize: "14px"
-    },
-    deadline_tag: {
-      width: "85vw", 
-      margin: "56px 0 0 15vw", 
-      background: "white"
-    },
-    deadline_tag__tag: {
-      background: "white", 
-      boxShadow: "0px 0.5px 1px grey", 
-      display: "flex", 
-      justifyContent: "space-around", 
-      textAlign: "center"
-    },
-    deadline_tag__btn_deadline: {
-      display: "inline-block", 
-      padding: "15px", 
-      width: "50vw", 
-      fontSize: "16px", 
-      fontWeight: "500"
-    },
-    deadline_tag__tag__assign: {
-      borderBottom: "2px solid rgb(125, 149, 255)", 
-      color: "rgb(125, 149, 255)"
-    },
-    deadline_tag__tag__university: {
-      borderBottom: "2px solid rgb(125, 149, 255)", 
-      color: "rgb(125, 149, 255)"
-    },
-    deadline_tag__tag__faculty: {
-      borderBottom: "2px solid rgb(125, 149, 255)", 
-      color: "rgb(125, 149, 255)"
-    }
-    
   }));
   
- 
-  function a11yProps(index) {
-    return {
-      id: `scrollable-auto-tab-${index}`,
-      'aria-controls': `scrollable-auto-tabpanel-${index}`,
-    };
-  }
+
 export default function News(){
   const classes = useStyles()
   const [value, setValue] = useState(0);

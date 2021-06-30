@@ -1,32 +1,12 @@
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import Drawer from '@material-ui/core/Drawer';
-import Hidden from '@material-ui/core/Hidden';
-import IconButton from '@material-ui/core/IconButton';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import List from '@material-ui/core/List';
-import {Menu,Badge} from '@material-ui/core';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import SchoolIcon from '@material-ui/icons/School';
 import ForumIcon from '@material-ui/icons/Forum';
-import EmailIcon from '@material-ui/icons/Email';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import ClassIcon from '@material-ui/icons/Class';
-import SubjectIcon from '@material-ui/icons/Subject';
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Notifications from "react-notifications-menu";
 import AlignItemsList from "./Message"
 import AccountMenu from "./Account"
@@ -35,8 +15,11 @@ import MessageIcon from '@material-ui/icons/Message';
 import logo from "../images/logo.jpg"
 import NotificationsIcon from '../images/notification.jpg';
 import {useHistory} from "react-router-dom"
-const drawerWidth = 200;
+import {List,Toolbar,Typography,ListItem,ListItemIcon,IconButton,ListItemText,Menu,Badge,Hidden,Drawer,Divider,CssBaseline,AppBar} from "@material-ui/core"
 
+
+const drawerWidth = 200;
+const AppBarHeight = 60
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -49,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
+      width: "100%",
+      marginLeft: 0,
+      height: AppBarHeight
     },
   },
   toolbarIcon: {
@@ -78,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
+    marginTop: AppBarHeight
   },
   content: {
     flexGrow: 1,
@@ -104,8 +89,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-function NavBar(props) {
-  const { window } = props;
+function NavBar() {
   let history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
@@ -114,7 +98,7 @@ function NavBar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const { selectedTab, messages, width, openAddBalanceDialog } = props;
+  //const { selectedTab, messages, width, openAddBalanceDialog } = props;
   const data = [
     {
       image : logo ,
@@ -203,13 +187,6 @@ function NavBar(props) {
       <ListItemText  primary="Tin tức" />
     </ListItem>
     <Divider light />
-    <ListItem button onClick={()=> history.push("/course")} >
-      <ListItemIcon>
-        <SchoolIcon style={{ color: 'dark' }} />
-      </ListItemIcon>
-      <ListItemText primary="Môn học" />
-    </ListItem>
-    <Divider light />
     <ListItem button  onClick={()=> history.push("/forum")}>
       <ListItemIcon>
         <ForumIcon style={{ color: 'dark' }} />
@@ -236,7 +213,6 @@ function NavBar(props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <div className={classes.root}>
@@ -280,7 +256,6 @@ function NavBar(props) {
                    data={data}
                    width = '300px' 
                    height = '400px'
-                   markAsRead={data => console.log(data)}
                    headerBackgroundColor	= "orange"
                    header={
                     {
@@ -289,9 +264,6 @@ function NavBar(props) {
                     }
                   }
                     />
-                  
-
-              
             </IconButton>
             <IconButton
               edge="end"
@@ -309,13 +281,10 @@ function NavBar(props) {
         </Toolbar>
       </AppBar>
       {messageMenu}
-      {
-        renderMenu
-      }
+      {renderMenu}
       <nav className={classes.drawer} aria-label="mailbox folders">
         <Hidden smUp implementation="css">
           <Drawer
-            container={container}
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}
@@ -327,7 +296,6 @@ function NavBar(props) {
               keepMounted: true,
             }}
           >
-            {drawer}
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
