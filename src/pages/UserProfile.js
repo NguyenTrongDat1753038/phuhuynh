@@ -4,6 +4,7 @@ import {withStyles} from "@material-ui/styles"
 import {Toolbar} from "@material-ui/core"
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import 'font-awesome/css/font-awesome.min.css';
 
 const useStyles = () => ({
   center: {
@@ -230,7 +231,6 @@ class Profile extends Component {
         await fetch("https://hcmusemu.herokuapp.com/profile/edit", requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
                 if (result.message === "profile edited") {
                     window.location.reload();
                 }
@@ -270,7 +270,6 @@ class Profile extends Component {
                 var uni = result.map((value, index) => {
                     return <option key={index} value={value.MaTruong}>{value.TenTruongDH}</option>;
                 })
-                console.log(uni)
                 this.setState({ listuniversity: uni })
             })
             .catch(error => console.log('error', error));
@@ -419,7 +418,6 @@ class Profile extends Component {
         await fetch("https://hcmusemu.herokuapp.com/profile/uploadimg", requestOptions)
             .then(response => response.json())
             .then(result => {
-                console.log(result)
                 this.setState({editimg:0})
             })
             .catch(error => console.log('error', error));
@@ -457,7 +455,6 @@ class Profile extends Component {
     render() {
         const {classes} = this.props
         if (this.state.loading === 0) {
-            console.log(this.state.name)
             return <></>
         }
         return (

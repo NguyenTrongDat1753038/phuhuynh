@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme)=>({
 }));
 function Homepage() {
   const classes = useStyles();
+  console.log(localStorage.getItem("token"));
   return (
     <div className = {classes.root}> 
         <NavBar/>

@@ -1,271 +1,15 @@
-import react from "react"
-import NavBar from "../Navigation/NavBar"
-import { Toolbar, Typography } from "@material-ui/core"
-import { makeStyles, withStyles } from "@material-ui/core"
-import clsx from "clsx"
-const useStyles = makeStyles((theme) =>({
-    root: {
-        marginLeft: "200px",
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'left',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        ...theme.mixins.toolbar,
-      },
-      content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-      },
-      calendar_page: {
-        width: "81vw", 
-        margin: "66px 17vw", 
-        display: "flex", 
-        background: "white", 
-        padding: "10px", 
-        justifyContent: "space-between"
-      },
-      calendar_page__calendar: {
-        width: "50vw"
-      },
-      calendar_page__calendar__title: {
-        fontSize: "20px", 
-        fontWeight: "700", 
-        color: "#18468b", 
-        padding: "5px"
-      },
-      calendar_page_ul: {
-        listStyleType: "none", 
-        padding: "0"
-      },
-      calendar_page__calendar__picker: {
-        display: "flex", 
-        justifyContent: "space-around", 
-        color: "#18468b", 
-        fontWeight: "500", 
-        padding: "5px", 
-        fontSize: "18px"
-      },
-      calendar_page__calendar__picker_i: {
-        fontWeight: "1000"
-      },
-      calendar_page__calendar_hr: {
-        padding: "0", 
-        margin: "2px"
-      },
-      calendar_page__dayofweek: {
-        margin: "0", 
-        padding: "10px 0"
-      },
-      calendar_page__dayofweek_li: {
-        display: "inline-block", 
-        width: "7vw", 
-        textAlign: "center", 
-        fontWeight: "500"
-      },
-      calendar_page__days_li: {
-        display: "inline-block", 
-        width: "7vw", 
-        margin: "10px 0", 
-        fontSize: "12px", 
-        textAlign: "center"
-      },
-      days_li__color_event: {
-        width: "3vw", 
-        height: "3vw", 
-        lineHeight: "3vw", 
-        borderRadius: "50%", 
-        textAlign: "center", 
-        margin: "auto", 
-        fontSize: "15px"
-      },
-      days: {
-        padding: "10px 0", 
-        margin: "0"
-      },
-      calendar_page__schedule: {
-        width: "28vw", 
-        background: "#3a7cdf", 
-        color: "white", 
-        borderRadius: "10px", 
-        padding: "10px"
-      },
-      calendar_page__schedule__date: {
-        fontSize: "16px", 
-        fontWeight: "500", 
-        margin: "10px 5px", 
-        background: "white", 
-        color: "rgb(97, 97, 97)", 
-        padding: "2px 5px", 
-        width: "22vw"
-      },
-      calendar_page__schedule__event: {
-        maxHeight: "55vh"
-      },
-      calendar_page__schedule_td: {
-        padding: "5px", 
-        verticalAlign: "top"
-      },
-      calendar_page__schedule__time: {
-        whiteSpace: "nowrap", 
-        fontSize: "18px", 
-        fontWeight: "600"
-      },
-      style_3___webkit_scrollbar_track: {
-        WebkitBoxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)", 
-        boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.1)", 
-        backgroundColor: "#F5F5F5"
-      },
-      style_3___webkit_scrollbar: {
-        width: "6px", 
-        backgroundColor: "#F5F5F5"
-      },
-      style_3___webkit_scrollbar_thumb: {
-        backgroundColor: "#000000"
-      },
-      calendar_button: {
-        display: "flex", 
-        justifyContent: "space-between"
-      },
-      calendar_button__btn_add: {
-        color: "rgb(44, 44, 44)", 
-        height: "3vw", 
-        background: "#ffffff", 
-        width: "3vw", 
-        lineHeight: "3vw", 
-        borderRadius: "50%", 
-        textAlign: "center", 
-        margin: "auto 0", 
-        fontSize: "20px"
-      },
-      calendar_button__btn_add_hover: {
-        background: "#eef1f5"
-      },
-      calendar_page__popup_event: {
-        position: "fixed", 
-        width: "35vw", 
-        height: "70vh", 
-        top: "50%", 
-        left: "50%", 
-        marginTop: "-30vh", 
-        marginLeft: "-17vw", 
-        background: "rgb(255, 255, 255)", 
-        border: "1px solid black", 
-        boxShadow: "2px 2px 10px 0px rgb(197, 197, 197)", 
-        overflow: "hidden", 
-        padding: "20px"
-      },
-      calendar_page__popup_event__event_input: {
-        fontSize: "16px", 
-        height: "30px", 
-        background: "white", 
-        border: "1px solid black", 
-        borderRadius: "10px", 
-        margin: "0", 
-        padding: "5px"
-      },
-      calendar_page__popup_event__event_input_label: {
-        fontWeight: "500"
-      },
-      calendar_page__popup_event__event_input__inputops: {
-        width: "40vw", 
-        fontSize: "16px", 
-        height: "30px"
-      },
-      popup_event__add_title: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "block", 
-        width: "30vw", 
-        margin: "10px"
-      },
-      add_title_focus: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "block", 
-        width: "30vw", 
-        margin: "10px"
-      },
-      popup_event__event: {
-        margin: "20px 10px"
-      },
-      popup_event__content: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "block", 
-        width: "30vw", 
-        margin: "10px"
-      },
-      content_focus: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "block", 
-        width: "30vw", 
-        margin: "10px"
-      },
-      popup_event__time: {
-        margin: "10px", 
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        width: "15vw"
-      },
-      time_focus: {
-        margin: "10px", 
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        width: "15vw"
-      },
-      popup_event__color: {
-        margin: "10px"
-      },
-      event_clock: {
-        margin: "10px", 
-        width: "30vw", 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center"
-      },
-      event_clock__clock: {
-        width: "10vw", 
-        display: "inline-block", 
-        padding: "3px"
-      },
-      popup_event__btn_box: {
-        display: "flex", 
-        justifyContent: "space-between", 
-        marginTop: "20px"
-      },
-      popup_event__btn_add: {
-        background: "rgb(100, 233, 122)", 
-        width: "15vw"
-      },
-      popup_event__btn_cancel: {
-        background: "rgb(255, 214, 180)", 
-        width: "15vw"
-      },
-      react_datepicker__input_container_input: {
-        display: "block", 
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        width: "30vw", 
-        margin: "10px"
-      },
-      calendar_page__schedule__remove: {
-        padding: "5px", 
-        background: "white", 
-        color: "black", 
-        borderRadius: "10%"
-      },
-      calendar_page__schedule__remove_hover: {
-        background: "#eef1f5"
-      },
-      calendar_page__schedule__event_tr: {
-        cursor: "pointer"
-      }
-}));
+import React, { Component } from 'react';
+import DatePicker from 'react-datepicker';
+import { registerLocale } from "react-datepicker";
+import vi from 'date-fns/locale/vi';
+import "./Calendar.css";
+import NavBar from '../../Navigation/NavBar';
+import "react-datepicker/dist/react-datepicker.css";
+import { CirclePicker } from 'react-color';
+import 'font-awesome/css/font-awesome.min.css';
 
-/*
+
+registerLocale('vi', vi)
 
 class Calendar extends Component {
     constructor(props) {
@@ -345,9 +89,12 @@ class Calendar extends Component {
         let temp = Array.from({ length: 31 }, () => "");
         let listevent = Array.from({ length: 31 }, () => [""]);
 
+
+        if (this.state.calendar.length != undefined){
         this.state.calendar.forEach((value, index) => {
 
             if (value.duedate !== undefined) {
+                // console.log(this.convertTime(value.duedate))
                 let newevent;
                 newevent = {
                     title: value.decription,
@@ -384,6 +131,7 @@ class Calendar extends Component {
                 }
             }
         });
+      }
         // console.log(listevent[19].time)
         this.setState({
             event: temp,
@@ -416,7 +164,7 @@ class Calendar extends Component {
 
     removeEvent = async (id) => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
         // console.log("event key",event.target.key)
@@ -441,14 +189,8 @@ class Calendar extends Component {
     selectedEventClick = (index) => {
 
         var viewevent = this.state.listEvent[this.state.selectedDay][index]
-        // console.log("Seleted",this.state.selectedEvent)
-        // console.log("view", viewevent)
-        // console.log("index",index)
-        // console.log(new Date(viewevent.value.StartHour).getHours())
-        // console.log("des", viewevent.value.Decription.text)
         const date = new Date(viewevent.value.Date.month + "/" + viewevent.value.Date.day + "/" + viewevent.value.Date.year)
         this.setState({
-            // selectedEvent: index,
             add_title: viewevent.value.Title,
             add_date: date,
             add_start: new Date(viewevent.value.StartHour * 1000).getHours(),
@@ -462,7 +204,6 @@ class Calendar extends Component {
     }
 
     selectedDay = () => {
-        const {classes} = this.props;
         if (this.state.loadcalendar === 0 && this.state.loadevent === 0) {
             console.log("test", this.state.listEvent)
             var listE = this.state.listEvent[this.state.selectedDay].map((item, index) => {
@@ -470,10 +211,10 @@ class Calendar extends Component {
                 if (item === "")
                     return <></>
                 if (item.id !== "") return <tr onClick={() => this.selectedEventClick(index)}>
-                    <td className={classes.time}>{item.time}</td>
+                    <td className="time">{item.time}</td>
                     <td>{item === "" ? "" : "-"}</td>
                     <td>{item.title}</td>
-                    <td type="button" onClick={() => this.removeEvent(item.id)}><i className= {clsx(classes.calendar_page__schedule__remove,classes.fa)} ></i></td>
+                    <td type="button" onClick={() => this.removeEvent(item.id)}><i className="remove fa fa-trash" ></i></td>
                 </tr>
                 else
                     return <tr>
@@ -494,7 +235,7 @@ class Calendar extends Component {
         })
         var myHeaders = new Headers();
         // console.log(this.state.month)
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
 
@@ -509,7 +250,7 @@ class Calendar extends Component {
             redirect: 'follow'
         };
 
-        fetch("https://hcmusemu.herokuapp.com/calendar/getthismonth", requestOptions)
+        fetch("https://hcmusemu.herokuapp.com/calendar/getthismonthwithout", requestOptions)
             .then(response => response.json())
             .then(result => {
                 // console.log(result)
@@ -628,7 +369,7 @@ class Calendar extends Component {
         this.setState({ popup: 0 })
         await this.convertAddingDate();
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -714,7 +455,7 @@ class Calendar extends Component {
         this.setState({ popupview: 0 })
         await this.convertAddingDate();
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -759,11 +500,12 @@ class Calendar extends Component {
 
             return (
                 <div className="popup-event">
-                    {}
+                    {/* <div style={{color:"black"}}>{viewevent.value.Title}</div> */}
                     <input className="add-title" placeholder="Thêm tiêu đề" onChange={this.setParams} name="add_title" value={this.state.add_title}></input>
+                    {/* <div className="event"> */}
 
-                    
-               /*     <DatePicker dateFormat="dd/MM/yyyy" locale="vi" selected={this.state.add_date} onChange={(date) => this.renderDatepicker(date)} />
+                    {/* <div>Ngày: {viewevent.value.Date.day+"/"+viewevent.value.Date.month+"/"+viewevent.value.Date.year}</div> */}
+                    <DatePicker dateFormat="dd/MM/yyyy" locale="vi" selected={this.state.add_date} onChange={(date) => this.renderDatepicker(date)} />
                     <div className="event-clock">
                         <label style={{ color: "black" }}>Thời gian</label>
                         <select className="clock" name="add_start" onChange={this.handleChange} value={this.state.add_start}>
@@ -795,9 +537,9 @@ class Calendar extends Component {
             return (
                 <div className="popup-event">
                     <input className="add-title" placeholder="Thêm tiêu đề" onChange={this.setParams} name="add_title" value={this.state.add_title}></input>
-                    {/* <div className="event"> }
+                    {/* <div className="event"> */}
 
-                    {/* <label>Ngày</label> }
+                    {/* <label>Ngày</label> */}
                     <DatePicker dateFormat="dd/MM/yyyy" locale="vi" selected={this.state.add_date} onChange={(date) => this.renderDatepicker(date)} />
                     <div className="event-clock">
                         <label>Thời gian</label>
@@ -817,10 +559,21 @@ class Calendar extends Component {
                         <CirclePicker color={this.state.add_color} width="30vw" onChangeComplete={this.handleChangeComplete} circleSize={28}></CirclePicker>
                     </div>
 
+                    {/* <input className="time" onChange={this.setParams} name="add_fulldate" value={this.state.add_fulldate} ></input> */}
 
-                    
+                    {/* <input placeholder="Kết thúc" onChange={this.setParams} name="add_end" value={this.state.add_end}></input> */}
+                    {/* </div> */}
+
+                    {/* <div className="color">
+                        <label>Màu</label>
+                        <input placeholder="Thêm màu" onChange={this.setParams} name="add_color" value={this.state.add_color}></input>
+                    </div> */}
+                    {/* <div>
+                        <label>Thời gian thông báo</label>
+                        <input onChange={this.setParams} name="add_noti" value={this.state.add_noti}></input>
+                    </div> */}
                     <div className="btn-box">
-                        <div class="btn add" type="button" onClick={this.addEvent}>Thêm thông báo</div>
+                        <div  class="btn add" type="button" onClick={this.addEvent}>Thêm thông báo</div>
                         <div class="btn cancel" type="button" onClick={this.closePopup}>Hủy</div>
                     </div>
                 </div>
@@ -842,6 +595,7 @@ class Calendar extends Component {
     }
 
     toTimestamp = (strDate) => {
+        // console.log("date", strDate)
         var datum = new Date(strDate).getTime();
         return datum / 1000;
     }
@@ -851,8 +605,7 @@ class Calendar extends Component {
         if (this.state.loadding === 0)
             return (
                 <div>
-                    <Navbar />
-                    <Sidebar />
+                    <NavBar />
                     <div className="calendar-page">
                         <div className="calendar">
                             <div className="title">LỊCH CÁ NHÂN</div>
@@ -887,14 +640,4 @@ class Calendar extends Component {
     }
 }
 
-export default withStyles(useStyles)(Calendar);*/
-
-export default function Calendar(){
-
-    return(
-        <div>
-            <NavBar/>
-            <Toolbar/>
-        </div>
-    )
-}
+export default Calendar;
