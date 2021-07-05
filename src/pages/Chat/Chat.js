@@ -1,5 +1,3 @@
-//import logo from './logo.svg';
-
 import React from 'react';
 import NavBar from '../../Navigation/NavBar'
 import {makeStyles, Toolbar,Typography} from "@material-ui/core"
@@ -32,17 +30,17 @@ const useStyles = makeStyles((theme)=>({
       whiteSpace: "normal",
   },
 }));
-function Homepage() {
+function Chat() {
   const classes = useStyles();
   return (
     <div className = {classes.root}> 
         <NavBar/>
         <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <div>Đây là trang chủ</div>
-      </main>
+            <div className={classes.toolbar} />
+
+        </main>
     </div>
   );
 }
 
-export default Homepage;
+export default Chat;

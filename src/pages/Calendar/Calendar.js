@@ -132,13 +132,11 @@ class Calendar extends Component {
             }
         });
       }
-        // console.log(listevent[19].time)
         this.setState({
             event: temp,
             listEvent: listevent,
             loadevent: 0
         })
-        // console.log("final",listevent)
 
 
     }
@@ -157,7 +155,6 @@ class Calendar extends Component {
     }
 
     async componentDidMount() {
-        // console.log(new Date(this.state.add_fulldate + " " + this.state.add_start + ":00:00").getHours())
         await this.getCurrenDate();
         this.getCalendar();
     }
@@ -167,7 +164,6 @@ class Calendar extends Component {
         myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-        // console.log("event key",event.target.key)
         var urlencoded = new URLSearchParams();
         urlencoded.append("id", id);
 
@@ -205,9 +201,7 @@ class Calendar extends Component {
 
     selectedDay = () => {
         if (this.state.loadcalendar === 0 && this.state.loadevent === 0) {
-            console.log("test", this.state.listEvent)
             var listE = this.state.listEvent[this.state.selectedDay].map((item, index) => {
-                // console.log(item);
                 if (item === "")
                     return <></>
                 if (item.id !== "") return <tr onClick={() => this.selectedEventClick(index)}>
@@ -234,7 +228,6 @@ class Calendar extends Component {
             loadcalendar: 1
         })
         var myHeaders = new Headers();
-        // console.log(this.state.month)
         myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
@@ -253,13 +246,11 @@ class Calendar extends Component {
         fetch("https://hcmusemu.herokuapp.com/calendar/getthismonthwithout", requestOptions)
             .then(response => response.json())
             .then(result => {
-                // console.log(result)
                 this.setState({
                     calendar: result
                 })
             })
             .then(success => {
-                // console.log("success")
                 this.filterCalendar();
                 this.setState({
                     loadcalendar: 0,
@@ -283,7 +274,6 @@ class Calendar extends Component {
         await this.setState({
             loadevent: 1
         })
-        // console.log(value)
         this.setState({
             selectedDay: value
         })
@@ -416,14 +406,12 @@ class Calendar extends Component {
             add_startUNIX: this.toTimestamp(this.state.add_fulldate + " " + this.state.add_start + ":00:00"),
             add_endUNIX: this.toTimestamp(this.state.add_fulldate + " " + this.state.add_end + ":00:00")
         });
-        // console.log(this.state.add_endUNIX)
     }
 
     renderClockPicker = () => {
 
 
         var timepicker = this.timeclock.map((num) => {
-            // console.log(num)
             if (num === 0) {
                 return <option value={num}>12 AM</option>
             }
@@ -447,7 +435,6 @@ class Calendar extends Component {
     }
 
     handleChangeComplete = (color, event) => {
-        // console.log(color)
         this.setState({ add_color: color.hex });
     };
 
@@ -595,7 +582,6 @@ class Calendar extends Component {
     }
 
     toTimestamp = (strDate) => {
-        // console.log("date", strDate)
         var datum = new Date(strDate).getTime();
         return datum / 1000;
     }
