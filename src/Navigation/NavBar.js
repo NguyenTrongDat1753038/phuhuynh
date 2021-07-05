@@ -12,8 +12,9 @@ import AlignItemsList from "./Message"
 import AccountMenu from "./Account"
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
+import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import logo from "../images/logo.jpg"
-import NotificationsIcon from '../images/notification.jpg';
+//import NotificationsIcon from '../images/notification.jpg';
 import {useHistory} from "react-router-dom"
 import {List,Toolbar,Typography,ListItem,ListItemIcon,IconButton,ListItemText,Menu,Badge,Hidden,Drawer,Divider,CssBaseline,AppBar} from "@material-ui/core"
 
@@ -98,7 +99,6 @@ function NavBar() {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  //const { selectedTab, messages, width, openAddBalanceDialog } = props;
   const data = [
     {
       image : logo ,
@@ -246,25 +246,17 @@ function NavBar() {
               </Badge>
             </IconButton>
             <IconButton 
-            color="primary"
+            color="inherit"
             edge="end"
             aria-label="notification of current user"
             className = "notifi_btn"
+            aria-haspopup="true"
             >
-                    <Notifications
-                   icon = {NotificationsIcon}
-                   data={data}
-                   width = '300px' 
-                   height = '400px'
-                   headerBackgroundColor	= "orange"
-                   header={
-                    {
-                      title: 'Thông báo',
-                      option: { text: 'Xem tất cả', onClick: () => {window.location("/notifications");} }
-                    }
-                  }
-                    />
+              <Badge badgeContent={5} color="secondary">
+                <NotificationsActiveIcon />
+              </Badge>
             </IconButton>
+             
             <IconButton
               edge="end"
               aria-label="account of current user"

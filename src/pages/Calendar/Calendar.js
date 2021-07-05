@@ -546,21 +546,15 @@ class Calendar extends Component {
                         <CirclePicker color={this.state.add_color} width="30vw" onChangeComplete={this.handleChangeComplete} circleSize={28}></CirclePicker>
                     </div>
 
-                    {/* <input className="time" onChange={this.setParams} name="add_fulldate" value={this.state.add_fulldate} ></input> */}
+                    {}
 
-                    {/* <input placeholder="Kết thúc" onChange={this.setParams} name="add_end" value={this.state.add_end}></input> */}
-                    {/* </div> */}
+                    {}
+                    {}
 
-                    {/* <div className="color">
-                        <label>Màu</label>
-                        <input placeholder="Thêm màu" onChange={this.setParams} name="add_color" value={this.state.add_color}></input>
-                    </div> */}
-                    {/* <div>
-                        <label>Thời gian thông báo</label>
-                        <input onChange={this.setParams} name="add_noti" value={this.state.add_noti}></input>
-                    </div> */}
+                    {}
+                    
                     <div className="btn-box">
-                        <div  class="btn add" type="button" onClick={this.addEvent}>Thêm thông báo</div>
+                        <div class="btn add" type="button" onClick={this.addEvent}>Thêm thông báo</div>
                         <div class="btn cancel" type="button" onClick={this.closePopup}>Hủy</div>
                     </div>
                 </div>

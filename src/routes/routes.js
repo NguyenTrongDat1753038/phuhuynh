@@ -14,6 +14,7 @@ import Homepage from "../pages/Homepage/Homepage"
 import CalendarSchedule from '../pages/Calendar/Calendar';
 import Forum from '../pages/Forum';
 import Course from '../pages/Course';
+import Notifications from "../pages/Notifications/Notification"
 import {CssBaseline } from "@material-ui/core";
 
 class ReactRouter extends Component {
@@ -42,6 +43,7 @@ class ReactRouter extends Component {
             <Route exact path = "/calendar"> <CalendarSchedule/></Route>
             <Route exact path = "/course"> <Course/></Route>
             <Route exact path = "/forum"> <Forum/></Route>
+            <Route exact path = "/notifications"> <Notifications/> </Route>
           </Switch>
     </BrowserRouter>
     
