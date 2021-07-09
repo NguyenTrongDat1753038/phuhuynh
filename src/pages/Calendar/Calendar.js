@@ -632,8 +632,8 @@ class Calendar extends Component {
             "Italic": false,
             "Bold": false,
             "Color": this.state.add_color,
-            "listguestEmail": [],
-            "listguestName": [],
+            "listguestEmail": this.add_listguestEmail,
+            "listguestName": this.add_listguestName,
             "Notification": this.state.add_noti
         });
 
@@ -796,7 +796,7 @@ class Calendar extends Component {
                 <div className="popup-event">
                     <input type="textarea" className="add-title" placeholder="Thêm tiêu đề" onChange={this.setParams} name="add_title" value={this.state.add_title}></input>
                     <div className="event-type">
-                    <label> Xếp loại lịch hẹn:    </label>
+                    <label color="black"> Xếp loại lịch hẹn:    </label>
                     <span> </span>
                     <select className="clock" onChange={this.handleEventChange} value={this.state.add_type_event}>
                             {this.renderTypeWork()}
@@ -819,7 +819,11 @@ class Calendar extends Component {
                         <DescriptionIcon fontSize="18px"/> <label> Mô tả lịch hẹn</label>
                         <textarea className="content" placeholder="Thêm nội dung" onChange={this.setParams} name="add_desc" value={this.state.add_desc}></textarea>
                     </div>
-                    <textarea label="Them khách mời"> Thêm khách mời</textarea>
+                    <div>
+                        <label> Thêm người dùng</label>
+                        <br/>
+                        <TextField width="30vw" placeholder="Thêm khách mời"> </TextField>
+                    </div>
                     <div className="event">
                         <label>Màu đánh dấu</label>
                         <CirclePicker color={this.state.add_color} width="30vw" onChangeComplete={this.handleChangeComplete} circleSize={28}></CirclePicker>

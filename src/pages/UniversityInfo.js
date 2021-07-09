@@ -53,8 +53,8 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: "#594f8d",
     color: "white",
-    padding: "1em",
-    width: "60%",
+    padding: "0.5em",
+    width: "80%",
     [theme.breakpoints.down(1200)]: {
       width: "70%"
     },
@@ -110,12 +110,13 @@ const DataInfoGridItem = (formState,propt, index) => {
       container
       direction="column"
       alignItems="center"
+     
     >
       <Paper className={classes.paper}>
         <Grid item xs={12}>
           <Typography variant="subtitle1">{mapInformation[propt]}</Typography>
         </Grid>
-        <Grid item xs={12} align="stretch">
+        <Grid item xs={12} align="normal">
             <Typography variant="h6">{formState[propt]}</Typography>
         </Grid>
       </Paper>

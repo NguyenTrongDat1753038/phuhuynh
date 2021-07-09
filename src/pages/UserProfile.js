@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import NavBar from '../Navigation/NavBar';
 import {withStyles} from "@material-ui/styles"
-import {Toolbar} from "@material-ui/core"
+import {Toolbar, Button} from "@material-ui/core"
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import 'font-awesome/css/font-awesome.min.css';
@@ -87,19 +87,25 @@ const useStyles = () => ({
     boxShadow: "0px 1px 2px 0px rgb(197, 197, 197)"
   },
   popup_box_image__btnchange: {
+    alignItems: "center",
     padding: "5px", 
     color: "white", 
-    background: "#4a8cf8"
+    background: "#4a8cf8",
+    textAlign: "center",
+    justifyContent: 'center'
   },
   btncancel: {
     display: "inline-block", 
     border: "1px solid gray", 
     margin: "0 0 1px 10px", 
     fontSize: "12px", 
-    fontWeight: "600"
+    fontWeight: "600",
+    textAlign: "center"
   },
   popup_box_image__btncancel: {
-    padding: "5px 20px"
+    padding: "5px 20px",
+    textAlign: "center",
+    justifyContent: 'center'
   },
   popup_box_image__title: {
     padding: "15px", 
@@ -163,7 +169,7 @@ class Profile extends Component {
 
     async componentDidMount() {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") + " tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") + "tC");
 
         var requestOptions = {
             method: 'GET',
@@ -174,6 +180,7 @@ class Profile extends Component {
         fetch("https://hcmusemu.herokuapp.com/profile/view", requestOptions)
             .then(response => response.json())
             .then(result => {
+                console.log(result[0].AnhSV)
                 this.setState({
                     name: result[0].HoTen,
                     email: result[0].Email,
@@ -213,7 +220,7 @@ class Profile extends Component {
 
     updateProfile = async () => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
 
         var urlencoded = new URLSearchParams();
         urlencoded.append("HoTen", this.state.name);
@@ -332,7 +339,10 @@ class Profile extends Component {
                     {}
                     {this.state.listuniversity}
                 </select></td>
-                <td className={classes.info_profile_td}><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span></td>
+                <td className={classes.info_profile_td}>
+                    <span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span>
+                    <span className="cancel" type="button" onClick={this.CancelEdit}>Hủy</span>
+                </td>
             </tr>
         }
     }
@@ -350,7 +360,6 @@ class Profile extends Component {
             return <tr>
                 <td className={clsx(classes.info_profile_td,classes.info_profile__firstcol)}>Khoa</td>
                 <td className={classes.info_profile_td}><select className="form-control" name="facselected" onChange={this.setParams} value={this.state.facselected}>
-                    {}
                     {this.state.listfaculty}
                 </select></td>
                 <td className={classes.info_profile_td}><span className={classes.info_profile__confirm} type="button" onClick={this.updateProfile}>Xác nhận</span><span className={classes.info_profile__cancel} type="button" onClick={this.CancelEdit}>Hủy</span></td>
@@ -440,12 +449,13 @@ class Profile extends Component {
             <div className={classes.popup_box_image__body}>
                 <img className={classes.popup_box_image__body_img} width="150vw" height="150vh" src={this.state.imgData} alt=""></img>
                 <label className={classes.popup_box_image__custom_file_upload}>
-                    <input className={classes.popup_box_image_input_type__file} type="file" accept="image/png, image/jpeg" onChange={this.onChangePicture} />Chọn ảnh từ máy tính của bạn
+                    <input className={classes.popup_box_image_input_type__file} type="file" accept="image/png, image/jpeg, image/jpg, img/tiff" onChange={this.onChangePicture} />
+                    Chọn ảnh từ máy tính của bạn
                 </label>
             </div>
             <div className= {classes.popup_box_image__footer}>
-                <div className="btnchange" type="button" onClick={this.updateImage}>Đặt ảnh đại diện</div>
-                <div className="btncancel" type="button" onClick={this.changeIMG}>Hủy</div>
+                <Button className={classes.popup_box_image__btnchange}  onClick={this.updateImage}>Đặt ảnh đại diện</Button>
+                <Button className={classes.popup_box_image__btncancel} onClick={this.changeIMG}>Hủy</Button>
             </div>
         </div>
         );
@@ -477,7 +487,10 @@ class Profile extends Component {
                             <tr className={classes.info_profile__tb_row_hover} onClick={this.changeIMG}>
                                 <td className={clsx(classes.info_profile_td,classes.info_profile__firstcol)}>Ảnh</td>
                                 <td className={classes.info_profile_td} style={{ color: "grey" }}>Thêm hình ảnh để cá nhân hóa tài khoản</td>
-                                <td className={classes.info_profile_td}><img className={classes.info_profile__image} width="50vw" height="50vh" src="https://i.pinimg.com/originals/a4/f8/f9/a4f8f91b31d2c63a015ed34ae8c13bbd.jpg" alt=""></img></td>
+                                <td className={classes.info_profile_td}>
+                                    <img className={classes.info_profile__image} width="50vw" height="50vh" src="https://i.pinimg.com/originals/a4/f8/f9/a4f8f91b31d2c63a015ed34ae8c13bbd.jpg" alt="">
+                                    </img>
+                                </td>
                             </tr>
 
                             {this.changeName()}
