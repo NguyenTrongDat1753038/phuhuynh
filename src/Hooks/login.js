@@ -85,14 +85,12 @@ export default function LoginButton() {
 
         await fetch("https://hcmusemu.herokuapp.com/account/signin", requestOptions)
             .then(response => {
-                console.log(response.clone)
                 if (response.ok && response.status==200) {
                     return response.json()
                 }
                 throw Error(response.status)
             })
             .then(result => {
-                console.log(result.token)
                 if (result.token !== undefined) {
                     localStorage.setItem("token", result.token)
                     console.log(result.token)
@@ -101,7 +99,7 @@ export default function LoginButton() {
             })
             .catch(error => {
                 console.log('error', error)
-                alert("Sai mat khau hoac tai khoan")
+                alert("Sai tài khoản hoặc mật khẩu")
                 setLoadding(0);
             });
     }
@@ -109,7 +107,7 @@ export default function LoginButton() {
     function loaddingButton() {
         if (loadding===1){
         return (
-            <button type="button" className={classes.btnSubmit}>
+            <button className={classes.btnSubmit}>
                 <i className="fa fa-circle-o-notch fa-spin">
                 </i>Loading
             </button>

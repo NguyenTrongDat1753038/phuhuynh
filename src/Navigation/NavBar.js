@@ -254,6 +254,7 @@ function NavBar() {
             >
               <Badge badgeContent={5} color="secondary">
                 <NotificationsActiveIcon />
+               
               </Badge>
             </IconButton>
              
