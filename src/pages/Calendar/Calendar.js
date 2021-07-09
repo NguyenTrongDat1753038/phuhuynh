@@ -820,6 +820,10 @@ class Calendar extends Component {
                         <textarea className="content" placeholder="Thêm nội dung" onChange={this.setParams} name="add_desc" value={this.state.add_desc}></textarea>
                     </div>
                     <div>
+                        <label> URL </label>
+                        <input type="text" className="add-title" placeholder="Thêm url" onChange={this.setParams} name="add_url" value={this.state.add_title}></input>
+                    </div>
+                    <div>
                         <label> Thêm người dùng</label>
                         <br/>
                         <TextField width="30vw" placeholder="Thêm khách mời"> </TextField>
