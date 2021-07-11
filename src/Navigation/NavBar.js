@@ -194,6 +194,13 @@ function NavBar() {
       <ListItemText primary="Diễn đàn" />
     </ListItem>
     <Divider  light />
+    <ListItem button onClick={()=> history.push("/chat")}>
+      <ListItemIcon >
+        <SchoolIcon style={{ color: 'dark' }}/>
+      </ListItemIcon>
+      <ListItemText primary="Chat" />
+    </ListItem>
+    <Divider light />
     <ListItem button onClick={()=> history.push("/calendar")}>
       <ListItemIcon>
         <CalendarTodayIcon style={{ color: 'dark' }} />
@@ -208,6 +215,7 @@ function NavBar() {
       <ListItemText primary="Thông tin trường" />
     </ListItem>
     <Divider light />
+    
       </List>
       
     </div>
@@ -257,7 +265,7 @@ function NavBar() {
                
               </Badge>
             </IconButton>
-             
+          
             <IconButton
               edge="end"
               aria-label="account of current user"
