@@ -34,11 +34,11 @@ const useStyles = makeStyles((theme)=>({
   wrap: {
     display: "flex", 
     width: "82vw", 
-    margin: "66px 0 0 16vw", 
-    justifyContent: "space-between"
+    //margin: "66px 0 0 16vw", 
+    justifyContent: "space-between",
   },
   listfriend_box: {
-    width: "28vw", 
+    width: "28vw",
     height: "85vh", 
     background: "rgb(255, 255, 255)", 
     marginRight: "5px"
@@ -197,7 +197,7 @@ function Chat() {
   useEffect(() => {
     getMessage();
 
-    socket.on('Private-Message-To-Client', (data) => {
+    /*socket.on('Private-Message-To-Client', (data) => {
         setSelectedmessage(selectedmessage => [...selectedmessage, {
             state: false,
             _id: data[0],
@@ -208,7 +208,7 @@ function Chat() {
         setNewmessage({ text: data[2], time: data[3] })
         console.log(data)
     })
-
+*/
     return () => {
         socket.off('Private-Message-To-Client');
     }
@@ -419,7 +419,6 @@ function Chat() {
 
                   return <div className={classes.message_box__message__box_friend}>
                       <div className={classes.message_box__friend}>{message.text}</div>
-                      {/* <div>{convertTime(message.time)}</div> */}
                   </div>
               }
           })
@@ -487,7 +486,6 @@ function Chat() {
     <div className = {classes.root}> 
         <NavBar/>
         
-        <main className={classes.content}>
             <div className={classes.toolbar} />
             <div className={classes.wrap}>
                 <div className={classes.listfriend_box}>
@@ -513,7 +511,6 @@ function Chat() {
                     </div>
                 </div>
             </div>
-        </main>
     </div>
   );
 }
