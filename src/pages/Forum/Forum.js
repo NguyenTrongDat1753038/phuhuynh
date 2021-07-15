@@ -3,8 +3,9 @@ import NavBar from '../../Navigation/NavBar'
 import { makeStyles } from '@material-ui/core/styles';
 import { Tab, Tabs, Typography, Box,Paper  } from '@material-ui/core';
 import PropTypes from "prop-types"
-import Truong from './Truong';
-import Khoa from "./Khoa"
+import Truong from './Truong/Truong';
+import MonHoc from "./MonHoc/MonHoc"
+import Khoa from "./Khoa/Khoa"
 const useStyles = makeStyles((theme) => ({
     root: {
       marginLeft: 200,
@@ -44,11 +45,13 @@ export default function News(){
            textColor="primary"
             variant = "fullWidth"
           >
-        <Tab label="Diễn đàn trường,khoa"/>
+        <Tab label="Diễn đàn trường"/>
+        <Tab  label="Diễn đàn khoa"/>
         <Tab  label="Diễn đàn môn học"/>
       </Tabs>
-      {value === 0 && <Truong/>}  
+      {value === 0 && <Truong/>} 
       {value === 1 && <Khoa/>} 
+      {value === 2 && <MonHoc/>} 
       </main>
       </Paper>
   )};

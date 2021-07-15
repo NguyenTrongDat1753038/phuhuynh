@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-export default function Khoa()
+export default function MonHoc()
 {
     const classes = useStyles()
     const [newsfac,setNewsFac] = useState([]);
@@ -45,7 +45,7 @@ export default function Khoa()
             redirect: 'follow'
         };
     
-        await fetch("https://hcmusemu.herokuapp.com/info/newsfaculty", requestOptions)
+        await fetch("https://hcmusemu.herokuapp.com/forum/courses/viewtop", requestOptions)
             .then(response => {return response.json();})
             .then(result => {
               setNewsFac(result)

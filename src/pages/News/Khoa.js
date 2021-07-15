@@ -55,7 +55,7 @@ export default function Khoa()
     useEffect(() => {
         getNewsFaculty();
      },[]);
-     if (newsfac.length != undefined)
+     if (newsfac.length !== undefined)
      {
         return newsfac.map((item, index) => {
             return (

@@ -55,7 +55,7 @@ export default function Truong()
     useEffect(() => {
         getNewsUniversity();
      },[]);
-     if (newsuni.length != undefined)
+     if (newsuni.length !== undefined)
      {
         return newsuni.map((item, index) => {
             return (
