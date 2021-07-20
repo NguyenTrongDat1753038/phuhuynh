@@ -12,16 +12,18 @@ import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-
+import ListItem from 'material-ui/List/ListItem';
+import CommentIcon from '@material-ui/icons/Comment';
+import { Filter } from '@material-ui/icons';
 const useStyles = makeStyles((theme) => ({
   root: {
     margin:'auto',
     flexDirection: 'column',
-    maxWidth: '80%',
+    maxWidth: '75%',
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '56.25%',
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -45,7 +47,6 @@ export default function Truong()
     const [forumPosts,setForumPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [expanded, setExpanded] = useState(false);
-
     const handleExpandClick = () => {
     setExpanded(!expanded);
     };
@@ -60,23 +61,28 @@ export default function Truong()
         myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+ "tC");
     
         var requestOptions = {
-            method: 'GET',
+            method: 'POST',
             headers: myHeaders,
             redirect: 'follow'
         };
-        await fetch("https://hcmusemu.herokuapp.com/forum/yourpost", requestOptions)
+        await fetch("https://hcmusemu.herokuapp.com/forum/view", requestOptions)
             .then(response => {return response.json()})
-            .then(result => {setForumPosts(result)})
+            .then((result)=>{
+              //result = Filter(result);
+              setForumPosts(result)
+            })
             .catch(error => console.log('error', error),
             setLoading(false));
     }
 
-    useEffect(async() => {
-      console.log("useEffect is being called");
-      getForumPosts();
-      console.log("useEffect is called")
-     },[forumPosts]);
+    useEffect(() => {
+       getForumPosts();
+     },[]);
 
+    const Filter = (list) => {
+      list = list.filter(item => item.scope != 'u');
+      return list;
+    }
     const getIndex = (id) => {
       var index;
       for (var i=0; i< forumPosts.length;i++){
@@ -127,26 +133,35 @@ export default function Truong()
           .catch(error => console.log('error', error));
     }
 
-    const getAvatar = (avatar) =>{
-      var img = avatar.substr(1);
-      return img;
-    }
-
-    const getLikeCount = (item) =>{
-      return item.like + item.LikeByOwn;
-    }
-
     const renderLike = (item) => {
       return(
         <div>
           {item.LikeByOwn == 0 ? <FavoriteIcon/> :<FavoriteIcon style={{ color: 'red' }} />}
-          {getLikeCount(item)}
+          {item.like}
         </div>
       )}
-
-   
-    console.log(forumPosts)
-     if (loading == false)
+     const renderCommemt = (item) => {
+       return(
+         <div>
+            <CommentIcon> {item.comment}</CommentIcon>
+         </div>
+       )
+     }
+     const renderImage = (item) =>{
+      if (item.image != "")
+      return(
+        <CardMedia
+        className={classes.media}
+        image={item.image}
+        />
+      )
+      else return(
+        <div>
+          
+        </div>
+      )
+     }
+     if (loading==false)
      {
         return forumPosts.map((item, index) => {
             return (
@@ -173,10 +188,7 @@ export default function Truong()
                           }
                           
                         />
-                    <CardMedia
-                        className={classes.media}
-                        image={item.image}
-                    />
+                    {renderImage(item)}
                     <CardContent>
                         <Typography variant="body2" color="textSecondary" component="p">
                         </Typography>
@@ -185,11 +197,16 @@ export default function Truong()
 
                         <IconButton 
                         aria-label="like the post"
-                        onClick={item.LikeByOwn==0 ? likePosts(item.ID) : unLikePosts(item.ID)}
+                        onClick=/*{item.LikeByOwn==0 ? likePosts(item.ID) : unLikePosts(item.ID)}*/""
                         >
                           {renderLike(item)}
                         </IconButton>
-
+                        <IconButton 
+                        aria-label="Comment the post"
+                        onClick=/*{item.LikeByOwn==0 ? likePosts(item.ID) : unLikePosts(item.ID)}*/""
+                        >
+                          {renderCommemt(item)}
+                        </IconButton>
                         <IconButton
                           className={clsx(classes.expand, {
                             [classes.expandOpen]: expanded,

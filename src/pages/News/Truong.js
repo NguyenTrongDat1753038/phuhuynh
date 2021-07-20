@@ -33,6 +33,7 @@ export default function Truong()
 {
     const classes = useStyles()
     const [newsuni,setNewsUni] = useState([]);
+    const [loading,setLoading] = useState(true);
 
     const getNewsUniversity = async() => {
         var myHeaders = new Headers();
@@ -46,16 +47,15 @@ export default function Truong()
     
         await fetch("https://hcmusemu.herokuapp.com/info/newsuniversity", requestOptions)
             .then(response => {return response.json()})
-            .then(result => {
-                setNewsUni(result)
-            })
-            .catch(error => console.log('error', error));
+            .then(result => {setNewsUni(result)})
+            .catch(error => console.log('error', error), setLoading(false));
     }
 
     useEffect(() => {
         getNewsUniversity();
+       
      },[]);
-     if (newsuni.length !== undefined)
+     if (loading!= true)
      {
         return newsuni.map((item, index) => {
             return (

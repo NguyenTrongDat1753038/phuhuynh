@@ -48,13 +48,14 @@ export default function Khoa()
         await fetch("https://hcmusemu.herokuapp.com/info/newsfaculty", requestOptions)
             .then(response => {return response.json();})
             .then(result => {
-              setNewsFac(result); console.log(result)
+              setNewsFac(result)
             })
             .catch(error => console.log('error', error));
         }
     useEffect(() => {
         getNewsFaculty();
      },[]);
+     console.log(newsfac);
      if (newsfac.length !== undefined)
      {
         return newsfac.map((item, index) => {
