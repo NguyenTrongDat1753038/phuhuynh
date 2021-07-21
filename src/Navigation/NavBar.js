@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
 import { makeStyles, useTheme, withStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
@@ -94,33 +94,24 @@ function NavBar() {
   let history = useHistory();
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState([{
+    HoTen: "",
+    AnhSV: "",
+    Email: "",
+    MaTruong: "",
+    TenTruongDH: "",
+    MaKhoa: "",
+    TenKhoa: ""
 
+  }])
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  const data = [
-    {
-      image : logo ,
-      message : 'Google tuyển dụng',
-      detailPage : 'wwww.google.com.vn', 
-      receivedTime:'30-04-2020'
-    },
-    {
-      image : logo ,
-      message : 'Lazada sale',
-      detailPage : 'wwww.lazada.vn', 
-      receivedTime:'16-05-2020'
-    },
-    {
-      image : logo ,
-      message : 'Shopee sale',
-      detailPage : 'wwww.shopee.vn', 
-      receivedTime:'16-05-2020'
-    },
- ];
+  
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -143,7 +134,26 @@ function NavBar() {
     message_setAnchorEl(null);
   };
 
+  const getInfoUser = async() => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") +"tC");
 
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+
+    await fetch("https://hcmusemu.herokuapp.com/profile/view", requestOptions)
+        .then(response => {return response.json();})
+        .then(result => {
+         setUserInfo(result)
+        })
+        .catch(error => console.log('error', error));
+    }
+useEffect(() => {
+  getInfoUser();
+},[]);
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -236,7 +246,7 @@ function NavBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap style={{color: "#f5f5f5"}}>
             Hệ thống phục vụ học tập cho giảng viên
           </Typography>
           <div className={classes.grow} />
@@ -274,7 +284,7 @@ function NavBar() {
               onClick={handleMenuProfileOpen}
               color="inherit"
             >
-             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> Trần Thị Quỳnh Như </Typography>
+             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> {userInfo[0].HoTen} </Typography>
 
               <AccountCircle />       
             </IconButton>

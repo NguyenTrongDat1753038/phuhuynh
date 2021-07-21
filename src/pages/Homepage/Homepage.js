@@ -35,6 +35,31 @@ const useStyles = makeStyles((theme)=>({
       textOverflow: "clip",
       whiteSpace: "normal",
   },
+  news_page: {
+    margin: "10px 0 0 16vw", 
+    background: "white", 
+    width: "80vw", 
+    boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px"
+  },
+  news_page_a: {
+    textDecoration: "none",
+    color: "orange !important"
+  },
+  news_page__news: {
+    padding: "20px 20px 0 20px"
+  },
+  news_page__news_hover__title: {
+   
+  },
+  news_page__title: {
+    fontSize: "20px", 
+    fontWeight: "300", 
+    color: "black"
+  },
+  news_page__time: {
+    color: "orange", 
+    fontSize: "18px"
+  },
 }));
 function Homepage() {
   let history = useHistory();
@@ -113,7 +138,7 @@ function Homepage() {
         if (id==1){
           return newsfac.map((item, index) => {
             return (
-              <Box border={1.5} borderRadius="10px">
+              <Box border={1} borderRadius="10px" color="white" width="100%">
               <Grid container
               justifyContent="center"
               alignItems="left">
@@ -141,7 +166,7 @@ function Homepage() {
         else if (id==0){
           return newsuni.map((item, index) => {
             return (
-              <Box border={3} borderRadius="10px" color="white">
+              <Box border={1} borderRadius="10px" color="white" width="100%">
               <Grid container
               justifyContent="center"
               alignItems="left"
@@ -163,6 +188,7 @@ function Homepage() {
             </div>
             </a>
               </div>
+              <br/>
               </Grid>
               </Box>
             )
@@ -172,8 +198,8 @@ function Homepage() {
      const renderNewsFac = () => {
        
       return (
-        <Box width="80%" border={4} borderRadius="25px" justifyContent="center">
-          <Typography align="center" variant="h4">
+        <Box width="80%" border={4} borderRadius="25px" justifyContent="center" width="100%">
+          <Typography align="center" variant="h4" style={{color: "red"}}>
             Tin tức khoa
           </Typography>
           {renderNewsComponent(0)}
@@ -189,8 +215,8 @@ function Homepage() {
       const renderNewsUni = () => {
        
         return (
-          <Box width="80%" border={1.5} borderRadius="25px" justifyContent="center">
-            <Typography align="center" variant="h4">
+          <Box width="80%" border={4} borderRadius="25px" justifyContent="center" width="100%">
+            <Typography align="center" variant="h4" style={{color: "red"}}>
               Tin tức trường
             </Typography>
             {renderNewsComponent(1)}
@@ -209,6 +235,35 @@ function Homepage() {
           <img src={info[0].Images} alt="" width="100%"/>
         )
       }
+      const renderDeadline = () => {
+       
+        return (
+          <Box width="80%" border={4} borderRadius="25px" justifyContent="center" width="100%">
+            <Typography align="center" variant="h4" style={{color: "red"}}>
+              Deadline trong tháng
+            </Typography>
+            <Typography align="center" variant="h5">
+              Chưa có deadline nào trong tháng
+            </Typography>
+            {}
+          </Box>
+          )
+        }
+        const renderCalendarEvent = () => {
+       
+          return (
+            <Box width="80%" border={4} borderRadius="25px" justifyContent="center" width="100%">
+              <Typography align="center" variant="h4" style={{color: "red"}}>
+                Lịch trong tháng
+              </Typography>
+              <Typography align="center" variant="h5">
+              Chưa có deadline nào trong tháng
+              </Typography>
+              {}
+            </Box>
+            )
+          }
+      
     return (
     <div className = {classes.root}> 
         <NavBar/>
@@ -216,11 +271,15 @@ function Homepage() {
         <div className={classes.toolbar} />
         <div>
             <Typography variant="h4" align="center"> {info[0].TenTruongDH}</Typography>
+            <br/> <br/> <br/>
             {renderImage()}
-            <br/>
+            <br/><br/> <br/>
+            {renderDeadline()}
+            <br/> <br/><br/>
+            {renderCalendarEvent()}
+            <br/> <br/><br/>
             {renderNewsFac()}
-            <hr>
-            </hr>
+            <br/><br/> <br/>
             {renderNewsUni()}
             <Footer/>
         </div>

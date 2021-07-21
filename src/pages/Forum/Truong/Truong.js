@@ -6,15 +6,13 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ListItem from 'material-ui/List/ListItem';
 import CommentIcon from '@material-ui/icons/Comment';
-import { Filter } from '@material-ui/icons';
+import UserComment from "../Comment"
 const useStyles = makeStyles((theme) => ({
   root: {
     margin:'auto',
@@ -44,12 +42,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Truong()
 {
     const classes = useStyles();
-    const [forumPosts,setForumPosts] = useState([]);
+    const [forumPosts,setForumPosts] = useState([
+     
+    ]);
     const [loading, setLoading] = useState(true);
-    const [expanded, setExpanded] = useState(false);
-    const handleExpandClick = () => {
-    setExpanded(!expanded);
-    };
 
     const convertTime = (UNIX_timestamp) => {
       var time = new Date(UNIX_timestamp).toLocaleDateString('en-US');
@@ -68,28 +64,48 @@ export default function Truong()
         await fetch("https://hcmusemu.herokuapp.com/forum/view", requestOptions)
             .then(response => {return response.json()})
             .then((result)=>{
-              //result = Filter(result);
+              result = result.filter(forum => forum.scope == 'u');
               setForumPosts(result)
             })
             .catch(error => console.log('error', error),
             setLoading(false));
     }
-
+    
     useEffect(() => {
        getForumPosts();
      },[]);
 
-    const Filter = (list) => {
-      list = list.filter(item => item.scope != 'u');
-      return list;
-    }
-    const getIndex = (id) => {
-      var index;
-      for (var i=0; i< forumPosts.length;i++){
-        if (forumPosts[i].ID == id)
-          index = i;
+     
+    const updateNumberLike = (id,type) => {
+      if (type==1){
+          var index = forumPosts.findIndex(x=> x.ID === id);
+          let g = forumPosts[index]
+          g['like']-=1
+          let value = g['like'];
+          updateState(id,"like",value)
       }
-      return index;
+      else{
+        var index = forumPosts.findIndex(x=> x.ID === id);
+        let g = forumPosts[index]
+        g['like']+=1
+        let value = g['like'];
+        updateState(id,"like",value)
+      }
+    }
+    const updateState =(id, whichvalue, newvalue)=> {
+      var index = forumPosts.findIndex(x=> x.ID === id);
+    
+      let g = forumPosts[index]
+      g[whichvalue] = newvalue
+      if (index === -1){
+        console.log('no match')
+      }
+      else
+        setForumPosts([
+          ...forumPosts.slice(0,index),
+          g,
+          ...forumPosts.slice(index+1)
+        ]);
     }
     const likePosts = async(id) => {
       var myHeaders = new Headers();
@@ -103,12 +119,11 @@ export default function Truong()
           body: urlencoded,
           redirect: 'follow'
       };
-      let markers = [ ...forumPosts ];
-      markers[getIndex(id)] = {...forumPosts[getIndex(id)], LikeByOwn : 1};
       await fetch("https://hcmusemu.herokuapp.com/forum/like", requestOptions)
           .then(response => {return response.json()})
           .then(
-            setForumPosts({ markers }))
+            updateState(id,"LikeByOwn",1)
+            )
           .catch(error => console.log('error', error));
     }
 
@@ -124,12 +139,10 @@ export default function Truong()
           body: urlencoded,
           redirect: 'follow'
       };
-      let markers = [ ...forumPosts ];
-      markers[getIndex(id)] = {...forumPosts[getIndex(id)], LikeByOwn : 0};
       await fetch("https://hcmusemu.herokuapp.com/forum/unlike", requestOptions)
           .then(response => {return response.json()})
           .then(
-            setForumPosts({ markers }))
+            updateState(id,"LikeByOwn",0))
           .catch(error => console.log('error', error));
     }
 
@@ -140,14 +153,15 @@ export default function Truong()
           {item.like}
         </div>
       )}
-     const renderCommemt = (item) => {
+    const renderCommentCount = (item) => {
        return(
          <div>
-            <CommentIcon> {item.comment}</CommentIcon>
+            <CommentIcon/>
+            {item.comment}
          </div>
        )
      }
-     const renderImage = (item) =>{
+    const renderImage = (item) =>{
       if (item.image != "")
       return(
         <CardMedia
@@ -160,6 +174,24 @@ export default function Truong()
           
         </div>
       )
+     }
+     const handleLike = (item) =>
+     {
+        if (item.LikeByOwn != 0){
+          unLikePosts(item.ID);
+          updateNumberLike(item.ID,1)
+        }
+        else{
+          likePosts(item.ID);
+          updateNumberLike(item.ID,0)
+        }
+     }
+     const renderComment = (num) =>{
+       return (
+         <div>
+           <UserComment id={num}/>
+         </div>
+       )
      }
      if (loading==false)
      {
@@ -189,41 +221,27 @@ export default function Truong()
                           
                         />
                     {renderImage(item)}
-                    <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                        </Typography>
-                    </CardContent>
                     <CardActions disableSpacing>
 
                         <IconButton 
                         aria-label="like the post"
-                        onClick=/*{item.LikeByOwn==0 ? likePosts(item.ID) : unLikePosts(item.ID)}*/""
+                        onClick= {() => handleLike(item)}
                         >
                           {renderLike(item)}
                         </IconButton>
                         <IconButton 
                         aria-label="Comment the post"
-                        onClick=/*{item.LikeByOwn==0 ? likePosts(item.ID) : unLikePosts(item.ID)}*/""
+                        onClick= {()=>renderComment()}
                         >
-                          {renderCommemt(item)}
+                          {renderCommentCount(item)}
                         </IconButton>
-                        <IconButton
-                          className={clsx(classes.expand, {
-                            [classes.expandOpen]: expanded,
-                          })}
-                          onClick={handleExpandClick}
-                          aria-expanded={expanded}
-                          aria-label="show more"
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
+                       
                     </CardActions>
 
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                      
-                    </Collapse>
+                      <UserComment></UserComment>
+
                   </Card>
-                  <p></p>
+                  <p/> <br/>
               </div>
             )
       })}
