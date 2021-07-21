@@ -1,5 +1,5 @@
 import React , {useState, useEffect}from 'react';
-import { Typography,makeStyles } from '@material-ui/core';
+import { Typography,makeStyles, Button,Box,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle } from '@material-ui/core';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -10,43 +10,53 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ListItem from 'material-ui/List/ListItem';
 import CommentIcon from '@material-ui/icons/Comment';
 import UserComment from "../Comment"
+import Modal from '@material-ui/core/Modal';
+import { PostThread } from '../PostThread';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin:'auto',
     flexDirection: 'column',
     maxWidth: '75%',
+    backgroundColor: "#f5f8fa"
   },
   media: {
     height: 0,
     paddingTop: '56.25%',
   },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
   avatar: {
     backgroundColor: "#f44336",
   },
-}));
+  news_post:{
+    marginTop:"30px"
+  },
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 
+}));
 
 export default function Truong()
 {
     const classes = useStyles();
-    const [forumPosts,setForumPosts] = useState([
-     
-    ]);
+    const [forumPosts,setForumPosts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isOpen,setIsOpen] = useState(false);
 
+    const handleDialogOpen = () =>{
+      setIsOpen(true);
+    }
+
+    const handleDialogClose = () => {
+      setIsOpen(false)
+    }
     const convertTime = (UNIX_timestamp) => {
       var time = new Date(UNIX_timestamp).toLocaleDateString('en-US');
       return time;
@@ -193,61 +203,93 @@ export default function Truong()
          </div>
        )
      }
-     if (loading==false)
-     {
-        return forumPosts.map((item, index) => {
-            return (
-              <div key={index}>
-                    <Card className={classes.root}>
-                        <CardHeader
-                          avatar={
-                            <Avatar aria-label="recipe" className={classes.avatar} src={item.AvartaOwn}/>
-                          }
-                          action={
-                            <IconButton aria-label="settings">
-                              <MoreVertIcon />
-                            </IconButton>
-                          }
-                          title= {
-                           <Typography variant="h6"></Typography>  
-                          }
-                          subheader= {
-                            <Typography textAlign="center" variant="h7">
-                              {item.NameOwn} 
-                              <br/>
-                              {convertTime(item.time)}
-                            </Typography>
-                          }
-                          
-                        />
-                    {renderImage(item)}
-                    <CardContent>
-                     <Typography variant="h6"> {item.title}</Typography> 
-                    </CardContent>
-                    <CardActions disableSpacing>
-
-                        <IconButton 
-                        aria-label="like the post"
-                        onClick= {() => handleLike(item)}
-                        >
-                          {renderLike(item)}
+     const renderForum = () =>{
+      return forumPosts.map((item, index) => {
+        return (
+          <div key={index}>
+                <Card className={classes.root}>
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar} src={item.AvartaOwn}/>
+                      }
+                      action={
+                        <IconButton aria-label="settings">
+                          <MoreVertIcon />
                         </IconButton>
-                        <IconButton 
-                        aria-label="Comment the post"
-                        onClick= {()=>renderComment()}
-                        >
-                          {renderCommentCount(item)}
-                        </IconButton>
-                       
-                    </CardActions>
+                      }
+                      title= {
+                       <Typography variant="h6"></Typography>  
+                      }
+                      subheader= {
+                        <Typography textAlign="center" variant="h7">
+                          {item.NameOwn} 
+                          <br/>
+                          {convertTime(item.time)}
+                        </Typography>
+                      }
+                      
+                    />
+                {renderImage(item)}
+                <CardContent>
+                 <Typography variant="h6"> {item.title}</Typography> 
+                </CardContent>
+                <CardActions disableSpacing>
 
-                      <UserComment></UserComment>
+                    <IconButton 
+                    aria-label="like the post"
+                    onClick= {() => handleLike(item)}
+                    >
+                      {renderLike(item)}
+                    </IconButton>
+                    <IconButton 
+                    aria-label="Comment the post"
+                    onClick= {()=>renderComment()}
+                    >
+                      {renderCommentCount(item)}
+                    </IconButton>
+                   
+                </CardActions>
 
-                  </Card>
-                  <p/> <br/>
-              </div>
-            )
-      })}
+                  <UserComment></UserComment>
+
+              </Card>
+              <p/> <br/>
+          </div>
+        )
+  })
+     }
+     const DialogComponent = (
+      <Dialog
+        open={isOpen}
+        onClose={handleDialogClose}
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+           test
+            </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleDialogClose} color="primary">
+                    Huỷ
+                </Button>
+                <Button>
+                    Đăng bài viết
+                </Button>
+        </DialogActions>
+      </Dialog>
+    );
+
+     if (loading==false){
+    return(
+          <div>
+            <Box className={classes.news_post} textAlign='center'>
+              <Button variant='contained' onClick={handleDialogOpen} textAlign="center">Tạo bài thảo luận</Button>
+            </Box>
+            <PostThread  isOpen={isOpen} handleClose={handleDialogClose}/>
+            {renderForum()}
+          </div>
+    )}
       else return (
         <div>
           <Typography align="center" textAlign="center">Hiện chưa có bài viết nào trong forum cả.</Typography>

@@ -9,6 +9,7 @@ import Khoa from "./Khoa/Khoa"
 const useStyles = makeStyles((theme) => ({
     root: {
       marginLeft: 200,
+      backgroundColor:"#f5f8fa"
     },
     toolbar: {
       display: 'flex',
