@@ -124,7 +124,7 @@ export default function LoginButton() {
             <Grid  container  direction="row" spacing={2} justify="center">
                 <Grid  className={classes.info} item xs={8} md={8}>
                     <Grid >
-                        <img width="50%" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/1200px-React-icon.svg.png" alt="logo"></img>
+                        <img width="50%" src="../images/logo.png" alt="logo"></img>
                     </Grid>
                     <Grid >
                         <h1 className={classes.login_form_1_h3}>Ứng dụng kết nối và quản lý cổng học tập</h1>

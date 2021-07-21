@@ -63,7 +63,8 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: drawerWidth,
-    marginTop: AppBarHeight
+    marginTop: AppBarHeight,
+    backgroundColor:"#e4edf5"
   },
   content: {
     flexGrow: 1,
@@ -246,7 +247,7 @@ useEffect(() => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap style={{color: "#f5f5f5"}}>
+          <Typography fontWeight="normal" variant="h4" noWrap style={{color: "#f5f5f5"}}>
             Hệ thống phục vụ học tập cho giảng viên
           </Typography>
           <div className={classes.grow} />

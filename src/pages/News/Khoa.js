@@ -6,9 +6,10 @@ import TimelapseIcon from '@material-ui/icons/Timelapse';
 const useStyles = makeStyles((theme) => ({
     news_page: {
       margin: "10px 0 0 16vw", 
-      background: "white", 
+      background: "#faf9e8", 
       width: "80vw", 
-      boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px"
+      boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px",
+      
     },
     news_page_a: {
       textDecoration: "none"

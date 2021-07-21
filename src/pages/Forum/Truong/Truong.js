@@ -209,18 +209,21 @@ export default function Truong()
                             </IconButton>
                           }
                           title= {
-                           <Typography variant="h6">{item.title}</Typography>  
+                           <Typography variant="h6"></Typography>  
                           }
                           subheader= {
                             <Typography textAlign="center" variant="h7">
-                              Thời gian đăng: {convertTime(item.time)}
+                              {item.NameOwn} 
                               <br/>
-                              Người đăng: {item.NameOwn}
+                              {convertTime(item.time)}
                             </Typography>
                           }
                           
                         />
                     {renderImage(item)}
+                    <CardContent>
+                     <Typography variant="h6"> {item.title}</Typography> 
+                    </CardContent>
                     <CardActions disableSpacing>
 
                         <IconButton 

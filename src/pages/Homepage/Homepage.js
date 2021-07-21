@@ -10,9 +10,10 @@ import Footer from '../../components/footer/Footer';
 const border = 200;
 const useStyles = makeStyles((theme)=>({
   root: {
-    marginLeft: `${border}`,
+    marginLeft: `${border}+10px`,
     display: "flex",
-    marginRight: "15px",
+    backgroundColor: "#faf9e8"
+
   },
   toolbar: {
     display: 'flex',
