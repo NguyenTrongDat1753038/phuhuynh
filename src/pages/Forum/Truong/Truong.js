@@ -14,6 +14,8 @@ import CommentIcon from '@material-ui/icons/Comment';
 import UserComment from "../Comment"
 import Modal from '@material-ui/core/Modal';
 import { PostThread } from '../PostThread';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +42,12 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  loadingEffect:{
+      width: '100%',
+      '& > * + *': {
+        marginTop: theme.spacing(2),
+    },
+  }
 
 }));
 
@@ -258,29 +266,15 @@ export default function Truong()
         )
   })
      }
-     const DialogComponent = (
-      <Dialog
-        open={isOpen}
-        onClose={handleDialogClose}
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-           test
-            </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
-                    Huỷ
-                </Button>
-                <Button>
-                    Đăng bài viết
-                </Button>
-        </DialogActions>
-      </Dialog>
-    );
-
-     if (loading==false){
+  if (loading == true){
+    return(
+      <div className={classes.loadingEffect}>
+      <LinearProgress />
+      <LinearProgress color="secondary" />
+    </div>
+    )
+    }
+   else{
     return(
           <div>
             <Box className={classes.news_post} textAlign='center'>
@@ -289,10 +283,5 @@ export default function Truong()
             <PostThread  isOpen={isOpen} handleClose={handleDialogClose}/>
             {renderForum()}
           </div>
-    )}
-      else return (
-        <div>
-          <Typography align="center" textAlign="center">Hiện chưa có bài viết nào trong forum cả.</Typography>
-        </div>
-      )
+  )}
 }

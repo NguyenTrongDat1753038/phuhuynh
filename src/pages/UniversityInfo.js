@@ -2,15 +2,12 @@ import React, { useState,useEffect } from "react";
 import NavBar from "../Navigation/NavBar"
 import {
   Grid,
-  Paper,
   Typography,
   createMuiTheme,
   MuiThemeProvider,
   makeStyles,
-  TextField,
-  Button,
   Toolbar,
-  Box,
+
 } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import LanguageIcon from '@material-ui/icons/Language';
@@ -20,6 +17,7 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import HomeIcon from '@material-ui/icons/Home';
 import BusinessIcon from '@material-ui/icons/Business';
+import LoadingScreen from "./LoadingScreen"
 let theme = createMuiTheme();
 theme.typography.h6 = {
   fontSize: "1rem",
@@ -107,6 +105,7 @@ export default function UniversityInfo() {
     Website: "",
     Images:""
   }])
+  const [loading,setLoading] = useState(true);
   const getInfoUni = async() => {
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") +"tC");
@@ -130,14 +129,20 @@ export default function UniversityInfo() {
            TenKhoa: result[0].TenKhoa,
            Website: result[0].WebSite,
            Images: result[0].Images}
-         )
+         );
+         setLoading(false);
         })
         .catch(error => console.log('error', error));
     }
   useEffect(() =>{
     getInfoUni();
   },[])
-
+  if (loading == true){
+    return(
+      <LoadingScreen/>
+    )
+  }
+  else{
   return (
     <div className={classes.root}>
     <NavBar className = {classes.floatingMenu}/>
@@ -181,4 +186,5 @@ export default function UniversityInfo() {
       </MuiThemeProvider>
     </div>
   );
+  }
 }

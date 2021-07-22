@@ -7,6 +7,7 @@ import FiberNewIcon from '@material-ui/icons/FiberNew';
 import TimelapseIcon from '@material-ui/icons/Timelapse'; 
 import {useHistory} from "react-router-dom"
 import Footer from '../../components/footer/Footer';
+import LoadingScreen from '../LoadingScreen';
 const border = 200;
 const useStyles = makeStyles((theme)=>({
   root: {
@@ -78,7 +79,7 @@ function Homepage() {
   TenKhoa: "Khoa Địa chất",
   Website: "https://phys.hcmus.edu.vn/",
   Images: "https://www.hcmus.edu.vn/images/2020/04/07/bn2.jpg"}]);
-
+  const [loading,setLoading] = useState(true);
   const getNewsUniversity = async() => {
       var myHeaders = new Headers();
       myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+ "tC");
@@ -134,6 +135,7 @@ function Homepage() {
         getNewsFaculty();
         getNewsUniversity();
         getInfoUni();
+        setLoading(false);
      },[]);
      const renderNewsComponent = (id) => {
         if (id==1){
@@ -264,7 +266,12 @@ function Homepage() {
             </Box>
             )
           }
-      
+    if (loading == true){
+      return (
+        <LoadingScreen/>
+      )
+    }
+    else{
     return (
     <div className = {classes.root}> 
         <NavBar/>
@@ -287,6 +294,7 @@ function Homepage() {
       </main>
     </div>
   );
+    }
 }
 
 export default Homepage;

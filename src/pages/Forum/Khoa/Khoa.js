@@ -15,6 +15,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import ListItem from 'material-ui/List/ListItem';
 import CommentIcon from '@material-ui/icons/Comment';
 import { Filter } from '@material-ui/icons';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin:'auto',
@@ -38,6 +40,12 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: "#f44336",
   },
+  loadingEffect:{
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(10),
+  },
+}
 }));
 
 
@@ -46,11 +54,7 @@ export default function Truong()
     const classes = useStyles();
     const [forumPosts,setForumPosts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [expanded, setExpanded] = useState(false);
-    const handleExpandClick = () => {
-    setExpanded(!expanded);
-    };
-
+  
     const convertTime = (UNIX_timestamp) => {
       var time = new Date(UNIX_timestamp).toLocaleDateString('en-US');
       return time;
@@ -171,8 +175,18 @@ export default function Truong()
           likePosts(item.ID)
         }
      }
-     if (loading==false)
+     if (loading==true)
      {
+      return(
+          <div style={{ alignItems: "center", display: "flex", justifyContent: "center", height: "100vh", width: "100vw" }}>
+            <div className={classes.loadingEffect}>
+              <LinearProgress />
+              <LinearProgress color="secondary" />
+            </div>
+          </div>
+      )
+     }
+     else{
         return forumPosts.map((item, index) => {
             return (
               <div key={index}>
@@ -217,29 +231,13 @@ export default function Truong()
                         >
                           {renderCommentCount(item)}
                         </IconButton>
-                        <IconButton
-                          className={clsx(classes.expand, {
-                            [classes.expandOpen]: expanded,
-                          })}
-                          onClick={handleExpandClick}
-                          aria-expanded={expanded}
-                          aria-label="show more"
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
+                    
                     </CardActions>
 
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
                       
-                    </Collapse>
                   </Card>
                   <p></p>
               </div>
             )
       })}
-      else return (
-        <div>
-          <Typography align="center" textAlign="center">Hiện chưa có bài viết nào trong forum cả.</Typography>
-        </div>
-      )
 }

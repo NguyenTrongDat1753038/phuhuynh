@@ -17,6 +17,11 @@ import MailIcon from "@material-ui/icons/Mail";
 import WaveBorder from "../shared/WaveBorder";
 import transitions from "@material-ui/core/styles/transitions";
 import FacebookIcon from '@material-ui/icons/Facebook';
+import BusinessIcon from '@material-ui/icons/Business';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
+import HomeIcon from '@material-ui/icons/Home';
+import WebIcon from '@material-ui/icons/Web';
+import Home from "@material-ui/icons/Home";
 
 const styles = theme => ({
   footerInner: {
@@ -75,7 +80,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.common.white
   },
   largeIcon: {
-    fontSize: "4em",
+    fontSize: "2em",
     color: "blue"
   },
 });
@@ -140,10 +145,11 @@ function Footer(props) {
              Thông tin liên lạc
             </Typography>
             <Typography style={{ color: "#1b2738" }} paragraph>
-                Email:  {info.Email}
-                <br/> SDT: {info.SDT}
-                <br/> Địa chỉ: {info.TenDiaChi}
-                <br/> <a href={info.WebSite} rel="noopener noreferrer" target="_blank">Website: {info.WebSite}</a>
+                <BusinessIcon/>Trường: {info.TenTruongDH}
+                <br/><MailIcon/>Email:  {info.Email}
+                <br/><PhoneIcon/> SDT: {info.SDT}
+                <br/><HomeIcon/> Địa chỉ: {info.TenDiaChi}
+                <br/><WebIcon/> <a href={info.WebSite} rel="noopener noreferrer" target="_blank">Website: {info.WebSite}</a>
             </Typography>
             <Box display="Fill">
                   <IconButton
@@ -152,6 +158,7 @@ function Footer(props) {
                     href={info.FanFage}
                     rel="noopener noreferrer" 
                     target="_blank"
+                    title= "Nhấn vào đây để truy cập Fanpage trường"
                   >
                   <FacebookIcon className={classes.largeIcon}/>
                   </IconButton>
