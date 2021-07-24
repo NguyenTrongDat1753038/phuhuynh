@@ -1,5 +1,5 @@
 import React , {useState, useEffect}from 'react';
-import { Typography,makeStyles, Button,Box,Menu,MenuItem } from '@material-ui/core';
+import { Typography,makeStyles, Button,Box,Menu,MenuItem,Grid } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -11,13 +11,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CommentIcon from '@material-ui/icons/Comment';
 import UserComment from "../Comment"
-import Modal from '@material-ui/core/Modal';
 import { PostThread } from '../PostThread';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import TimeAgo from '../../../components/functions/TimeAgo';
-import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import ConfirmDialog from "../../../components/shared/ConfirmDialog"
+import LoadingScreen from '../../../components/shared/LoadingScreen';
 const useStyles = makeStyles((theme) => ({
   root: {
     margin:'auto',
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#f44336",
   },
   news_post:{
-    marginTop:"30px"
+    marginTop:"30px",
   },
   paper: {
     position: 'absolute',
@@ -80,13 +79,16 @@ export default function Truong()
     const [isOpen,setIsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentPost,setCurrentPost] = useState(null);
-    const [confirmDialog,setConfirmDialog] = useState({isOpen:false, title:"",subTitle:""})
+    const [userMail,setUserMail] = useState(null);
+    const [confirmDialog,setConfirmDialog] = useState({isOpen:false, title:"",subTitle:""})  
+    const [mounted, setMounted] = useState(false);
+
     const handleOptionsClick = (e,id) => {
       setCurrentPost(id);
       setAnchorEl(e.currentTarget);
     };
-
-  
+    const toggle = () => setMounted(!mounted);
+    
     const handleOptionsClose = () => {
       setAnchorEl(null);
     };
@@ -96,10 +98,24 @@ export default function Truong()
     }
 
     const handleDialogClose = () => {
-      setIsOpen(false)
+      setIsOpen(false);
     }
 
+    const getUserEmail = ()=>{
+      var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") + "tC");
 
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch("https://hcmusemu.herokuapp.com/profile/view", requestOptions)
+            .then(response => response.json())
+            .then(result => {setUserMail(result[0].Email)})
+            .catch(error => console.log('error', error));
+    }
     const getForumPosts = async() => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+ "tC");
@@ -112,7 +128,7 @@ export default function Truong()
         await fetch("https://hcmusemu.herokuapp.com/forum/view", requestOptions)
             .then(response => {return response.json()})
             .then((result)=>{
-              result = result.filter(forum => forum.scope == 'k');
+              result = result.filter(forum => forum.scope == 'f');
               setForumPosts(result)
             })
             .catch(error => console.log('error', error),
@@ -120,10 +136,15 @@ export default function Truong()
     }
     
     useEffect(() => {
+      if (!mounted){
        getForumPosts();
+       getUserEmail();
+       setLoading(!loading);
+       toggle();
+      }
+
      },[]);
 
-     
     const updateNumberLike = (id,type) => {
       if (type==1){
           var index = forumPosts.findIndex(x=> x.ID === id);
@@ -226,7 +247,6 @@ export default function Truong()
           removeElementState(id);
         }
         else{
-          console.log(statusCode);
           console.log("loi");
         }
   
@@ -262,6 +282,16 @@ export default function Truong()
         </div>
       )
      }
+     
+    const getCurrentMail = (id) => {
+      var array = [...forumPosts];
+      var index = array.findIndex(x=> x.ID === id);
+      if (index != -1){
+        return array[index].EmailOwn;
+      }
+      return "";
+    }
+
      const handleLike = (item) =>
      {
         if (item.LikeByOwn != 0){
@@ -288,7 +318,6 @@ export default function Truong()
     })
     deletePosts(id);
     }
-    console.log(forumPosts)
      const renderForum = () =>{
       return forumPosts.map((item, index) => {
         return (
@@ -345,6 +374,7 @@ export default function Truong()
                   open={Boolean(anchorEl)}
                   onClose={handleOptionsClose}
                 >
+                  {userMail === getCurrentMail(currentPost) ?
                   <MenuItem onClick={()=>{
                        setConfirmDialog({
                         isOpen: true,
@@ -353,6 +383,9 @@ export default function Truong()
                         onConfirm: () => { deletePosts(currentPost);setConfirmDialog({isOpen: false,}) }
                     })
                   }}>Xoá post</MenuItem>
+                  :
+                 <MenuItem> </MenuItem>
+                }
                   <MenuItem onClick={handleOptionsClose}>Coi lượt yêu thích</MenuItem>
                 </Menu>
               <ConfirmDialog
@@ -366,21 +399,21 @@ export default function Truong()
         )
   })
      }
-  if (loading == true){
+  if (loading == false){
     return(
-      <div className={classes.loadingEffect}>
-      <LinearProgress />
-      <LinearProgress color="secondary" />
+      <div>
+          <LoadingScreen/>
     </div>
     )
     }
    else{
     return(
           <div>
-            <Box className={classes.news_post} textAlign='center'>
+            <Box style={{backgroundColor:"#b4cc37"}} className={classes.news_post} textAlign='center'>
               <Button style={{backgroundColor:"#b7e0eb"}} variant='contained' onClick={handleDialogOpen} textAlign="center">Tạo bài thảo luận</Button>
             </Box>
             <PostThread  isOpen={isOpen} handleClose={handleDialogClose}/>
+            
             {renderForum()}
           </div>
   )}

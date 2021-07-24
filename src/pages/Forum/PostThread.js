@@ -55,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const PostThread =  ({
         isOpen,
-        handleClose
+        handleClose,
+        message,
     })=>{
     const classes  = useStyles();
     const [image,setImage] = useState("");

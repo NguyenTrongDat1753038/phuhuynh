@@ -6,7 +6,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import Avatar from '@material-ui/core/Avatar';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+import ConfirmDialog from "../../components/shared/ConfirmDialog"
 
 
 
@@ -26,12 +26,15 @@ const useStyles = makeStyles((theme) => ({
     input: {
       display: 'none'
   },
+ 
   }));
-function UserComment({id}) {
+function UserComment({id,postid,sent}) {
     const classes = useStyles();
     const [comment,getComment] = useState([]); 
-    const [images,setImages] = useState("")
-    const [title,setTitle] = useState("")
+    const [confirmDialog,setConfirmDialog] = useState({isOpen:false, title:"",subTitle:""})  
+    const [update,setUpdate] = useState(sent);
+    const [list,setList] = useState([]);
+    const [firsttime,setFirstime] = useState(true);
     const getPostComment = async() => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+ "tC");
@@ -51,23 +54,46 @@ function UserComment({id}) {
             })
             .catch(error => console.log('error', error));
       }
+    const getLikedUser = async() => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+ "tC");
+        
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("IDPost", id);
+  
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+        await fetch("https://hcmusemu.herokuapp.com/forum/viewlike", requestOptions)
+            .then(response => {return response.json()})
+            .then((result)=>{
+              setList(result);
+            })
+            .catch(error => console.log('error', error));
+      }
+      
     useEffect(()=>{
+      if (firsttime==true || update == true){
         getPostComment();
+        getLikedUser();
+        setFirstime(false);
+        setUpdate(false);
+      }
     },[])
 
-    const handleTitle = (event) => {
-      setTitle(event.target.value);
-    }
-
-    const handleCapture = (e) => {
-      const reader = new FileReader();
-      reader.onload = function() {
-          console.log(reader.result)
-          setImages(reader.result)
-      }
-      reader.readAsDataURL(e.target.files[0]);
-    }
-    const renderImage = (item) =>{
+   
+    /*const handleDeleteComment = (id) => {
+      setConfirmDialog({
+        ...confirmDialog,
+        isOpen: false
+    })
+    deletePosts(id);
+    }*/
+   
+    const renderImageUser = (item) =>{
         if (item.image != "")
         return(
               <img style={{height:"100px", width:"100px"}} src={item.image} alt="recipe thumbnail"/>   
@@ -77,21 +103,11 @@ function UserComment({id}) {
           </div>
         )
        }
+    
+    
     const totalProps = comment.reduce((a, obj) => a + Object.keys(obj).length, 0);
 
-    const renderBoxPostComment = () =>{
-      return(
-        <Box border={0.1} borderColor="black" borderRadius="5px" width="100%" height="50%">
-            <Input type="file" className={classes.input} id="icon-button-photo" onChange={handleCapture} accept="image/png, image/jpeg, image/jpg, img/tiff"/>
-                <label htmlFor="icon-button-photo">
-                    <IconButton color="primary" component="span">
-                        <PhotoCameraIcon />
-                    </IconButton>
-                </label>
-                <TextField className={classes.HeightTextField} required variant="outlined" value={title} onChange={handleTitle} margin="normal"  fullWidth size="small" multiline placeholder="Nhập bình luận của bạn tại đây ^^"/>
-        </Box>
-      )
-    }
+    
 
     const renderComment = () =>{
       return comment.map((item, index) => {
@@ -104,7 +120,7 @@ function UserComment({id}) {
                       <DeleteIcon />
                     </IconButton>
                   }/>
-                  {renderImage(item)}
+                  {renderImageUser(item)}
                     <div>
                         <Typography style={{ marginLeft:"5%"}} >{item.comment}</Typography>
                     </div>
@@ -114,17 +130,14 @@ function UserComment({id}) {
         )
     })
     }
+
+   
     if (totalProps == 0){
-      return(
-        <div>
-          {renderBoxPostComment()}
-        </div>
-      )
+      return null;
     }
     else{
         return(
           <div>
-            {renderBoxPostComment()}
             {renderComment()}
           </div>
         )

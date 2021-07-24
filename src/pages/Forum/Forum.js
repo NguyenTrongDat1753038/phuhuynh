@@ -36,7 +36,7 @@ export default function News(){
   
   return (
       <Paper className={classes.root}>
-          <NavBar/>
+        <NavBar/>
             <main className={classes.content}>
             <div className={classes.toolbar} />
             <Tabs
