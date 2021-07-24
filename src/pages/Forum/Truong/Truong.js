@@ -83,13 +83,12 @@ export default function Truong()
 {
     const classes = useStyles();
     const [forumPosts,setForumPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [isOpen,setIsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentPost,setCurrentPost] = useState(null);
     const [userMail,setUserMail] = useState(null);
     const [confirmDialog,setConfirmDialog] = useState({isOpen:false, title:"",subTitle:""})  
-    const [mounted, setMounted] = useState(false);
     const [image,setImage] = useState("")
     const [upload,setUpload] = useState(null);
     const [title,setTitle] = useState("")
@@ -107,7 +106,7 @@ export default function Truong()
       setCurrentPost(id);
       setAnchorEl(e.currentTarget);
     };
-    const toggle = () => setMounted(!mounted);
+  
     
     const handleOptionsClose = () => {
       setAnchorEl(null);
@@ -186,7 +185,6 @@ export default function Truong()
           return Promise.all([statusCode, dataRes]);
         }).then(([statusCode, dataRes]) => {
           if(statusCode === 200){
-            console.log("Comment thanh cong")
             if(upload !== "" && upload !== null){
             setPreViewComment({IDPost:currentPost,Comment:title,Image:image})}
             else{
@@ -200,12 +198,10 @@ export default function Truong()
   }
 
     useEffect(() => {
-      if (!mounted){
        getForumPosts();
        getUserEmail();
-       setLoading(!loading);
-       toggle();
-      }
+       setLoading(false);
+
      },[]);
 
     
@@ -427,8 +423,7 @@ export default function Truong()
                   {renderBoxPostComment(item)}
                    <UserComment 
                     id={item.ID} 
-                    postid={previewComment.IDPost} 
-                    sent={sent}
+                    email={userMail}
                     />
                    <Menu
                   id="simple-menu"
@@ -495,6 +490,9 @@ export default function Truong()
   const postMySelfComment = () =>{
     postNewComment();
     handleCommentPosted();
+    setPreViewComment({IDPost:"",Comment:"",Image:""});
+    resetImage();
+    
     }
   const renderBoxPostComment = (item) =>{
       return(
@@ -522,7 +520,7 @@ export default function Truong()
         </Box>
       )
     }
-  if (loading == false){
+  if (loading == true){
     return(
       <div>
         <LoadingScreen/>

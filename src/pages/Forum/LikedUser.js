@@ -1,11 +1,8 @@
 import React, {useState,useEffect,Image} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import {Button,Dialog,DialogActions,DialogContent,DialogContentText,Avatar,List ,ListItem,ListItemAvatar,ListItemText } from '@material-ui/core'
-import Typography from 'material-ui/styles/typography';
+import {Button,Dialog,DialogActions,Avatar,Popover,Typography  } from '@material-ui/core'
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import { IndeterminateCheckBoxRounded } from '@material-ui/icons';
-import { DialogTitle } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,32 +51,10 @@ export const LikedUser =  ({
             setLoading(false);
         }
     },[])
-    
-    const totalProps = list.reduce((a, obj) => a + Object.keys(obj).length, 0);
-    const listItems = (totalProps===0 ? <Typography>Hãy là người like bài viết đầu tiên </Typography> :list.map((item,index) => 
-        <li key={index}>
-            <Avatar src={item.Avart}/>
-            <Typography>{item.Name}</Typography>
-        </li>))
-    return(
-        <Dialog 
-        open={isOpen}
-        onClose={handleClose}
-        className={classes.root}
-        fullWidth
-        maxWidth={'md'} 
-        >
-      
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Huỷ
-                </Button>
-            </DialogActions>
-        </Dialog>
-    )
-}
-Dialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
 
+    return(
+        <div>
+       
+      </div>
+    )
 }
