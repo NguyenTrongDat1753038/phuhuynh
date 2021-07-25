@@ -2,11 +2,13 @@ import React , {useState, useEffect}from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Box, Button,TextField,Typography} from "@material-ui/core"
 import { Alert } from 'react-native';
+import VisibilityPasswordTextField from "../../components/shared/VisibilityPasswordTextField"
+import LoadingScreen from "../../components/shared/LoadingScreen"
+import { type } from 'language-tags';
 const useStyles = makeStyles((theme) => ({
     root: {
       background: "#faf9e8", 
-     boxShadow: "rgba(0, 0, 0, 0.1) 0px 1px 3px",
-      borderRadius: "50px 50px 0 0",
+      borderRadius: "25px",
     },
     is_grouped: {
         display: "inline-block",
@@ -22,8 +24,12 @@ export default function Moodle()
     const classes = useStyles()
     const [info,setInfo] = useState({url:"",username:"",password:""});
     const [loading,setLoading] = useState(true)
-    const [success,setSuccess] = useState(false);
-    const [connected,setConnected]= useState([])
+    const [isVisible,setVisible] = useState(true);
+    const [cancelBtnActive,setCancelBtnActive] = useState(false);
+
+    const handleVisible = () =>{
+        setVisible(!isVisible);
+    }
     const handleURL = (event) => {
             setInfo({url:event.target.value});
         }
@@ -31,15 +37,65 @@ export default function Moodle()
             setInfo({username:event.target.value});
         }
     const handlePassword = (event) => {
-            setInfo({password:event.target.value});
+            setInfo({password: event.target.value});
         }
+    const isEmpty = (obj)=> {
+            for(var prop in obj) {
+                if(obj.hasOwnProperty(prop))
+                    return false;
+            }
+        
+            return true;
+        }
+    const getMoodleInfo = async() => {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
     
-        const postMoolde = async() => {
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+    
+            fetch("https://hcmusemu.herokuapp.com/web/getcustomlink", requestOptions)
+                .then(response => {
+                    if (response.status === 200) {
+                        return response.json();
+                    }
+                    else {
+                        throw new Error('Lấy thất bại');
+                    }
+                })
+                .then(result => {
+                    console.log(result)
+                    result = result.filter(connection => connection.Type == 'Moodle');
+                    if (isEmpty(result)==false){
+                        setInfo({url:result[0].Url,username:result[0].Username})
+                        setCancelBtnActive(false);
+                    }
+                    else{
+                        setInfo({url:"",username:""})
+                        setCancelBtnActive(true);
+                    }
+
+                    setLoading(false);
+
+                })
+                .catch(error => {
+                    console.log('error', error)
+                });
+    
+    
+        }
+    useEffect(()=>{
+        getMoodleInfo();
+    },[])
+    const postMoodleLink = async() => {
             setLoading(false);
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
             myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    
+            console.log(info);
             var urlencoded = new URLSearchParams();
             urlencoded.append("typeUrl","Moodle");
             urlencoded.append("url", info.url);
@@ -64,19 +120,61 @@ export default function Moodle()
                     }
                 })
                 .then(result => {
-                    console.log(result);
-                    setSuccess(1);
+                //console.log(result);
                 })
                 .catch(error => {
                     console.log('error', error)
-                    setSuccess(0);
-                    setLoading(true);
                 });
     
     
         }
-        
+    const deleteMoodleLink = async() => {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("typeUrl","Moodle");
+    
+            var requestOptions = {
+                method: 'DELETE',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+    
+            fetch("https://hcmusemu.herokuapp.com/web/deleteaccount", requestOptions)
+                .then(response => {
+                    console.log(response.status);
+                    if (response.status === 201) {
+                        return response.text();
+                    }
+                    else {
+                        console.log(response.status);
+                        throw new Error('Lưu thất bại');
+                    }
+                })
+                .then(
+                    setInfo({url:"",username:"",password:""})
+                )
+                .catch(error => {
+                    console.log('error', error)
+                });
+    
+    
+        }
+    const hanldePostMoodle = ()=>{
+        postMoodleLink();
+    }
+
+    if (loading == true){
+        return(
+        <div className={classes.root}>
+            <LoadingScreen/>
+        </div>
+        )
+    }
+   else{
     return (
         <div className={classes.root}>
         <Box  container
@@ -105,7 +203,9 @@ export default function Moodle()
                     onChange={handleUsername}
                     size="medium"  />
             <Typography style={{fontWeight:"bold",marginLeft:"10%",color:"blue"}}> Nhập mật khẩu Moodle ở đây </Typography>
-            <TextField 
+            <VisibilityPasswordTextField 
+                    isVisible={isVisible}
+                    onVisibilityChange = {handleVisible}
                     id = "user_pass"
                     value={info.password}  
                     variant="outlined"   
@@ -115,10 +215,10 @@ export default function Moodle()
                     size="medium"  />
             <br/>
             <div className="btn-toolbar" style={{marginLeft:"5%"}}>
-                <Button style={{width:170,backgroundColor:"green",color:"white"}} onClick={postMoolde}>
+                <Button style={{width:"auto",backgroundColor:"green",color:"white"}} onClick={hanldePostMoodle}>
                     Kết nối
                 </Button>
-                <Button disabled style={{width:170,backgroundColor:"red",color:"white",marginLeft: 50}} >
+                <Button onClick={deleteMoodleLink} disabled={cancelBtnActive} style={{width:"auto",backgroundColor: cancelBtnActive==false?"red":"#f0b3b3",color:"white",marginLeft: 175}} >
                    Huỷ kết nối
                 </Button>
             </div>
@@ -126,4 +226,4 @@ export default function Moodle()
         </div>
     )
    }
-
+}
