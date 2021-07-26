@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 import VisibilityPasswordTextField from "../../components/shared/VisibilityPasswordTextField"
 import LoadingScreen from "../../components/shared/LoadingScreen"
 import { type } from 'language-tags';
+import { responsiveFontSizes } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
     root: {
       background: "#faf9e8", 
@@ -20,25 +21,28 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export default function Portal()
+export default function Moodle()
 {
     const classes = useStyles()
     const [info,setInfo] = useState({url:"",username:"",password:""});
+    const [website,setWebsite] = useState("");
+    const [username,setUsername] = useState("");
+    const [password,setPassword] = useState("");
     const [loading,setLoading] = useState(true)
     const [isVisible,setVisible] = useState(true);
-    const [cancelBtnActive,setCancelBtnActive] = useState(true);
+    const [cancelBtnActive,setCancelBtnActive] = useState(false);
 
     const handleVisible = () =>{
         setVisible(!isVisible);
     }
     const handleURL = (event) => {
-            setInfo({url:event.target.value});
+            setWebsite(event.target.value)
         }
     const handleUsername = (event) => {
-            setInfo({username:event.target.value});
+            setUsername(event.target.value);
         }
     const handlePassword = (event) => {
-            setInfo({password: event.target.value});
+            setPassword(event.target.value);
         }
     
     const isEmpty = (obj)=> {
@@ -49,7 +53,7 @@ export default function Portal()
         
             return true;
         }
-    const getPortalInfo = async() => {
+    const getMoodleInfo = async() => {
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
     
@@ -61,23 +65,24 @@ export default function Portal()
     
             fetch("https://hcmusemu.herokuapp.com/web/getcustomlink", requestOptions)
                 .then(response => {
+                    console.log(response.status);
                     if (response.status === 200) {
                         return response.json();
                     }
-                    else {
-                        throw new Error('Lấy thất bại');
-                    }
+                    else return [];
                 })
                 .then(result => {
                     result = result.filter(connection => connection.Type == 'Portal');
-                    console.log(typeof(result))
-                    if (isEmpty(result)==false){
-                        setInfo({url:result[0].Url,username:result[0].Username})
-                        setCancelBtnActive(true);
+                    if (isEmpty(result)==false)
+                    {
+                        setWebsite(result[0].Url);
+                        setUsername(result[0].Username)
+                        setCancelBtnActive(false);
                     }
                     else{
-                        setInfo({url:"",username:""})
-                        setCancelBtnActive(false);
+                        setWebsite("");
+                        setUsername("")
+                        setCancelBtnActive(true);
                     }
 
                     setLoading(false);
@@ -89,10 +94,53 @@ export default function Portal()
     
     
         }
+    const deleteMoodleInfo = async() => {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+            var urlencoded = new URLSearchParams();
+            urlencoded.append("typeUrl","Portal");
+
+            var requestOptions = {
+                method: 'DELETE',
+                headers: myHeaders,
+                body: urlencoded,
+                redirect: 'follow'
+            };
+    
+            fetch("https://hcmusemu.herokuapp.com/web/deleteaccount", requestOptions)
+                .then(response => {
+                    console.log(response.status)
+                    if (response.status === 200) {
+                        console.log(response.text())
+
+                        return response.text();
+                    }
+                    else {
+                        throw new Error("Có lỗi không xoá được");
+                    };
+                })
+                .then(setCancelBtnActive(true))
+                .catch(error => {
+                    console.log('error', error)
+                });
+    
+    
+    }
+    const handleDeleteMoodle = () =>{
+        deleteMoodleInfo();
+        afterDelete();
+    }
+    const afterDelete = () =>{
+        setWebsite("");
+        setUsername("");
+        setPassword("");
+    }
     useEffect(()=>{
-        getPortalInfo();
+        getMoodleInfo();
     },[])
-    const postPortalLink = async() => {
+    const postMoodleLink = async() => {
             setLoading(false);
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
@@ -100,10 +148,10 @@ export default function Portal()
     
             var urlencoded = new URLSearchParams();
             urlencoded.append("typeUrl","Portal");
-            urlencoded.append("url", info.url);
-            urlencoded.append("username", info.username);
-            urlencoded.append("password", info.password);
-    
+            urlencoded.append("url", website);
+            urlencoded.append("username", username);
+            urlencoded.append("password", password);
+            console.log(website,username,password)
             var requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
@@ -113,8 +161,7 @@ export default function Portal()
     
             fetch("https://hcmusemu.herokuapp.com/web/postaccountcustom", requestOptions)
                 .then(response => {
-                   // console.log(response.status);
-                    if (response.status === 200) {
+                    if (response.status === 201) {
                         return response.text();
                     }
                     else {
@@ -122,7 +169,7 @@ export default function Portal()
                         throw new Error('Lưu thất bại');
                     }
                 })
-                .then()
+                .then(setCancelBtnActive(false))
                 .catch(error => {
                     console.log('error', error)
                 });
@@ -131,10 +178,14 @@ export default function Portal()
         }
  
 
-    const hanldePostPortal = ()=>{
-        postPortalLink();
+    const hanldePostMoodle = ()=>{
+        postMoodleLink();
+       
     }
 
+  
+
+    console.log(website,username,password);
     if (loading == true){
         return(
         <div className={classes.root}>
@@ -154,8 +205,9 @@ export default function Portal()
                 
             <Typography  style={{fontWeight:"bold",marginLeft:"12.5%",color:"blue"}}> Nhập URL Portal ở đây </Typography>
             <TextField 
+                    required
                     id = "user_link"
-                    value={info.url}  
+                    value={website}  
                     variant="outlined"   
                     margin="normal"  
                     style={{width:"50%"}}
@@ -163,8 +215,9 @@ export default function Portal()
                     size="medium"  />
             <Typography   style={{fontWeight:"bold",marginLeft:"10%",color:"blue"}}> Nhập tài khoản Portal ở đây </Typography>
             <TextField 
+                    required
                     id = "user_name"
-                    value={info.username}  
+                    value={username}  
                     variant="outlined"   
                     margin="normal"  
                     style={{width:"50%"}}
@@ -172,10 +225,11 @@ export default function Portal()
                     size="medium"  />
             <Typography style={{fontWeight:"bold",marginLeft:"10%",color:"blue"}}> Nhập mật khẩu Portal ở đây </Typography>
             <VisibilityPasswordTextField 
+                    required
                     isVisible={isVisible}
                     onVisibilityChange = {handleVisible}
                     id = "user_pass"
-                    value={info.password}  
+                    value={password}  
                     variant="outlined"   
                     margin="normal"  
                     style={{width:"50%"}}
@@ -183,10 +237,10 @@ export default function Portal()
                     size="medium"  />
             <br/>
             <div className="btn-toolbar" style={{marginLeft:"5%"}}>
-                <Button style={{width:"auto",backgroundColor:"green",color:"white"}} onClick={hanldePostPortal}>
+                <Button style={{width:"auto",backgroundColor:"green",color:"white"}} onClick={hanldePostMoodle}>
                     Kết nối
                 </Button>
-                <Button disabled={cancelBtnActive} style={{width:"auto",backgroundColor: cancelBtnActive==true?"#e52727":"#f0b3b3",color:"white",marginLeft: 175}} >
+                <Button onClick={handleDeleteMoodle} disabled={cancelBtnActive} style={{width:"auto",backgroundColor: cancelBtnActive==false?"red":"#f0b3b3",color:"white",marginLeft: 175}} >
                    Huỷ kết nối
                 </Button>
             </div>

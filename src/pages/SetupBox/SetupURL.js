@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Tab, Tabs, Typography, Box,Paper  } from '@material-ui/core';
 import PropTypes from "prop-types"
 import Moodle from './Moodle';
+import Portal from './Portal';
 const useStyles = makeStyles((theme) => ({
     root: {
       marginLeft: 200,
@@ -48,6 +49,7 @@ export default function SetupURL(){
         <Tab  label="Portal"/>
       </Tabs>
       {value === 0 && <Moodle/>} 
+      {value === 1 && <Portal/>} 
       </main>
       </Paper>
   )};
