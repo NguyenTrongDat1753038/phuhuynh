@@ -9,7 +9,6 @@ import {
   Toolbar,
 
 } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
 import LanguageIcon from '@material-ui/icons/Language';
 import SchoolIcon from '@material-ui/icons/School';
 import MailIcon from '@material-ui/icons/Mail';
@@ -137,7 +136,7 @@ export default function UniversityInfo() {
   useEffect(() =>{
     getInfoUni();
   },[])
-  if (loading == true){
+  if (loading === true){
     return(
       <LoadingScreen/>
     )
