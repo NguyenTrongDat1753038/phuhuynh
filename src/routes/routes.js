@@ -51,7 +51,7 @@ class ReactRouter extends Component {
             <Route exact path = "/chat"> <Chat/> </Route>
             <Route exact path = "/connection"><SetupURL/></Route>
             <Route exact path = "/changepassword"><Reset/></Route>
-            <Route exact path = "/resetaccount"><Forgot/></Route>
+            <Route exact path = "/resetpassword"><Forgot/></Route>
           </Switch>
     </BrowserRouter>
     
