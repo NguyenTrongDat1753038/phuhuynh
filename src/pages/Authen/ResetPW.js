@@ -91,7 +91,6 @@ export default function Reset() {
         
         fetch("https://hcmusemu.herokuapp.com/account/changepassword", requestOptions)
             .then(response => {
-
                 if (response.ok)
                     return response
                 else{

@@ -159,7 +159,10 @@ export default function UniversityInfo() {
           </Typography>
           <br/>
           <Typography style={{fontSize: "25px"}}>
-            <LanguageIcon style={{fontSize: "25px"}}/> {info.WebSite}
+            <LanguageIcon style={{fontSize: "25px"}}/>  
+            <a href={info.WebSite} rel="noopener noreferrer" target="_blank">
+                      Website: {info.WebSite}
+            </a>
           </Typography>
           <br/>
           <Typography style={{fontSize: "25px"}}>
@@ -171,7 +174,10 @@ export default function UniversityInfo() {
           </Typography>
           <br/>
           <Typography style={{fontSize: "25px"}}>
-            <FacebookIcon style={{fontSize: "25px"}}/> {info.FanFage}
+            <FacebookIcon style={{fontSize: "25px"}}/> 
+            <a href={info.WebSite} rel="noopener noreferrer" target="_blank">
+                      Website: {info.FanFage}
+            </a>
           </Typography>
           <br/>
           <Typography style={{fontSize: "25px"}}>

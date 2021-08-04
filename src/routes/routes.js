@@ -19,6 +19,7 @@ import Chat from "../pages/Chat/Chat"
 import SetupURL from '../pages/SetupBox/SetupURL';
 import Forgot from "../pages/Authen/ForgotPW"
 import Reset from "../pages/Authen/ResetPW"
+import Score from "../pages/Scores/Score"
 import {CssBaseline } from "@material-ui/core";
 
 class ReactRouter extends Component {
@@ -52,6 +53,7 @@ class ReactRouter extends Component {
             <Route exact path = "/connection"><SetupURL/></Route>
             <Route exact path = "/changepassword"><Reset/></Route>
             <Route exact path = "/resetpassword"><Forgot/></Route>
+            <Route exact path = "/score"> <Score/></Route>
           </Switch>
     </BrowserRouter>
     

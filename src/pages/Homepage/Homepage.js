@@ -238,7 +238,7 @@ function Homepage() {
           </Typography>
           {renderNewsComponent(0)}
           <a>
-          <Button  width="80%" onClick={()=> history.push("/news")}>
+          <Button  width="80%" onClick={()=> history.push("/news?tag=1")}>
             <Typography variant="h6" color="blue"> Xem thêm</Typography>
           </Button>
           </a>
@@ -255,7 +255,7 @@ function Homepage() {
             </Typography>
             {renderNewsComponent(1)}
             <a>
-            <Button  width="80%" onClick={()=> history.push("/news")}>
+            <Button  width="80%" onClick={()=> history.push("/news?tag=0")}>
               <Typography variant="h6" color="blue"> Xem thêm</Typography>
             </Button>
             </a>
