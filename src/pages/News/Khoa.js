@@ -4,6 +4,8 @@ import {Box, Grid} from "@material-ui/core"
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 import TimelapseIcon from '@material-ui/icons/Timelapse';
 import LoadingScreen from '../../components/shared/LoadingScreen';
+import checkTokenExpired from '../../ValidAccess/AuthToken';
+import {useHistory} from "react-router-dom"
 const useStyles = makeStyles((theme) => ({
     news_page: {
       margin: "10px 0 0 16vw", 
@@ -37,9 +39,15 @@ export default function Khoa()
     const classes = useStyles()
     const [newsfac,setNewsFac] = useState([]);
     const [loading,setLoading] = useState(true);
+    const history = useHistory();
     const getNewsFaculty = async() => {
+      if (checkTokenExpired()) {
+        localStorage.clear()
+        history.replace("/");
+        return null
+        }
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") +"tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
     
         var requestOptions = {
             method: 'GET',

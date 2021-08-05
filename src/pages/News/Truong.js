@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import FiberNewIcon from '@material-ui/icons/FiberNew';
 import TimelapseIcon from '@material-ui/icons/Timelapse';
 import LoadingScreen from '../../components/shared/LoadingScreen';
-
+import { useHistory } from 'react-router-dom';
+import checkTokenExpired from '../../ValidAccess/AuthToken';
 const useStyles = makeStyles((theme) => ({
     news_page: {
       margin: "10px 0 0 16vw", 
@@ -36,10 +37,15 @@ export default function Truong()
     const classes = useStyles()
     const [newsuni,setNewsUni] = useState([]);
     const [loading,setLoading] = useState(true);
-
+    const history = useHistory();
     const getNewsUniversity = async() => {
+      if (checkTokenExpired()) {
+        localStorage.clear()
+        history.replace("/");
+        return null
+        }
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+ "tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
     
         var requestOptions = {
             method: 'GET',

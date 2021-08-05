@@ -110,8 +110,9 @@ export default function LoginButton() {
             })
             .then(result => {
                 if (result.token !== undefined) {
-                    localStorage.setItem("token", result.token)
-                    console.log(result.token)
+                    localStorage.setItem("token", result.token+ "tC")
+                    localStorage.setItem("expired",(new Date).getTime()+7200000)
+                    //console.log(result.token)
                     history.replace("/");
                 }
             })
@@ -198,7 +199,7 @@ export default function LoginButton() {
                         </FormGroup>
                        <br/>
                             {loaddingButton()}
-                            <Link to="/resetaccount" className={classes.btnForgetPwd}>Quên mật khẩu?</Link>
+                            <Link to="/resetpassword" className={classes.btnForgetPwd}>Quên mật khẩu?</Link>
                 </Grid>
             </Grid>
         </div>

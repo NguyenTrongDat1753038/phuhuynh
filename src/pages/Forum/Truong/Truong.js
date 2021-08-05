@@ -26,8 +26,8 @@ import SendIcon from '@material-ui/icons/Send';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
-import { current } from 'immer';
-import { findAllByDisplayValue } from '@testing-library/dom';
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin:'auto',
