@@ -2,14 +2,10 @@ import React , {useState, useEffect}from 'react';
 import NavBar from '../../Navigation/NavBar'
 import { makeStyles } from '@material-ui/core/styles';
 import { Tab, Tabs, Typography, Box,Paper  } from '@material-ui/core';
-import PropTypes from "prop-types"
-import Truong from './Truong/Truong';
-import MonHoc from "./MonHoc/MonHoc"
-import Khoa from "./Khoa/Khoa"
+import CurrentCourse from './CurrentCourse';
 const useStyles = makeStyles((theme) => ({
     root: {
       marginLeft: 200,
-      backgroundColor:"#faf9e8"
     },
     toolbar: {
       display: 'flex',
@@ -25,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 
-export default function Forum(){
+export default function Courses(){
   const classes = useStyles()
   const [value, setValue] = useState(0);
 
@@ -40,19 +36,16 @@ export default function Forum(){
             <main className={classes.content}>
             <div className={classes.toolbar} />
             <Tabs
-            value={value}
-            onChange={handleChange}
-           indicatorColor="primary"
-           textColor="primary"
-            variant = "fullWidth"
-          >
-        <Tab backgroundColo="#c5f0ca"  label="Diễn đàn trường"/>
-        <Tab  label="Diễn đàn khoa"/>
-        <Tab  label="Diễn đàn môn học"/>
-      </Tabs>
-      {value === 0 && <Truong/>} 
-      {value === 1 && <Khoa/>} 
-      {value === 2 && <MonHoc/>} 
+                value={value}
+                onChange={handleChange}
+                indicatorColor="primary"
+                textColor="primary"
+                variant = "fullWidth"
+                >
+                <Tab  label="Môn học hiện tại"/>
+                <Tab  label="Tất cả môn học"/>
+            </Tabs>
+            {value === 0 && <CurrentCourse/>}  
       </main>
       </Paper>
   )};

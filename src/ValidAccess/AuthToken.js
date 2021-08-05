@@ -6,7 +6,7 @@ const checkTokenExpired = function() {
     if (expired < dateNow.getTime()-60000)
         isExpired = true;
 
-    console.log(isExpired)
+    //console.log(isExpired)
     return isExpired;
 }
 

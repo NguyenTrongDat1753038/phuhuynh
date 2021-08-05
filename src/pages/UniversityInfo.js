@@ -107,7 +107,17 @@ export default function UniversityInfo() {
     Images:""
   }])
   const [loading,setLoading] = useState(true);
+  const history = useHistory();
+  useEffect(() =>{
+    getInfoUni();
+  })
+
   const getInfoUni = async() => {
+    if (checkTokenExpired()) {
+      localStorage.clear()
+      history.replace("/");
+      return null
+      }
     var myHeaders = new Headers();
     myHeaders.append("Authorization", "bearer " + localStorage.getItem("token") +"tC");
 
@@ -135,9 +145,8 @@ export default function UniversityInfo() {
         })
         .catch(error => console.log('error', error));
     }
-  useEffect(() =>{
-    getInfoUni();
-  },[])
+ 
+
   if (loading === true){
     return(
       <LoadingScreen/>
