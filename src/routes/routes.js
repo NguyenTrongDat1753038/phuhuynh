@@ -14,6 +14,7 @@ import Homepage from "../pages/Homepage/Homepage"
 import CalendarSchedule from '../pages/Calendar/Calendar';
 import Forum from '../pages/Forum/Forum';
 import Notifications from "../pages/Notifications/Notification"
+import DetailCourse from '../pages/Courses/DetailCourse';
 import Chat from "../pages/Chat/Chat"
 import SetupURL from '../pages/SetupBox/SetupURL';
 import Forgot from "../pages/Authen/ForgotPW"
@@ -53,7 +54,8 @@ class ReactRouter extends Component {
             <Route exact path = "/changepassword"><Reset/></Route>
             <Route exact path = "/resetpassword"><Forgot/></Route>
             <Route exact path = "/score"> <Score/></Route>
-            <Route exact path = "/courses"><Courses/></Route>
+            <Route exact path = "/course"><Courses/></Route>
+            <Route exact path = "/course/:id" component={DetailCourse}/>
           </Switch>
     </BrowserRouter>
     

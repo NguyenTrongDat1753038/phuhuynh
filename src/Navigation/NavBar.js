@@ -218,7 +218,7 @@ useEffect(() => {
       <ListItemText primary="Lịch" />
     </ListItem>
     <Divider light />
-    <ListItem button onClick={()=> history.push("/courses")}>
+    <ListItem button onClick={()=> history.push("/course")}>
       <ListItemIcon >
         <LocalLibraryIcon style={{ color: 'dark' }}/>
       </ListItemIcon>

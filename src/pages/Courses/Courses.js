@@ -3,6 +3,8 @@ import NavBar from '../../Navigation/NavBar'
 import { makeStyles } from '@material-ui/core/styles';
 import { Tab, Tabs, Typography, Box,Paper  } from '@material-ui/core';
 import CurrentCourse from './CurrentCourse';
+import AllCourses from './AllCourses';
+import Category from "./Category"
 const useStyles = makeStyles((theme) => ({
     root: {
       marginLeft: 200,
@@ -35,6 +37,9 @@ export default function Courses(){
         <NavBar/>
             <main className={classes.content}>
             <div className={classes.toolbar} />
+            <div style={{backgroundColor:"#c8d1db",borderRadius:"25px"}}>
+            <Category current="Môn học"/>
+            </div>
             <Tabs
                 value={value}
                 onChange={handleChange}
@@ -46,6 +51,7 @@ export default function Courses(){
                 <Tab  label="Tất cả môn học"/>
             </Tabs>
             {value === 0 && <CurrentCourse/>}  
+            {value === 1 && <AllCourses/>}
       </main>
       </Paper>
   )};

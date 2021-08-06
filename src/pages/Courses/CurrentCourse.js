@@ -1,10 +1,12 @@
 import React , {useState, useEffect}from 'react';
-import NavBar from '../../Navigation/NavBar'
 import { makeStyles } from '@material-ui/core/styles';
-import { Tab, Tabs, Typography, Box,Paper  } from '@material-ui/core';
+import { Typography} from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import LoadingScreen from '../../components/shared/LoadingScreen';
+import checkTokenExpired from "../../ValidAccess/AuthToken"
+import { useHistory } from 'react-router-dom';
+
 const useStyles = makeStyles((theme) => ({
 
     course_page: {},
@@ -81,12 +83,17 @@ function CurrentCourse(){
     const classes = useStyles();
     const [course,setCourse] = useState([]);
     const [loading,setLoading] = useState(true);
-
+    const history = useHistory();
     useEffect(()=>{
         getCurrentCourse()
     },[])
 
     const getCurrentCourse = () => {
+      if (checkTokenExpired()) {
+        localStorage.clear()
+        history.replace("/");
+        return null
+        }
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
 
@@ -104,7 +111,6 @@ function CurrentCourse(){
             })
             .catch(error => console.log('error', error));
     }
-    console.log(course);
 
     if (loading === true){
         return(
