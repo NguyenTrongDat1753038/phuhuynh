@@ -3,17 +3,16 @@ import { useSelector } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import Category from '../Category';
 import { Button,makeStyles } from '@material-ui/core';
-import ConfirmDialog from "../../components/shared/ConfirmDialog"
+import Zoom from 'react-medium-image-zoom'
+
 const backCover = {
     backgroundColor: 'rgba(52, 52, 52, 0.2)',
     position: 'fixed',
-    // marginTop: 20,
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
     zIndex: 3
-    // opacity: 0.5,
 }
 
 const useStyles = makeStyles((theme) => ({

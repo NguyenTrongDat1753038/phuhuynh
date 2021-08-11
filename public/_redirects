@@ -1,0 +1,17 @@
+/
+/homepage
+/news
+/profile
+/signup
+/contact
+/calendar
+/forum
+/notifications
+/chat
+/connection
+/changepassword
+/resetpassword
+/score
+/course
+/course/:id
+/login

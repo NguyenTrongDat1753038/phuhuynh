@@ -14,10 +14,8 @@ import TimeAgo from '../../../components/functions/TimeAgo';
 import ConfirmDialog from "../../../components/shared/ConfirmDialog"
 import LoadingScreen from '../../../components/shared/LoadingScreen';
 import { green } from '@material-ui/core/colors';
-import Zoom from 'react-medium-image-zoom'
-
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import ViewComment from '../ViewComment';
-import { BorderColor } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -349,8 +347,8 @@ export default function Khoa(props)
     const renderListUserLike = () =>{
       if (listLike.length === 0){
         return(<div>
-        <div  onClick={() => setPopUp(false)}></div>
           <Box style={{ padding: "20px", borderRadius: "7px",borderColor:"black" }} className={classes.like_dialog_popup}>
+          <IconButton style={{position: "absolute",top: "0px",right: "0px",}}  onClick={() => setPopUp(false)}><HighlightOffIcon/></IconButton>
           <Typography>Bạn hãy là người like bài viết đầu tiên ^^</Typography>
           </Box>
         </div>)
