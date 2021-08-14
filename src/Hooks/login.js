@@ -206,13 +206,13 @@ export default function LoginButton() {
                           {loaddingButton()}
                           <Link to="/resetpassword" className={classes.btnForgetPwd}>Quên mật khẩu?</Link>
                       <br/>
-                      <div style={{textAlign:"center"}}>
+                      {/*<div style={{textAlign:"center"}}>
                       <Typography>Bạn chưa có tài khoản?
                         <Link to="/signup" className={classes.btnSignUp}>
                           Đăng ký ngay
                         </Link>
                         </Typography>
-                      </div>
+                      </div>*/}
                 </Grid>
                
             </Grid>
