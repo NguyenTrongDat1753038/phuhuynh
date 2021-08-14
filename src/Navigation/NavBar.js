@@ -148,9 +148,20 @@ function NavBar() {
     };
 
     await fetch("https://hcmusemu.herokuapp.com/profile/view", requestOptions)
-        .then(response => {return response.json();})
-        .then(result => {
-         setUserInfo(result)
+      .then((response) => {
+        const statusCode = response.status;
+        const dataRes = response.json();
+        return Promise.all([statusCode, dataRes]);
+      })
+      .then(([statusCode, dataRes]) => {
+         if (statusCode === 200){         
+           setUserInfo(dataRes)
+          }
+          else if (statusCode === 401){
+            localStorage.clear()
+            history.replace("/");
+            return null
+          }
         })
         .catch(error => console.log('error', error));
     }
@@ -454,7 +465,7 @@ function NavBar() {
               onClick={handleMenuProfileOpen}
               color="inherit"
             >
-             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> {userInfo.HoTen} </Typography>
+             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> {userInfo[0].HoTen} </Typography>
 
               <AccountCircle />       
             </IconButton>
