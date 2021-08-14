@@ -178,7 +178,6 @@ function NavBar() {
       }).then(([statusCode, dataRes]) => {
         if(statusCode === 200){
           setListNoti(dataRes);
-          //console.log(listNoti)
         }
         else{
           console.log("loi");
@@ -455,7 +454,7 @@ function NavBar() {
               onClick={handleMenuProfileOpen}
               color="inherit"
             >
-             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> {userInfo[0].HoTen} </Typography>
+             <Typography  variant="h6" adjustsfontsizetofit="true" component="span" color="inherit"> {userInfo.HoTen} </Typography>
 
               <AccountCircle />       
             </IconButton>

@@ -403,7 +403,7 @@ function Chat() {
       </Box>
     ))
     return list;
-}
+  }
 
   const viewChat = async() => {
     if (checkTokenExpired()) {
