@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useEffect,useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { registerLocale } from "react-datepicker";
 import vi from 'date-fns/locale/vi';
@@ -6,270 +6,319 @@ import "./Calendar.css";
 import NavBar from '../../Navigation/NavBar';
 import "react-datepicker/dist/react-datepicker.css";
 import { CirclePicker } from 'react-color';
-import {makeStyles} from "@material-ui/core"
+import {makeStyles, Typography} from "@material-ui/core"
 import clsx from 'clsx';
 import 'font-awesome/css/font-awesome.min.css';
-import {Button,TextField,Input } from "@material-ui/core"
+import {Button,TextField,Input,Toolbar,Select,ListItem,Box,InputAdornment,IconButton} from "@material-ui/core"
 import 'date-fns'
-import TitleIcon from '@material-ui/icons/Title';
-
-import TimelapseIcon from '@material-ui/icons/Timelapse';
-import DescriptionIcon from '@material-ui/icons/Description';
-import CategoryIcon from '@material-ui/icons/Category';
-import LinkIcon from '@material-ui/icons/Link';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import ColorLensIcon from '@material-ui/icons/ColorLens';
 import LoadingScreen from '../../components/shared/LoadingScreen';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import ConfirmDialog from "../../components/shared/ConfirmDialog"
+import ColorLensIcon from '@material-ui/icons/ColorLens';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import LinkIcon from '@material-ui/icons/Link';
+import DescriptionIcon from '@material-ui/icons/Description';
+import TimelapseIcon from '@material-ui/icons/Timelapse';
+import CategoryIcon from '@material-ui/icons/Category';
+import TitleIcon from '@material-ui/icons/Title';
+import checkTokenExpired from "../../ValidAccess/AuthToken"
+import { useHistory } from 'react-router-dom';
+import ClearIcon from '@material-ui/icons/Clear';
+import { FreeBreakfastOutlined, IndeterminateCheckBoxSharp } from '@material-ui/icons';
 const useStyles = makeStyles(() => ({
-  "calendar_page": {
-    "width": "81vw",
-    "margin": "66px 17vw",
-    "display": "flex",
-    "background": "white",
-    "padding": "10px",
-    "justifyContent": "space-between"
-  },
-  "calendar_page__calendar": {
-    "width": "50vw"
-  },
-  "calendar_page__calendar__title": {
-    "fontSize": "20px",
-    "fontWeight": "700",
-    "color": "#18468b",
-    "padding": "5px"
-  },
-  "calendar_page_ul": {
-    "listStyleType": "none",
-    "padding": "0"
-  },
-  "calendar_page__calendar__picker": {
-    "display": "flex",
-    "justifyContent": "space-around",
-    "color": "#18468b",
-    "fontWeight": "500",
-    "padding": "5px",
-    "fontSize": "18px"
-  },
-  "calendar_page__calendar__picker_i": {
-    "fontWeight": "1000"
-  },
-  "calendar_page__calendar_hr": {
-    "padding": "0",
-    "margin": "2px"
-  },
-  "calendar_page__dayofweek": {
-    "margin": "0",
-    "padding": "10px 0"
-  },
-  "calendar_page__dayofweek_li": {
-    "display": "inline-block",
-    "width": "7vw",
-    "textAlign": "center",
-    "fontWeight": "500"
-  },
-  "calendar_page__days_li": {
-    "display": "inline-block",
-    "width": "7vw",
-    "margin": "10px 0",
-    "fontSize": "12px",
-    "textAlign": "center"
-  },
-  "days_li__color_event": {
-    "width": "3vw",
-    "height": "3vw",
-    "lineHeight": "3vw",
-    "borderRadius": "50%",
-    "textAlign": "center",
-    "margin": "auto",
-    "fontSize": "15px"
-  },
-  "days": {
-    "padding": "10px 0",
-    "margin": "0"
-  },
-  "calendar_page__schedule": {
-    "width": "28vw",
-    "background": "#3a7cdf",
-    "color": "white",
-    "borderRadius": "10px",
-    "padding": "10px"
-  },
-  "calendar_page__schedule__date": {
-    "fontSize": "16px",
-    "fontWeight": "500",
-    "margin": "10px 5px",
-    "background": "white",
-    "color": "rgb(97, 97, 97)",
-    "padding": "2px 5px",
-    "width": "22vw"
-  },
-  "calendar_page__schedule__event": {
-    "maxHeight": "55vh"
-  },
-  "calendar_page__schedule_td": {
-    "padding": "5px",
-    "verticalAlign": "top"
-  },
-  "calendar_page__schedule__time": {
-    "whiteSpace": "nowrap",
-    "fontSize": "18px",
-    "fontWeight": "600"
-  },
-  "style_3___webkit_scrollbar_track": {
-    "WebkitBoxShadow": "inset 0 0 6px rgba(0, 0, 0, 0.3)",
-    "boxShadow": "inset 0 0 6px rgba(0, 0, 0, 0.1)",
-    "backgroundColor": "#F5F5F5"
-  },
-  "style_3___webkit_scrollbar": {
-    "width": "6px",
-    "backgroundColor": "#F5F5F5"
-  },
-  "style_3___webkit_scrollbar_thumb": {
-    "backgroundColor": "#000000"
-  },
-  "calendar_button": {
-    "display": "flex",
-    "justifyContent": "space-between"
-  },
-  "calendar_button__btn_add": {
-    "color": "rgb(44, 44, 44)",
-    "height": "3vw",
-    "background": "#ffffff",
-    "width": "3vw",
-    "lineHeight": "3vw",
-    "borderRadius": "50%",
-    "textAlign": "center",
-    "margin": "auto 0",
-    "fontSize": "20px"
-  },
-  "calendar_button__btn_add_hover": {
-    "background": "#eef1f5"
-  },
-  "calendar_page__popup_event": {
-    "position": "fixed",
-    "width": "35vw",
-    "height": "70vh",
-    "top": "50%",
-    "left": "50%",
-    "marginTop": "-30vh",
-    "marginLeft": "-17vw",
-    "background": "rgb(255, 255, 255)",
-    "border": "1px solid black",
-    "boxShadow": "2px 2px 10px 0px rgb(197, 197, 197)",
-    "overflow": "hidden",
-    "padding": "20px"
-  },
-  "calendar_page__popup_event__event_input": {
-    "fontSize": "16px",
-    "height": "30px",
-    "background": "white",
-    "border": "1px solid black",
-    "borderRadius": "10px",
-    "margin": "0",
-    "padding": "5px"
-  },
-  "calendar_page__popup_event__event_input_label": {
-    "fontWeight": "500"
-  },
-  "calendar_page__popup_event__event_input__inputops": {
-    "width": "40vw",
-    "fontSize": "16px",
-    "height": "30px"
-  },
-  "popup_event__add_title": {
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "display": "block",
-    "width": "30vw",
-    "margin": "10px"
-  },
-  "add_title_focus": {
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "display": "block",
-    "width": "30vw",
-    "margin": "10px"
-  },
-  "popup_event__event": {
-    "margin": "20px 10px"
-  },
-  "popup_event__content": {
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "display": "block",
-    "width": "30vw",
-    "margin": "10px"
-  },
-  "content_focus": {
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "display": "block",
-    "width": "30vw",
-    "margin": "10px"
-  },
-  "popup_event__time": {
-    "margin": "10px",
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "width": "15vw"
-  },
-  "time_focus": {
-    "margin": "10px",
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "width": "15vw"
-  },
-  "popup_event__color": {
-    "margin": "10px"
-  },
-  "event_clock": {
-    "margin": "10px",
-    "width": "30vw",
-    "display": "flex",
-    "justifyContent": "space-between",
-    "alignItems": "center"
-  },
-  "event_clock__clock": {
-    "width": "10vw",
-    "display": "inline-block",
-    "padding": "3px"
-  },
-  "popup_event__btn_box": {
-    "display": "flex",
-    "justifyContent": "space-between",
-    "marginTop": "20px"
-  },
-  "popup_event__btn_add": {
-    "background": "rgb(100, 233, 122)",
-    "width": "15vw"
-  },
-  "popup_event__btn_cancel": {
-    "background": "rgb(255, 214, 180)",
-    "width": "15vw"
-  },
-  "react_datepicker__input_container_input": {
-    "display": "block",
-    "borderWidth": "0 0 2px",
-    "outline": "none",
-    "width": "30vw",
-    "margin": "10px"
-  },
-  "calendar_page__schedule__remove": {
-    "padding": "5px",
-    "background": "white",
-    "color": "black",
-    "borderRadius": "10%"
-  },
-  "calendar_page__schedule__remove_hover": {
-    "background": "#eef1f5"
-  },
-  "calendar_page__schedule__event_tr": {
-    "cursor": "pointer"
-  }
+    root: {
+        marginLeft: "200px"
+    },
+    search_user: {
+        padding: "10px", 
+        marginLeft: "10px", 
+        cursor: "pointer"
+      },
+    calendar_page: {
+        width: "81vw", 
+        margin: "66px 17vw", 
+        display: "flex", 
+        background: "white", 
+        padding: "10px", 
+        justifyContent: "space-between", 
+        marginLeft: "200px",
+        overflow:"scroll",
+      },
+      calendar_page__calendar: {
+        width: "50vw"
+      },
+      calendar_page__calendar__title: {
+        fontSize: "20px", 
+        fontWeight: "700", 
+        color: "#18468b", 
+        padding: "5px"
+      },
+      calendar_page_ul: {
+        listStyleType: "none", 
+        padding: "0"
+      },
+      calendar_page__calendar__picker: {
+        display: "flex", 
+        justifyContent: "space-around", 
+        color: "#18468b", 
+        fontWeight: "500", 
+        padding: "5px", 
+        fontSize: "18px"
+      },
+      calendar_page__calendar__picker_i: {
+        fontWeight: "1000"
+      },
+      calendar_page__calendar_hr: {
+        padding: "0", 
+        margin: "2px"
+      },
+      calendar_page__dayofweek: {
+        margin: "0", 
+        padding: "10px 0"
+      },
+      calendar_page__dayofweek_li: {
+        display: "inline-block", 
+        width: "7vw", 
+        textAlign: "center", 
+        fontWeight: "500"
+      },
+      calendar_page__days_li: {
+        display: "inline-block", 
+        width: "7vw", 
+        margin: "10px 0", 
+        fontSize: "12px", 
+        textAlign: "center"
+      },
+      days_li__color_event: {
+        width: "3vw", 
+        height: "3vw", 
+        lineHeight: "3vw", 
+        borderRadius: "50%", 
+        textAlign: "center", 
+        margin: "auto", 
+        fontSize: "15px"
+      },
+      days: {
+        padding: "10px 0", 
+        margin: "0"
+      },
+      calendar_page__schedule: {
+        width: "28vw", 
+        background: "#3a7cdf", 
+        color: "white", 
+        borderRadius: "10px", 
+        padding: "10px"
+      },
+      calendar_page__schedule__date: {
+        fontSize: "16px", 
+        fontWeight: "500", 
+        margin: "10px 5px", 
+        background: "white", 
+        color: "rgb(97, 97, 97)", 
+        padding: "2px 5px", 
+        width: "22vw"
+      },
+      calendar_page__schedule__event: {
+        maxHeight: "55vh"
+      },
+      calendar_page__schedule_td: {
+        padding: "0px", 
+        verticalAlign: "text-bottom", 
+        textAlign: "center", 
+        overflow: "hidden"
+      },
+      calendar_page__schedule__time: {
+        whiteSpace: "nowrap", 
+        fontSize: "18px", 
+        fontWeight: "600"
+      },
+      style_3___webkit_scrollbar_track: {
+        WebkitBoxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)", 
+        boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.1)", 
+        backgroundColor: "#F5F5F5"
+      },
+      style_3___webkit_scrollbar: {
+        width: "6px", 
+        backgroundColor: "#F5F5F5"
+      },
+      style_3___webkit_scrollbar_thumb: {
+        backgroundColor: "#000000"
+      },
+      calendar_button: {
+        display: "flex", 
+        justifyContent: "space-between"
+      },
+      calendar_button__btn_add: {
+        color: "rgb(44, 44, 44)", 
+        height: "3vw", 
+        background: "#ffffff", 
+        width: "3vw", 
+        lineHeight: "3vw", 
+        borderRadius: "50%", 
+        textAlign: "center", 
+        margin: "auto 0", 
+        fontSize: "20px"
+      },
+      calendar_button__btn_add_hover: {
+        background: "#eef1f5"
+      },
+      calendar_page__popup_event: {
+        position: "fixed", 
+        width: "40vw", 
+        height: "80vh", 
+        top: "50%", 
+        left: "50%", 
+        marginTop: "-37vh", 
+        marginLeft: "-17vw", 
+        background: "rgb(255, 255, 255)", 
+        border: "1px solid black", 
+        boxShadow: "2px 2px 10px 0px rgb(197, 197, 197)", 
+        overflow: "auto",
+        padding: "10px",
+        resize: "both"
+      },
+      calendar_page__popup_event__event_input: {
+        fontSize: "16px", 
+        background: "white", 
+        border: "1px solid black", 
+        borderRadius: "10px", 
+        margin: "0", 
+        padding: "5px"
+      },
+      calendar_page__popup_event__event_input_label: {
+        fontWeight: "500"
+      },
+      calendar_page__popup_event__event_input__inputops: {
+        width: "40vw", 
+        fontSize: "16px", 
+        height: "32px"
+      },
+      popup_event__add_title: {
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        display: "flex", 
+        width: "32vw", 
+        margin: "10px", 
+        textAlign: "left", 
+        overflow: "hidden"
+      },
+      add_title_focus: {
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        display: "flex", 
+        width: "32vw", 
+        margin: "10px", 
+        textAlign: "left", 
+        overflow: "hidden"
+      },
+      popup_event__event: {
+        margin: "20px 10px"
+      },
+      popup_event__content: {
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        display: "inherit", 
+        height: "50px", 
+        width: "32vw", 
+        margin: "10px", 
+        textAlign: "left"
+      },
+      content_focus: {
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        display: "inherit", 
+        height: "50px", 
+        width: "32vw", 
+        margin: "10px", 
+        textAlign: "left"
+      },
+      popup_event__useradd: {
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        display: "inherit", 
+        height: "50px", 
+        width: "32vw", 
+        margin: "0px", 
+        textAlign: "left"
+      },
+      user_focus: {
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        display: "inherit", 
+        height: "50px", 
+        width: "32vw", 
+        margin: "10px", 
+        textAlign: "left"
+      },
+      popup_event__time: {
+        margin: "10px", 
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        width: "15vw"
+      },
+      time_focus: {
+        margin: "10px", 
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        width: "15vw"
+      },
+      popup_event__color: {
+        margin: "0px"
+      },
+      event_type: {
+        width: "32vw", 
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center"
+      },
+      event_clock: {
+        width: "32vw", 
+        display: "flex", 
+        justifyContent: "left", 
+        alignItems: "center"
+      },
+      event_clock__clock: {
+        width: "10vw", 
+        display: "inline-block", 
+        padding: "3px"
+      },
+      popup_event__btn_box: {
+        display: "flex", 
+        justifyContent: "space-between", 
+        textAlign: "center"
+      },
+      popup_event__btn_add: {
+        background: "rgb(100, 233, 122)", 
+        width: "12vw", 
+      },
+      popup_event__btn_cancel: {
+        background: "#ec6b6b", 
+        width: "12vw", 
+      },
+      react_datepicker__input_container_input: {
+        display: "block", 
+        borderWidth: "0 0 2px", 
+        outline: "none", 
+        width: "32vw", 
+        margin: "10px"
+      },
+      calendar_page__schedule__remove: {
+        padding: "5px", 
+        background: "white", 
+        color: "black", 
+        borderRadius: "10%"
+      },
+      calendar_page__schedule__remove_hover: {
+        background: "#eef1f5"
+      },
+      calendar_page__schedule__event_tr: {
+        cursor: "pointer"
+      }
 }));
 registerLocale('vi', vi)
 
-class Calendar extends Component {
+/*class Calendar extends Component {
     
     constructor(props) {
         super(props);
@@ -949,5 +998,767 @@ class Calendar extends Component {
 
     }
 }
+*/
 
-export default Calendar;
+export default function Calendar(){
+    //constant variable
+    const classes = useStyles();
+    const history = useHistory();
+    const timeclock = Array.from(Array(24).keys());
+    //state loading
+    const [loading,setLoading] = useState(true)
+    const [loadCalendar,setLoadCalendar] = useState(true);
+    const [loadEvent,setLoadEvent] = useState(true);
+    const [loadingSearch,setLoadingSearch] = useState(false);
+
+    const [dataCalendar,setDataCalendar] = useState([]);
+    const [events,setEvents] = useState([])
+    const [listEvents,setListEvents] = useState([]);
+    const [foundedUser, setFoundedUser] = useState([])
+
+    const [date,setDate] = useState({day: new Date().getDate(),month: new Date().getMonth()+1, year: new Date().getFullYear()});
+    const [listEmail,setListEmail] = useState([]);
+    const [listName,setListName] = useState([]);
+    const [title,setTitle] = useState("");
+    const [des,setDesc] = useState("");
+    const [type,setType] = useState("Công việc");
+    const [startDay,setStartDay] = useState({day: new Date().getDate(), UNIX_day: (new Date().getTime()/1000).toFixed(0)})
+    const [endDay,setEndDay] = useState({day: new Date().getDate(), UNIX_day: (new Date().getTime()/1000).toFixed(0)})
+    const [color,setColor] = useState("#FFFFFF")
+    const [url,setUrl] = useState("");
+    const [noti,setNoti] = useState((new Date().getTime()/1000).toFixed(0));
+    const [selectedDay,setSelecteday] = useState(new Date().getDate());
+    const [datePost,setDatePost] = useState(new Date());
+    const [eventID,setEventID] = useState(null);
+    const [fullday,setFullDay] = useState(new Date().toDateString())
+    const [popup,setPopUp] = useState(false);
+    const [search,setSearch] = useState("");
+
+    const [confirmDialog,setConfirmDialog] = useState({isOpen:false, title:"",subTitle:""})  
+    //useEffect call
+    useEffect(()=>{
+        getCalendar();
+    },[date.month,date.year])
+    //API
+
+    const getCalendar = async() => {
+        if (checkTokenExpired()) {
+            localStorage.clear()
+            history.replace("/");
+            return null
+        }
+        setLoadCalendar(true);
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("year", date.year);
+        urlencoded.append("month", date.month);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        fetch("https://hcmusemu.herokuapp.com/calendar/getthismonthwithout", requestOptions)
+        .then((response) => {
+            const statusCode = response.status;
+            const dataRes = response.json();
+            return Promise.all([statusCode, dataRes]);
+          })
+          .then(([statusCode, dataRes]) => {
+              if (statusCode  === 200){
+                    setDataCalendar(dataRes);
+                    filterCalendar();
+                }
+                setLoadCalendar(false);
+                setLoading(false);
+            })
+            .catch(error => console.log('error', error));
+    }
+
+    const deleteEventAPI = async(id) =>{
+        if (checkTokenExpired()) {
+            localStorage.clear()
+            history.replace("/");
+            return null
+            }
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+        var urlencoded = new URLSearchParams();
+        urlencoded.append("id", id);
+
+        var requestOptions = {
+            method: 'DELETE',
+            headers: myHeaders,
+            body: urlencoded,
+            redirect: 'follow'
+        };
+
+        await fetch("https://hcmusemu.herokuapp.com/calendar/delete", requestOptions)
+            .then(response => response.text())
+            .then()
+            .catch(error => console.log('error', error));
+    }
+    const addEventAPI = async () => {
+        if (checkTokenExpired()) {
+            localStorage.clear()
+            history.replace("/");
+            return null
+            }
+        setPopUp(false);
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+        myHeaders.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+            "Title": title,
+            "TypeEvent": type,
+            "year": datePost.getFullYear(),
+            "month": datePost.getMonth()+1,
+            "day": datePost.getDate(),
+            "StartHour": startDay.UNIX_day,
+            "EndHour": endDay.UNIX_day,
+            "desciptionText": des,
+            "url": url,
+            "UnderLine": false,
+            "Italic": false,
+            "Bold": false,
+            "Color": color,
+            "listguestEmail": listEmail,
+            "listguestName": listName,
+            "Notification": noti
+        });
+        console.log(raw)
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        await fetch("https://hcmusemu.herokuapp.com/calendar/post", requestOptions)
+        .then((response) => {
+            const statusCode = response.status;
+            const dataRes = response.json();
+            return Promise.all([statusCode, dataRes]);
+          })
+          .then(([statusCode, dataRes]) => { 
+              console.log(statusCode,dataRes)
+            })
+            .catch(error => console.log('error', error));
+
+        getCalendar();
+    }
+
+    const searchUserAPI = async() => {
+        setLoadingSearch(true);
+        if (checkTokenExpired()) {
+          localStorage.clear()
+          history.replace("/");
+          return null
+          }
+          var myHeaders = new Headers();
+          myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
+          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+          var urlencoded = new URLSearchParams();
+          urlencoded.append("username", search);
+    
+          var requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              body: urlencoded,
+              redirect: 'follow'
+          };
+    
+          await fetch("https://hcmusemu.herokuapp.com/profile/findname", requestOptions)
+              .then(response => response.json())
+              .then(result => {
+                  setFoundedUser(result);
+                  setLoadingSearch(false);
+              })
+              .catch(error => console.log('error', error));
+      }
+    //function
+    const handleSearch = () => {
+        if (search !== "" || search !== null){
+            searchUserAPI()
+        }
+    }
+    const convertAddingDate = () => {
+        var fullday = new Date(this.state.add_date);
+        this.setState({
+            add_day: fullday.getDate(),
+            add_month: fullday.getMonth() + 1,
+            add_year: fullday.getFullYear(),
+            add_startUNIX: this.toTimestamp(this.state.add_fulldate + " " + this.state.add_start+":00:00"),
+            add_endUNIX: this.toTimestamp(this.state.add_fulldate + " " + this.state.add_end+":00:00")
+        })
+    }
+
+    const convertTimestamp = (timestamp) => {
+        var d = new Date(timestamp * 1000),	
+            hh = d.getHours(),
+            h = hh,
+            min = ('0' + d.getMinutes()).slice(-2),		
+            ampm = 'AM',
+            time;
+
+        if (hh > 12) {
+            h = hh - 12;
+            ampm = 'PM';
+        } else if (hh === 12) {
+            h = 12;
+            ampm = 'PM';
+        } else if (hh === 0) {
+            h = 12;
+        }
+        time = h + ':' + min + ' ' + ampm;
+
+        return time;
+    }
+
+    const filterCalendar = () => {
+        setLoadEvent(true);
+        let temp = Array.from({ length: 31 }, () => "");
+        let listevent = Array.from({ length: 31 }, () => [""]);
+
+
+        if (dataCalendar.length !== undefined || dataCalendar.length > 0){
+        dataCalendar.forEach((value, index) => {
+
+            if (value.duedate !== undefined) {
+                let newevent;
+                newevent = {
+                    title: value.decription,
+                    time: convertTimestamp(value.duedate),
+                    id: "",
+                }
+                temp[convertTime(value.duedate)] = "black";
+                if (listevent[convertTime(value.duedate)][0] === "") {
+                    listevent[convertTime(value.duedate)][0] = newevent;
+                }
+                else {
+                    listevent[convertTime(value.duedate)].push(newevent);
+                }
+
+            }
+
+            if (value.Date !== undefined) {
+                let newevent;
+                newevent = {
+                    title: value.Title,
+                    time: convertTimestamp(value.StartHour),
+                    id: value._id,
+                    value: value
+                }
+
+                temp[value.Date.day] = value.Color;
+                if (listevent[value.Date.day][0] === "") {
+                    listevent[value.Date.day][0] = newevent;
+                }
+                else {
+                    listevent[value.Date.day].push(newevent);
+                }
+            }
+        });
+      }
+        setEvents(temp);
+        setListEvents(listevent);
+        setLoadEvent(false)
+    }
+
+    const convertTime = (UNIX_timestamp) => {
+        var a = new Date(UNIX_timestamp * 1000);
+        var date = a.getDate();
+        return date;
+    }
+
+    const setSelectedDayValue = async (value) => {
+        await setLoadEvent(true);
+        setSelecteday(value);
+        //filterCalendar();
+    }
+
+    const getDayOfWeek = () => {
+        var now = new Date(date.year, date.month - 1, 1, 0, 0, 0);
+
+        var days = [6, 0, 1, 2, 3, 4, 5];
+
+        var day = days[now.getDay()];
+
+        return day;
+    }
+
+    const changeMonth = async (i) => {
+        let month = date.month += i; 
+        let year = date.year;
+        if (month > 12){ 
+            month = 1;
+            year += 1;
+        }
+        if (month < 1){
+            month = 12;
+            year -= 1;
+        }
+        await setDate({month: month,year: year,day: 1});
+        await setSelecteday(1);
+    }
+
+    const selectedEventClick = (index) => {
+
+        let viewevent = listEvents[selectedDay][index]
+        const date = new Date(viewevent.value.Date.month + "/" + viewevent.value.Date.day + "/" + viewevent.value.Date.year)
+        setTitle(viewevent.value.Title);
+        setDatePost(date);
+        setStartDay({day:new Date(viewevent.value.StartHour * 1000).getHours()})
+        setEndDay({day: new Date(viewevent.value.EndHour * 1000).getHours()})
+        setDesc(viewevent.value.Decription.text)
+        setColor(viewevent.value.Color);
+        setEventID(viewevent.value._id);
+        setPopUp(true);
+    }
+
+    
+    const toTimestamp = (strDate) => {
+        var datum = new Date(strDate).getTime();
+        return datum / 1000;
+    }
+
+    const removeEvent = (id) =>{
+        setConfirmDialog({
+              ...confirmDialog,
+              isOpen: false
+        })
+        deleteEventAPI(id)
+       
+    }
+
+    const addUser = (user) =>{
+        let user_list = [...listName];
+        let mail_list = [...listEmail];
+        const includes = (a, v) => a.indexOf(v) !== -1
+        if (includes(mail_list,user) === true){
+             alert("Người dùng này đã được thêm vào danh sách");
+        }
+        else{
+             user_list.push(user.HoTen);
+             mail_list.push(user.Email);
+             setListName(user_list);
+             setListEmail(mail_list);
+        }
+    }
+
+    const removeAddedUser = async(user)=>{
+        let user_list = [...listName];
+        let mail_list = [...listEmail];
+        let index = mail_list.indexOf(user);
+        await index !== -1 && user_list.splice(index , 1)
+        await index !== -1 && mail_list.splice(index , 1)
+        await setListEmail(mail_list);
+        await setListName(user_list);
+
+    }
+    //component
+
+    
+    const renderFoundedUser = () => {
+        if (foundedUser.length > 0){
+        return(
+            <div>
+                {foundedUser.map((user,index) => {
+                return( 
+                <div key={index}  onClick={()=>{addUser(user);setSearch("")}}>
+                    <Box border={1} borderColor="red" textAlign="center" className={classes.search_user}>
+                        <div>{user.HoTen}</div>
+                        <div>({user.Email})</div>
+                    </Box>
+                </div>
+                )})}         
+            </div>
+           
+        )
+
+        }
+        else{
+            return null;
+        }
+    }
+
+    const renderTypeWork = () => {
+        let TypeEvent = ["Công việc","Cá nhân", "Gia đình", "Khác"];
+        let TypeEventPicker = TypeEvent.map((value) => {
+           return(
+            <ListItem value={value}>{value}</ListItem>
+           )
+        })
+       
+        return TypeEventPicker;
+    }
+
+   const renderClockPickerStart = () => {
+        var timepicker = timeclock.map((num) => {
+            if (num === 0) {
+                return <ListItem  value={num}>12 AM</ListItem>
+            }
+            else if (num === 12) {
+                return <ListItem value={num}>12 PM</ListItem>
+            }
+            else if (num > 12) {
+                return <ListItem value={num}>{num - 12} PM</ListItem>
+            }
+
+            else return <ListItem value={num}>{num} AM</ListItem>
+        })
+       
+        return timepicker;
+    }
+
+    const renderClockPickerEnd = () => {
+        var timepicker = timeclock.map((num) => {
+            if (num === 0) {
+                return <ListItem disabled={num > startDay.day ? false : true} value={num}>12 AM</ListItem>
+            }
+            else if (num === 12) {
+                return <ListItem disabled={num > startDay.day ? false : true } value={num}>12 PM</ListItem>
+            }
+            else if (num > 12) {
+                return <ListItem disabled={num > startDay.day ? false : true } value={num}>{num - 12} PM</ListItem>
+            }
+
+            else 
+                return <ListItem disabled={num > startDay.day ? false : true } value={num}>{num} AM</ListItem>
+        })
+       
+        return timepicker;
+    }
+
+    const renderHidden = () =>{
+        return(
+            <div>
+                <br/>
+                {renderAdderUser()}
+                <div className={classes.popup_event__color}>
+                    <br/>
+                    
+                    <Typography variant="h6"><ColorLensIcon/>Màu đánh dấu</Typography>
+                    <CirclePicker 
+                        color={color} 
+                        width="30vw" 
+                        onChangeComplete={(color)=>{setColor(color.hex)}} 
+                        circleSize={28}
+                    />
+                </div>
+                <br/>
+                <div className= {classes.popup_event__btn_box}>
+                    <Button className={classes.popup_event__btn_add} onClick={()=>addEventAPI()}>Thêm thông báo</Button>
+                    <Button className={classes.popup_event__btn_cancel} onClick={()=>{setPopUp(false);setListEmail([]);setListName([])}}>Hủy</Button>
+                </div>
+            </div>
+        )
+    }
+
+    const renderAdderUser = () =>{
+        if (listEmail.length > 0 || listName > 0){
+            return(
+                <Box fullWidth style={{display:"block",borderRadius:"10px"}} multiline border={1}>
+                    {listEmail.map((item,index)=>{
+                        return(
+                            <Box key={index} border={1} style={{margin:"2% 1% 2% 1%",borderRadius:"5px",display: "inline-block", height:"4vh"}}>
+                                {item} 
+                                <IconButton onClick={()=>removeAddedUser(item)} style={{width: "4vh", height: "4vh"}}>
+                                    <ClearIcon fontSize="small"/>
+                                </IconButton>
+                            </Box>
+                            
+                        )
+                    }
+                    )}
+                </Box>
+            )
+        }
+    }
+    const  popupAddEvent = () => {
+        if (popup === true) {
+            return (
+                <div className={classes.calendar_page__popup_event}>
+                    <div>
+                        <IconButton onClick={()=>{setPopUp(false);setListEmail([]);setListName([])}} style={{float: "right",backgroundColor:"red"}}><ClearIcon color="white"/></IconButton>
+                        <Typography variant="h6"> <TitleIcon verticalAlign="center"/>Tiêu đề</Typography>
+                        <br/>
+                        <TextField 
+                            maxHeight="10vh"
+                            multiline
+                            variant="outlined"
+                            fullWidth 
+                            placeholder="Thêm tiêu đề" 
+                            onChange={(e)=>setTitle(e.target.value)} 
+                            name="add_title" 
+                            value={title}
+
+                        />
+                    </div>
+                    <br/>
+                    <div style={{ display: "flex" }}>
+                        <Typography variant="h6"> <CategoryIcon/> Xếp loại lịch hẹn </Typography>
+                        &nbsp; &nbsp;&nbsp;
+                        <Select 
+                            onChange={(e)=>setType(e.target.value)} 
+                            value={type}
+                            >
+                            {renderTypeWork()}
+                        </Select>
+                    </div>
+                    <DatePicker 
+                        dateFormat="dd/MM/yyyy" 
+                        placeholderText="Ngày lên lịch" 
+                        locale="vi" 
+                        selected={datePost} 
+                        onChange={(date) => {
+                           setDatePost(date);
+                           setFullDay(date.toDateString());
+                        }} />
+                    <div className= {classes.event_clock}>
+                        <Typography variant="h6"><TimelapseIcon verticalAlign="center"/>Thời gian:&nbsp;&nbsp;&nbsp;</Typography>
+                        <br/>
+                        <Typography>Từ:&nbsp;&nbsp;&nbsp;</Typography>
+                        <Select 
+                            borderRadius="50%" 
+                            className= {classes.event_clock__clock}
+                            name="add_start" 
+                            onChange={(e)=>{setStartDay({day: e.target.value, UNIX_day: toTimestamp(fullday + " " + e.target.value + ":00:00") })}} 
+                            value={startDay.day}>
+                            {renderClockPickerStart()}
+                        </Select>
+                        <Typography>Đến:&nbsp;&nbsp;&nbsp;</Typography>
+                        <Select 
+                            borderRadius="50%" 
+                            className= {classes.event_clock__clock}
+                            name="add_end" 
+                            onChange={(e)=>{setEndDay({day: e.target.value, UNIX_day: toTimestamp(fullday + " " + e.target.value + ":00:00") })}}  
+                            value={endDay.day}>
+                            {renderClockPickerEnd()}
+                        </Select>
+                    </div>
+                    <br/>
+                    <div>
+                        <Typography variant="h6"> <DescriptionIcon verticalAlign="center"/>Mô tả lịch hẹn</Typography>
+                        <br/>
+                        <TextField 
+                            multiline
+                            maxHeight="10vh"
+                            variant = "outlined"
+                            fullWidth
+                            placeholder="Thêm nội dung" 
+                            onChange={(e)=>setDesc(e.target.value)} 
+                            name="add_desc" 
+                            value={des}
+                        />
+                    </div>
+                    <div>
+                       
+                        <Typography variant="h6"> <LinkIcon verticalAlign="center"/>Link</Typography>
+                        <TextField
+                            multiline
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Thêm url tuỳ chọn" 
+                            onChange={(e)=>setUrl(e.target.value)} 
+                            name="add_url" 
+                            value={url}
+                        />
+                    </div>
+                    <div>
+                        <Typography variant="h6"><PersonAddIcon/> Thêm người dùng</Typography>
+                        <br/>
+                        <TextField  
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Thêm người dùng" 
+                            onChange={(e)=>setSearch(e.target.value)}
+                            onKeyDown={handleSearch}
+                            name="add_user_list"
+                            InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end" alignItems="center">
+                                      {search.length > 0 ? 
+                                        <IconButton onClick={()=>setSearch("")}>
+                                            <ClearIcon style={{borderRadius:"50%"}}/>
+                                        </IconButton> 
+                                        : 
+                                        null}
+                                  </InputAdornment>
+                                ),
+                              }}
+                        />
+                        {search.length > 0 ? renderFoundedUser(): renderHidden() }
+                        <br/>
+                        <br/>
+                    </div>
+                 
+                </div>
+            )
+        }
+    }
+
+    const renderCalendar = () => {
+        if (loadCalendar === false) {
+          console.log(date);
+          let daysofmonth = new Date(date.year, date.month, 0).getDate();
+          let ascen = Array.from({ length: daysofmonth }, (_, i) => i + 1);
+          let dow = getDayOfWeek()
+          let temp = Array.from({ length: dow }, () => "");
+          var numbers = temp.concat(ascen)
+          const listItems = numbers.map((number) => {
+              if (number === "")
+                  return(<li></li>)
+              else if (events[number] !== "") {
+                  return(
+                    <li className={classes.calendar_page__days_li} key={number} type="button" value={number} onClick={(e) => setSelectedDayValue(e.currentTarget.value)}>
+                        <div className={classes.days_li__color_event} style={{ backgroundColor: events[number], color: "white" }} >
+                          {number}
+                        </div>
+                    </li>)
+              }
+              return(
+                <li className={classes.calendar_page__days_li} key={number} type="button" value={number} onClick={(e) => setSelectedDayValue(e.currentTarget.value)}>
+                    <span className={classes.days_li__color_event}>
+                        {number}
+                    </span>
+                </li>)
+          });
+          return listItems;
+      }}
+    
+    const  renderSchedule = () => {
+        return(
+        <div className={classes.calendar_page__schedule} >
+            <div className={classes.calendar_button}>
+                <div className={classes.calendar_page__schedule__date}>
+                    {date.day + "/" + date.month + "/" + date.year}
+                </div>
+                <Button className={classes.popup_event__btn_add} onClick={()=>setPopUp(true)}>
+                    <i className="fa fa-plus" >
+                    </i>
+                </Button>
+            </div>
+            <div className={classes.calendar_page__schedule__event} id="style-3">
+                <table>
+                    <colgroup>
+                        <col span="1" style={{ width: "22%" }} />
+                        <col span="1" style={{ width: "1%" }} />
+                        <col span="1" style={{ width: "22%" }} />
+                        <col span="1" style={{ width: "85%" }} />
+                        <col span="1" style={{ width: "5%" }} />
+                    </colgroup>
+                    <tbody>
+                        {renderSelectedDay()}
+                    </tbody>
+                </table>
+            </div>
+            {/*this.viewDetailEvent()*/}
+        </div>
+        )}
+    
+    const renderSelectedDay = () => {
+            if (loadCalendar === false && loadEvent === false) {
+                var listE = listEvents[selectedDay].map((item, index) => {
+                    if (item === "")
+                        return null
+                    if (item.id !== ""){ 
+                        return(
+                        <tr style={{'background-color': item.value.Color}}>
+                            <td className= {classes.calendar_page__schedule__time} onClick={() => selectedEventClick(index)}>
+                                {item.value.StartHour != null ? convertTimestamp(item.value.StartHour): "12 AM"}
+                            </td>
+                            <td>
+                                {item === "" ? "" : "-"}
+                            </td>
+                            <td className={classes.calendar_page__schedule__time} onClick={() => selectedEventClick(index)}>
+                                {item.value.EndHour != null ? convertTimestamp(item.value.EndHour): "11 PM"}
+                            </td>
+                            <td onClick={() => selectedEventClick(index)}>
+                                {item.title}
+                            </td>
+                            <Button onClick={() => { setConfirmDialog({
+                                isOpen: true,
+                                title: 'Bạn muốn xoá sự kiện này chứ',
+                                subTitle: "Giao tác không thể hoàn",
+                                onConfirm: () => { removeEvent(item.id); setConfirmDialog({isOpen: false,});getCalendar();}
+                            })}}>
+                                <i className={clsx(classes.calendar_page__schedule__remove,"fa","fa-trash")}>
+                                </i>
+                            </Button>
+                        </tr>
+                        )
+                    }
+                    else
+                        return <tr style={{'background-color': item.value.Color}} >
+                           <td className={classes.calendar_page__schedule__time}>{item.value.StartHour != null ? convertTimestamp(item.value.StartHour): ""}</td>
+                           <td>{item === "" ? "" : "-"}</td>
+                           <td className={classes.calendar_page__schedule__time}>{item.value.EndHour != null ? convertTimestamp(item.value.EndHour): ""}</td>
+                           <td>{item.title}</td>
+                            <td ></td>
+                        </tr>
+                })
+                return listE;
+            }
+    
+    }
+
+    
+
+    //render
+    if (loading === false)
+            return (
+                <div style={{marginLeft: 10}}>
+                    <NavBar />
+                    <Toolbar/>
+                    <div className={classes.calendar_page}>
+                        <div className={classes.calendar_page__calendar}>
+                            <div className={classes.calendar_page__calendar__title}>LỊCH CÁ NHÂN</div>
+                            <div className={classes.calendar_page__calendar__picker}>
+                                <div className={classes.calendar_page__calendar__picker_i} onClick={() => changeMonth(-1)}>
+                                    <ArrowBackIcon/>
+                                </div>
+                                <div>THÁNG {date.month}</div>
+                                <div className={classes.calendar_page__calendar__picker_i} onClick={() => changeMonth(1)}>
+                                   <ArrowForwardIcon/>
+                                </div>
+                            </div>
+                            <hr />
+                            <ul className={classes.calendar_page__dayofweek}>
+                                <li className={classes.calendar_page__dayofweek_li} key="Mon">Hai</li>
+                                <li className={classes.calendar_page__dayofweek_li} key="Tue">Ba</li>
+                                <li className={classes.calendar_page__dayofweek_li} key="Wed">Tư</li>
+                                <li className={classes.calendar_page__dayofweek_li} key="Thu">Năm</li>
+                                <li className={classes.calendar_page__dayofweek_li} key="Fri">Sáu</li>
+                                <li className={classes.calendar_page__dayofweek_li} key="Sar">Bảy</li>
+                                <li className={classes.calendar_page__dayofweek_li} key="Sun">Chủ Nhật</li>
+                            </ul>
+                            <ul className={clsx(classes.calendar_page_ul,classes.days)}>
+                                {renderCalendar()}
+                            </ul>
+                        </div>
+                        {renderSchedule()}
+                    </div>
+                    <ConfirmDialog
+                        confirmDialog={confirmDialog}
+                        setConfirmDialog={setConfirmDialog}
+                    />
+                    {popupAddEvent()}
+                </div>
+            )
+    else{
+    return(
+        <div className={classes.root}>
+                <NavBar/>
+                <LoadingScreen/>
+        </div>
+    )}
+}
