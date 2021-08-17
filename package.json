@@ -30,6 +30,7 @@
     "react-color": "^2.19.3",
     "react-datepicker": "^4.1.1",
     "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.3",
     "react-medium-image-zoom": "^4.3.4",
     "react-native": "^0.64.2",
     "react-native-image-picker": "^4.0.4",

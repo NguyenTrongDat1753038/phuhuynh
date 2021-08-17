@@ -25,300 +25,13 @@ import TitleIcon from '@material-ui/icons/Title';
 import checkTokenExpired from "../../ValidAccess/AuthToken"
 import { useHistory } from 'react-router-dom';
 import ClearIcon from '@material-ui/icons/Clear';
-import { FreeBreakfastOutlined, IndeterminateCheckBoxSharp } from '@material-ui/icons';
-const useStyles = makeStyles(() => ({
-    root: {
-        marginLeft: "200px"
-    },
-    search_user: {
-        padding: "10px", 
-        marginLeft: "10px", 
-        cursor: "pointer"
-      },
-    calendar_page: {
-        width: "81vw", 
-        margin: "66px 17vw", 
-        display: "flex", 
-        background: "white", 
-        padding: "10px", 
-        justifyContent: "space-between", 
-        marginLeft: "200px",
-        overflow:"scroll",
-      },
-      calendar_page__calendar: {
-        width: "50vw"
-      },
-      calendar_page__calendar__title: {
-        fontSize: "20px", 
-        fontWeight: "700", 
-        color: "#18468b", 
-        padding: "5px"
-      },
-      calendar_page_ul: {
-        listStyleType: "none", 
-        padding: "0"
-      },
-      calendar_page__calendar__picker: {
-        display: "flex", 
-        justifyContent: "space-around", 
-        color: "#18468b", 
-        fontWeight: "500", 
-        padding: "5px", 
-        fontSize: "18px"
-      },
-      calendar_page__calendar__picker_i: {
-        fontWeight: "1000"
-      },
-      calendar_page__calendar_hr: {
-        padding: "0", 
-        margin: "2px"
-      },
-      calendar_page__dayofweek: {
-        margin: "0", 
-        padding: "10px 0"
-      },
-      calendar_page__dayofweek_li: {
-        display: "inline-block", 
-        width: "7vw", 
-        textAlign: "center", 
-        fontWeight: "500"
-      },
-      calendar_page__days_li: {
-        display: "inline-block", 
-        width: "7vw", 
-        margin: "10px 0", 
-        fontSize: "12px", 
-        textAlign: "center"
-      },
-      days_li__color_event: {
-        width: "3vw", 
-        height: "3vw", 
-        lineHeight: "3vw", 
-        borderRadius: "50%", 
-        textAlign: "center", 
-        margin: "auto", 
-        fontSize: "15px"
-      },
-      days: {
-        padding: "10px 0", 
-        margin: "0"
-      },
-      calendar_page__schedule: {
-        width: "28vw", 
-        background: "#3a7cdf", 
-        color: "white", 
-        borderRadius: "10px", 
-        padding: "10px"
-      },
-      calendar_page__schedule__date: {
-        fontSize: "16px", 
-        fontWeight: "500", 
-        margin: "10px 5px", 
-        background: "white", 
-        color: "rgb(97, 97, 97)", 
-        padding: "2px 5px", 
-        width: "22vw"
-      },
-      calendar_page__schedule__event: {
-        maxHeight: "55vh"
-      },
-      calendar_page__schedule_td: {
-        padding: "0px", 
-        verticalAlign: "text-bottom", 
-        textAlign: "center", 
-        overflow: "hidden"
-      },
-      calendar_page__schedule__time: {
-        whiteSpace: "nowrap", 
-        fontSize: "18px", 
-        fontWeight: "600"
-      },
-      style_3___webkit_scrollbar_track: {
-        WebkitBoxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)", 
-        boxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.1)", 
-        backgroundColor: "#F5F5F5"
-      },
-      style_3___webkit_scrollbar: {
-        width: "6px", 
-        backgroundColor: "#F5F5F5"
-      },
-      style_3___webkit_scrollbar_thumb: {
-        backgroundColor: "#000000"
-      },
-      calendar_button: {
-        display: "flex", 
-        justifyContent: "space-between"
-      },
-      calendar_button__btn_add: {
-        color: "rgb(44, 44, 44)", 
-        height: "3vw", 
-        background: "#ffffff", 
-        width: "3vw", 
-        lineHeight: "3vw", 
-        borderRadius: "50%", 
-        textAlign: "center", 
-        margin: "auto 0", 
-        fontSize: "20px"
-      },
-      calendar_button__btn_add_hover: {
-        background: "#eef1f5"
-      },
-      calendar_page__popup_event: {
-        position: "fixed", 
-        width: "40vw", 
-        height: "80vh", 
-        top: "50%", 
-        left: "50%", 
-        marginTop: "-37vh", 
-        marginLeft: "-17vw", 
-        background: "rgb(255, 255, 255)", 
-        border: "1px solid black", 
-        boxShadow: "2px 2px 10px 0px rgb(197, 197, 197)", 
-        overflow: "auto",
-        padding: "10px",
-        resize: "both"
-      },
-      calendar_page__popup_event__event_input: {
-        fontSize: "16px", 
-        background: "white", 
-        border: "1px solid black", 
-        borderRadius: "10px", 
-        margin: "0", 
-        padding: "5px"
-      },
-      calendar_page__popup_event__event_input_label: {
-        fontWeight: "500"
-      },
-      calendar_page__popup_event__event_input__inputops: {
-        width: "40vw", 
-        fontSize: "16px", 
-        height: "32px"
-      },
-      popup_event__add_title: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "flex", 
-        width: "32vw", 
-        margin: "10px", 
-        textAlign: "left", 
-        overflow: "hidden"
-      },
-      add_title_focus: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "flex", 
-        width: "32vw", 
-        margin: "10px", 
-        textAlign: "left", 
-        overflow: "hidden"
-      },
-      popup_event__event: {
-        margin: "20px 10px"
-      },
-      popup_event__content: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "inherit", 
-        height: "50px", 
-        width: "32vw", 
-        margin: "10px", 
-        textAlign: "left"
-      },
-      content_focus: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "inherit", 
-        height: "50px", 
-        width: "32vw", 
-        margin: "10px", 
-        textAlign: "left"
-      },
-      popup_event__useradd: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "inherit", 
-        height: "50px", 
-        width: "32vw", 
-        margin: "0px", 
-        textAlign: "left"
-      },
-      user_focus: {
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        display: "inherit", 
-        height: "50px", 
-        width: "32vw", 
-        margin: "10px", 
-        textAlign: "left"
-      },
-      popup_event__time: {
-        margin: "10px", 
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        width: "15vw"
-      },
-      time_focus: {
-        margin: "10px", 
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        width: "15vw"
-      },
-      popup_event__color: {
-        margin: "0px"
-      },
-      event_type: {
-        width: "32vw", 
-        display: "flex", 
-        justifyContent: "space-between", 
-        alignItems: "center"
-      },
-      event_clock: {
-        width: "32vw", 
-        display: "flex", 
-        justifyContent: "left", 
-        alignItems: "center"
-      },
-      event_clock__clock: {
-        width: "10vw", 
-        display: "inline-block", 
-        padding: "3px"
-      },
-      popup_event__btn_box: {
-        display: "flex", 
-        justifyContent: "space-between", 
-        textAlign: "center"
-      },
-      popup_event__btn_add: {
-        background: "rgb(100, 233, 122)", 
-        width: "12vw", 
-      },
-      popup_event__btn_cancel: {
-        background: "#ec6b6b", 
-        width: "12vw", 
-      },
-      react_datepicker__input_container_input: {
-        display: "block", 
-        borderWidth: "0 0 2px", 
-        outline: "none", 
-        width: "32vw", 
-        margin: "10px"
-      },
-      calendar_page__schedule__remove: {
-        padding: "5px", 
-        background: "white", 
-        color: "black", 
-        borderRadius: "10%"
-      },
-      calendar_page__schedule__remove_hover: {
-        background: "#eef1f5"
-      },
-      calendar_page__schedule__event_tr: {
-        cursor: "pointer"
-      }
-}));
+import Draggable from 'react-draggable';
+import { ThumbDownSharp } from '@material-ui/icons';
+
+
 registerLocale('vi', vi)
 
-/*class Calendar extends Component {
+export default class Calendar extends Component {
     
     constructor(props) {
         super(props);
@@ -330,8 +43,10 @@ registerLocale('vi', vi)
             event: [],
 
             listEvent: [],
+            foundedUser: [],
             selectedDay: 0,
             selectedEvent: null,
+            search: "",
 
             loadcalendar: 1,
             loadevent: 1,
@@ -358,7 +73,8 @@ registerLocale('vi', vi)
             popup: 0,
             popupview: 0,
             
-            loadding: 1
+            loadding: 1,
+            confirmDialog: {isOpen:false, title:"",subTitle:""}
 
         }
 
@@ -467,12 +183,13 @@ registerLocale('vi', vi)
 
     async componentDidMount() {
         await this.getCurrenDate();
+        this.setState({loadding: 0})
         this.getCalendar();
     }
 
     removeEvent = async (id) => {
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
         var urlencoded = new URLSearchParams();
@@ -493,6 +210,15 @@ registerLocale('vi', vi)
         this.getCalendar()
     }
 
+    handleRemoveEvent = (id) =>{
+       this.setState({
+           confirmDialog: {
+            ...this.state.confirmDialog,
+            isOpen: false
+           }
+      })
+      this.removeEvent(id);
+    }
     selectedEventClick = (index) => {
 
         var viewevent = this.state.listEvent[this.state.selectedDay][index]
@@ -518,10 +244,10 @@ registerLocale('vi', vi)
                     return <></>
                 if (item.id !== "") return <tr style={{'background-color': item.value.Color}} onClick={() => this.selectedEventClick(index)}>
                     <td className="time">{item.value.StartHour != null ? this.convertTimestamp(item.value.StartHour): "12 AM"}</td>
-                    <td>{item === "" ? "" : "-"}</td>
+                    <td>-</td>
                     <td className="time">{item.value.EndHour != null ? this.convertTimestamp(item.value.EndHour): "11 PM"}</td>
                     <td>{item.title}</td>
-                    <Button onClick={() => this.removeEvent(item.id)}><i className="remove fa fa-trash" ></i></Button>
+                    <td></td>
                 </tr>
                 else
                     return <tr style={{'background-color': item.value.Color}} >
@@ -529,7 +255,7 @@ registerLocale('vi', vi)
                        <td>{item === "" ? "" : "-"}</td>
                        <td className="time">{item.value.EndHour != null ? this.convertTimestamp(item.value.EndHour): ""}</td>
                        <td>{item.title}</td>
-                        <td ></td>
+                     <td ></td>
                     </tr>
             })
             return listE;
@@ -542,7 +268,7 @@ registerLocale('vi', vi)
             loadcalendar: 1
         })
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
 
@@ -666,7 +392,7 @@ registerLocale('vi', vi)
         this.setState({ popup: 0 })
         await this.convertAddingDate();
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/json");
         var raw = JSON.stringify({
             "Title": this.state.add_title,
@@ -677,13 +403,13 @@ registerLocale('vi', vi)
             "StartHour": this.state.add_startUNIX,
             "EndHour": this.state.add_endUNIX,
             "desciptionText": this.state.add_desc,
-            "url": this.add_url,
+            "url": this.state.add_url,
             "UnderLine": false,
             "Italic": false,
             "Bold": false,
             "Color": this.state.add_color,
-            "listguestEmail": [],
-            "listguestName": [],
+            "listguestEmail": this.state.add_listguestEmail,
+            "listguestName": this.state.add_listguestName,
             "Notification": this.state.add_noti
         });
         console.log(raw)
@@ -695,8 +421,14 @@ registerLocale('vi', vi)
         };
 
         await fetch("https://hcmusemu.herokuapp.com/calendar/post", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
+        .then((response) => {
+            const statusCode = response.status;
+            const dataRes = response.json();
+            return Promise.all([statusCode, dataRes]);
+          })
+          .then(([statusCode, dataRes]) => {
+              console.log(statusCode,dataRes);
+          })
             .catch(error => console.log('error', error));
 
         this.getCalendar();
@@ -720,30 +452,51 @@ registerLocale('vi', vi)
     }
     renderTypeWork = () => {
         var TypeEventPicker = this.TypeEvent.map((value) => {
-           return <option value={value}>{value}</option>
+           return <ListItem value={value}>{value}</ListItem>
         })
        
         return TypeEventPicker;
     }
-    renderClockPicker = () => {
+    renderClockPickerStart = () => {
+        let now = new Date();
         var timepicker = this.timeclock.map((num) => {
             if (num === 0) {
-                return <option value={num}>12 AM</option>
+                return <ListItem  value={num}>12 AM</ListItem>
             }
             else if (num === 12) {
-                return <option value={num}>12 PM</option>
+                return <ListItem value={num}>12 PM</ListItem>
             }
             else if (num > 12) {
-                return <option value={num}>{num - 12} PM</option>
+                return <ListItem  value={num}>{num - 12} PM</ListItem>
             }
 
-            else return <option value={num}>{num} AM</option>
+            else return <ListItem value={num}>{num} AM</ListItem>
+        })
+       
+        return timepicker;
+    }
+
+    renderClockPickerEnd = () => {
+        var timepicker = this.timeclock.map((num) => {
+            if (num === 0) {
+                return <ListItem disabled={num >= this.state.add_start ? false : true} value={num}>12 AM</ListItem>
+            }
+            else if (num === 12) {
+                return <ListItem disabled={num >= this.state.add_start ? false : true } value={num}>12 PM</ListItem>
+            }
+            else if (num > 12) {
+                return <ListItem disabled={num >= this.state.add_start ? false : true } value={num}>{num - 12} PM</ListItem>
+            }
+
+            else 
+                return <ListItem disabled={num >= this.state.add_start ? false : true } value={num}>{num} AM</ListItem>
         })
        
         return timepicker;
     }
 
     renderDatepicker = (date) => {
+        console.log(date.toDateString());
         this.setState({
             add_date: date,
             add_fulldate: date.toDateString()
@@ -758,7 +511,7 @@ registerLocale('vi', vi)
         this.setState({ popupview: 0 })
         await this.convertAddingDate();
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -776,8 +529,8 @@ registerLocale('vi', vi)
             "Italic": "",
             "Bold": "",
             "Color": this.state.add_color,
-            "listguestEmail": this.listguestEmail,
-            "listguestName": this.listguestName,
+            "listguestEmail": this.add_listguestEmail,
+            "listguestName": this.add_listguestName,
             "Notification": "1800"
         });
 
@@ -796,17 +549,15 @@ registerLocale('vi', vi)
         this.getCalendar();
     }
 
-    getName = (item) => {
-        this.setState({
-            loadcalendar: 1
-        })
+    searchUserAPI = async() => {
+       
         var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token")+"tC");
+        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
 
         var urlencoded = new URLSearchParams();
-        urlencoded.append("username", item);
+        urlencoded.append("username", this.state.search);
 
         var requestOptions = {
             method: 'POST',
@@ -815,121 +566,377 @@ registerLocale('vi', vi)
             redirect: 'follow'
         };
 
-        fetch("https://hcmusemu.herokuapp.com/profile/findname", requestOptions)
+        await fetch("https://hcmusemu.herokuapp.com/profile/findname", requestOptions)
             .then(response => response.json())
             .then(result => {
                 this.setState({
-                    add_listguestEmail:[...this.state.add_listguestEmail, result[0]]
+                    //add_listguestEmail:[...this.state.add_listguestEmail, result[0]]
+                    foundedUser: result
                 })
             })
             .then()
             .catch(error => console.log('error', error));
     }
 
+    addUser = (user) =>{
+        let user_list = [...this.state.add_listguestName];
+        let mail_list = [...this.state.add_listguestEmail];
+        const includes = (a, v) => a.indexOf(v) !== -1
+        if (includes(mail_list,user) === true){
+             alert("Người dùng này đã được thêm vào danh sách");
+        }
+        else{
+             user_list.push(user.HoTen);
+             mail_list.push(user.Email);
+             this.setState({
+                 add_listguestName: user_list,
+                 add_listguestEmail: mail_list
+             })
+        }
+    }
     renderAddedUser = () => {
-        //console.log(localStorage.getItem("token"))
         
-        this.state.add_listguestEmail.map((item, i)=> {
-            var  result = this.getName()
-            return (
-              <TextField id={'userss['+i+']'} label={'user '+i} key={i} onChange={this.handleChange('roles['+i+']')}  />
+        if (this.state.foundedUser.length > 0){
+            return(
+                <div>
+                    {this.state.foundedUser.map((user,index) => {
+                    return( 
+                    <div key={index}  onClick={()=>{this.addUser(user);this.setState({search: ""})}}>
+                         <Box border={1} borderColor="red" textAlign="center" className="search">
+                            {user.HoTen}&nbsp;-&nbsp;{user.Email}
+                        </Box>
+                    </div>
+                    )})}         
+                </div>
+               
             )
-          })
+    
+            }
+        else{
+                return null;
+            }
+    }
+
+    handleSearch = () => {
+        if (this.state.search.length > 0){
+            this.searchUserAPI()
+        }
+    }
+    handleChangeSearch = (event) =>{
+        this.setState({search: event.target.value})
+    }
+    removeAddedUser = (user)=>{
+        let user_list = [...this.state.add_listguestName];
+        let mail_list = [...this.state.add_listguestEmail];
+        let index = mail_list.indexOf(user);
+        index !== -1 && user_list.splice(index , 1)
+        index !== -1 && mail_list.splice(index , 1)
+        this.setState({
+            add_listguestName: user_list,
+            add_listguestEmail: mail_list
+        })
     }
     viewDetailEvent = () => {
       if (this.state.popupview === 1) {
         return (
-            <div className="popup-event">
-                <span style={{color: "black"}}>  <TitleIcon/> Tiêu đề    </span>
-                <input className="add-title" placeholder="Thêm tiêu đề" onChange={this.setParams} name="add_title" value={this.state.add_title}></input>
-                <div>
-                       <span style={{color: "black"}}> <CategoryIcon/> Xếp loại lịch hẹn    </span>
-                    <span> </span>
-                    <select fontSize="20px" onChange={this.handleChange} value={this.state.add_type_event}>
-                            {this.renderTypeWork()}
-                        </select>
+            <div style={{color: "black"}} className="popup-event">
+                    <div>
+                        <IconButton 
+                            onClick={()=>{this.closePopup();this.setState({foundedUser: []})}} 
+                            style={{float: "right",backgroundColor:"red"}}>
+                                <ClearIcon fontSize="small" color="white"/>
+                        </IconButton>
+                        <Typography variant="h6"> 
+                            <TitleIcon verticalAlign="center"/>Tiêu đề
+                        </Typography>
+                        <br/>
+                        <TextField 
+                                    maxHeight="10vh"
+                                    multiline
+                                    variant="outlined"
+                                    fullWidth 
+                                    placeholder="Thêm tiêu đề" 
+                                    onChange={this.setParams} 
+                                    name="add_title" 
+                                    value={this.state.add_title}
+                        />
                     </div>
-                <DatePicker dateFormat="dd/MM/yyyy" locale="vi" selected={this.state.add_date} onChange={(date) => this.renderDatepicker(date)} />
-                <div className="event-clock">
-                    <span style={{ color: "black" }}><TimelapseIcon/>Thời gian</span>
-                    <select className="clock" name="add_start" onChange={this.handleChange} value={this.state.add_start}>
-                        {this.renderClockPicker()}
-                    </select>
-                    <span>-</span>
-                    <select className="clock" name="add_end" onChange={this.handleChange} value={this.state.add_end}>
-                        {this.renderClockPicker()}
-                    </select>
+                    <br/>
+                    <div style={{ display: "flex" }}>
+                        <Typography variant="h6"> <CategoryIcon/> Xếp loại lịch hẹn </Typography>
+                        &nbsp; &nbsp;&nbsp;
+                        <Select 
+                            onChange={this.handleEventChange} 
+                            value={this.state.add_type_event}
+                            >
+                            {this.renderTypeWork()}
+                        </Select>
+                    </div>
+                    <DatePicker 
+                        dateFormat="dd/MM/yyyy" 
+                        placeholderText="Ngày lên lịch" 
+                        locale="vi" 
+                        selected={this.state.add_date} 
+                        onChange={(date) => this.renderDatepicker(date)} />
+                    <div style={{display:"flex",alignItems:"center", justifyContent:"left"}}>
+                        <Typography variant="h6"><TimelapseIcon/>Thời gian:&nbsp;&nbsp;&nbsp;</Typography>
+                        <br/>
+                        <Typography>Từ:&nbsp;&nbsp;&nbsp;</Typography>
+                        <Select 
+                            borderRadius="50%" 
+                            className= "clock"
+                            name="add_start" 
+                            onChange={this.handleChange} 
+                            value={this.state.add_start}>
+                            {this.renderClockPickerStart()}
+                        </Select>
+                        <Typography>Đến:&nbsp;&nbsp;&nbsp;</Typography>
+                        <Select 
+                            borderRadius="50%" 
+                            className= "clock"
+                            name="add_end" 
+                            onChange={this.handleChange}  
+                            value={this.state.add_end}>
+                            {this.renderClockPickerEnd()}
+                        </Select>
+                    </div>
+
+                    <br/>
+                    <div>
+                        <Typography variant="h6"> 
+                            <DescriptionIcon verticalAlign="center"/>
+                            Mô tả lịch hẹn
+                        </Typography>
+                        <br/>
+                        <TextField 
+                        variant="outlined" 
+                        fullWidth
+                        placeholder="Thêm nội dung" 
+                        onChange={this.setParams} 
+                        name="add_desc" 
+                        value={this.state.add_desc}/>
+                    </div>
+                    <div>
+                        <Typography variant="h6"> <LinkIcon/>Link</Typography>
+                    
+                        <TextField
+                            multiline
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Thêm url tuỳ chọn" 
+                            onChange={this.setParams} 
+                            name="add_url" 
+                            value={this.state.add_url}
+                        />
+                    </div>
+                    <div>
+                        <Typography variant="h6"><PersonAddIcon/> Thêm người dùng</Typography>
+                        <br/>
+                        <TextField  
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Thêm người dùng" 
+                            onChange={(e)=>this.handleChangeSearch(e)}
+                            onKeyDown={this.handleSearch}
+                            value={this.state.search}
+                            name="add_user_list"
+                            InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end" alignItems="center">
+                                      {this.state.search.length > 0 ? 
+                                        <IconButton onClick={()=>this.setState({search: ""})}>
+                                            <ClearIcon style={{borderRadius:"50%"}}/>
+                                        </IconButton> 
+                                        : 
+                                        null}
+                                  </InputAdornment>
+                                ),
+                              }}
+                        />
+                        {this.state.search.length > 0 ? this.renderAddedUser() : null}
+                    </div>
+                    {this.renderAdderUser()}
+                    <br/>
+                    <div>
+                        <Typography variant="h6"><ColorLensIcon/>Màu đánh dấu</Typography>
+                        <CirclePicker color={this.state.add_color} width="100%"  onChangeComplete={this.handleChangeComplete} circleSize={28}/>
+                    </div>
+                    <br/>
+                    <div class="btn-box">
+                        <Button class="btn add" onClick={this.editEvent}>Chỉnh sửa</Button>
+                        <Button class="btn delete" onClick={()=>{{ this.setState({
+                            confirmDialog:{
+                                isOpen: true,
+                                title: 'Bạn muốn xoá sự kiện này chứ',
+                                subTitle: "Giao tác không thể hoàn",
+                                onConfirm: () => { this.removeEvent(this.state.edit_id); this.setState({confirmDialog: {isOpen: false,}});this.closePopup()}}
+                            })}}}>Xoá event</Button>
+                        <Button class="btn cancel" onClick={()=>{this.closePopup();this.setState({foundedUser: []})}}>Hủy</Button>
+                    </div>
+                    <ConfirmDialog
+                        confirmDialog={this.state.confirmDialog}
+                        setConfirmDialog={(e)=>this.setState({confirmDialog:  e.target.value})}
+                    />
                 </div>
-                <div>
-                    <span style={{ color: "black" }}><DescriptionIcon/>Nội dung</span>
-                    <textarea className="content" placeholder="Xem nội dung" onChange={this.setParams} name="add_desc" value={this.state.add_desc}></textarea>
-                </div>
-                <div className="useradd">
-                    <span style={{ color: "black" }}><PersonAddIcon/> Thêm người dự </span>
-                    <TextField type="email" required width="30px" placeholder="Thêm người dùng" onChange={this.setParams} name="add_user_list"> </TextField>                
-                </div>
-                <div className="event">
-                    <span style={{ color: "black" }}><ColorLensIcon/> Màu đánh dấu</span>
-                    <CirclePicker color={this.state.add_color} width="32vw" onChangeComplete={this.handleChangeComplete} circleSize={28}></CirclePicker>
-                </div>
-                <div className="btn-box">
-                    <Button class="btn add" onClick={this.editEvent}>Chỉnh sửa</Button>
-                    <Button class="btn cancel"  onClick={this.closePopup}>Hủy</Button>
-                </div>
-            </div>
-        )
+            )
+        }
     }
+
+    renderAdderUser = () =>{
+        if (this.state.add_listguestEmail.length > 0 || this.state.add_listguestName.length > 0){
+            return(
+                <Box fullWidth style={{display:"block",borderRadius:"10px"}} multiline border={1}>
+                    {this.state.add_listguestEmail.map((item,index)=>{
+                        return(
+                            <Box key={index} border={1} style={{margin:"2% 1% 2% 1%",borderRadius:"5px",display: "inline-block", height:"4vh"}}>
+                                {item} 
+                                <IconButton onClick={()=>this.removeAddedUser(item)} style={{width: "4vh", height: "4vh"}}>
+                                    <ClearIcon fontSize="small"/>
+                                </IconButton>
+                            </Box>
+                            
+                        )
+                    }
+                    )}
+                </Box>
+            )
+        }
+        else return(
+            <Box fullWidth style={{display:"block",borderRadius:"10px"}} multiline border={1}>
+            </Box>
+        )
     }
 
     popupAddEvent = () => {
         if (this.state.popup === 1) {
             return (
                 <div className="popup-event">
-                    <TitleIcon/>
-                    <label fontSize="20" color="black"> Tiêu đề    </label>
-                    <input type="text" className="add-title" placeholder="Thêm tiêu đề" onChange={this.setParams} name="add_title" value={this.state.add_title}>
-                    </input>
-                    <div className="event-type">
-                        <span> <CategoryIcon/> Xếp loại lịch hẹn    </span>
-                        <select className="clock" onChange={this.handleEventChange} value={this.state.add_type_event}>
+                    <div>
+                    <IconButton 
+                        onClick={()=>{this.closePopup();this.setState({foundedUser: []})}} 
+                        style={{float: "right",backgroundColor:"red"}}>
+                            <ClearIcon fontSize="small" color="white"/>
+                    </IconButton>
+                        <Typography variant="h6"> 
+                            <TitleIcon verticalAlign="center"/>Tiêu đề
+                        </Typography>
+                        <br/>
+                        <TextField 
+                                    maxHeight="10vh"
+                                    multiline
+                                    variant="outlined"
+                                    fullWidth 
+                                    placeholder="Thêm tiêu đề" 
+                                    onChange={this.setParams} 
+                                    name="add_title" 
+                                    value={this.state.add_title}
+                        />
+                    </div>
+                    <br/>
+                    <div style={{ display: "flex" }}>
+                        <Typography variant="h6"> <CategoryIcon/> Xếp loại lịch hẹn </Typography>
+                        &nbsp; &nbsp;&nbsp;
+                        <Select 
+                            onChange={this.handleEventChange} 
+                            value={this.state.add_type_event}
+                            >
                             {this.renderTypeWork()}
-                        </select>
+                        </Select>
                     </div>
-                    <DatePicker dateFormat="dd/MM/yyyy" placeholderText="Ngày lên lịch" locale="vi" selected={this.state.add_date} onChange={(date) => this.renderDatepicker(date)} />
-                    <div className="event-clock">
-                        <span>  <TimelapseIcon/>Thời gian: &nbsp; &nbsp; </span>
-                        <select borderRadius="50%" className="clock" name="add_start" onChange={this.handleChange} value={this.state.add_start}>
-                            {this.renderClockPicker()}
-                        </select>
-                        <span>&nbsp; - &nbsp;</span>
-                        <select borderRadius="50%" className="clock" name="add_end" onChange={this.handleChange} value={this.state.add_end}>
-                            {this.renderClockPicker()}
-                        </select>
+                    <DatePicker 
+                        dateFormat="dd/MM/yyyy" 
+                        placeholderText="Ngày lên lịch" 
+                        locale="vi" 
+                        selected={this.state.add_date} 
+                        onChange={(date) => this.renderDatepicker(date)} />
+                    <div style={{display:"flex",alignItems:"center", justifyContent:"left"}}>
+                        <Typography variant="h6"><TimelapseIcon/>Thời gian:&nbsp;&nbsp;&nbsp;</Typography>
+                        <br/>
+                        <Typography>Từ:&nbsp;&nbsp;&nbsp;</Typography>
+                        <Select 
+                            borderRadius="50%" 
+                            className= "clock"
+                            name="add_start" 
+                            onChange={this.handleChange} 
+                            value={this.state.add_start}>
+                            {this.renderClockPickerStart()}
+                        </Select>
+                        <Typography>Đến:&nbsp;&nbsp;&nbsp;</Typography>
+                        <Select 
+                            borderRadius="50%" 
+                            className= "clock"
+                            name="add_end" 
+                            onChange={this.handleChange}  
+                            value={this.state.add_end}>
+                            {this.renderClockPickerEnd()}
+                        </Select>
+                    </div>
+
+                    <br/>
+                    <div>
+                        <Typography variant="h6"> 
+                            <DescriptionIcon verticalAlign="center"/>
+                            Mô tả lịch hẹn
+                        </Typography>
+                        <br/>
+                        <TextField 
+                        variant="outlined" 
+                        fullWidth
+                        placeholder="Thêm nội dung" 
+                        onChange={this.setParams} 
+                        name="add_desc" 
+                        value={this.state.add_desc}/>
                     </div>
                     <div>
-                         <span> <DescriptionIcon/>Mô tả lịch hẹn</span>
-                        <textarea className="content" placeholder="Thêm nội dung" onChange={this.setParams} name="add_desc" value={this.state.add_desc}></textarea>
-                    </div>
-                    <div>
-                        <LinkIcon verticalAlign="center"/>
-                        <span>Link</span>
-                        <input type="text" className="add-title" placeholder="Thêm url tuỳ chọn" onChange={this.setParams} name="add_url" value={this.state.add_url}></input>
-                    </div>
-                    <div className="useradd">
-                        <PersonAddIcon/> <span> Thêm người dùng</span>
-                        <TextField  height="50px" type="email" placeholder="Thêm người dùng" onChange={this.setParams} name="add_user_list"> </TextField>
-                        {this.renderAddedUser()}
-                    </div>
-                    <div className="event">
-                        <ColorLensIcon/>
-                        <label>Màu đánh dấu</label>
-                        <CirclePicker color={this.state.add_color} width="30vw" onChangeComplete={this.handleChangeComplete} circleSize={28}></CirclePicker>
-                    </div>
+                        <Typography variant="h6"> <LinkIcon/>Link</Typography>
                     
-                    <div className="btn-box">
+                        <TextField
+                            multiline
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Thêm url tuỳ chọn" 
+                            onChange={this.setParams} 
+                            name="add_url" 
+                            value={this.state.add_url}
+                        />
+                    </div>
+                    <div>
+                        <Typography variant="h6"><PersonAddIcon/> Thêm người dùng</Typography>
+                        <br/>
+                        <TextField  
+                            variant="outlined"
+                            fullWidth
+                            placeholder="Thêm người dùng" 
+                            onChange={(e)=>this.handleChangeSearch(e)}
+                            onKeyDown={this.handleSearch}
+                            value={this.state.search}
+                            name="add_user_list"
+                            InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end" alignItems="center">
+                                      {this.state.search.length > 0 ? 
+                                        <IconButton onClick={()=>this.setState({search: ""})}>
+                                            <ClearIcon style={{borderRadius:"50%"}}/>
+                                        </IconButton> 
+                                        : 
+                                        null}
+                                  </InputAdornment>
+                                ),
+                              }}
+                        />
+                        {this.state.search.length > 0 ? this.renderAddedUser() : null}
+                    </div>
+                    {this.renderAdderUser()}
+                    <br/>
+                    <div>
+                        <Typography variant="h6"><ColorLensIcon/>Màu đánh dấu</Typography>
+                        <CirclePicker color={this.state.add_color} width="100%"  onChangeComplete={this.handleChangeComplete} circleSize={28}/>
+                    </div>
+                    <br/>
+                    <div class="btn-box">
                         <Button class="btn add" onClick={this.addEvent}>Thêm thông báo</Button>
                         <span>&nbsp;&nbsp;&nbsp; </span>
-                        <Button class="btn cancel" onClick={this.closePopup}>Hủy</Button>
+                        <Button class="btn cancel" onClick={()=>{this.closePopup();this.setState({foundedUser: []})}}>Hủy</Button>
                     </div>
                 </div>
             )
@@ -964,9 +971,9 @@ registerLocale('vi', vi)
                         <div className="calendar">
                             <div className="title">LỊCH CÁ NHÂN</div>
                             <div className="picker">
-                                <div onClick={(i) => this.changeMonth(-1)}><Button  width="20vw" className="fa fa-angle-left fa-lg fa-fw" aria-hidden="true"> {"<<"} </Button></div>
+                                <div onClick={(i) => this.changeMonth(-1)}> <ArrowBackIcon/></div>
                                 <div>THÁNG {this.state.month}</div>
-                                <div onClick={(i) => this.changeMonth(1)}><Button  width="20vw" className="fa fa-angle-right fa-lg fa-fw" aria-hidden="true"> {">>"} </Button></div>
+                                <div onClick={(i) => this.changeMonth(1)}> <ArrowForwardIcon/></div>
                             </div>
                             <hr />
                             <ul className="dayofweek">
@@ -997,768 +1004,4 @@ registerLocale('vi', vi)
         );
 
     }
-}
-*/
-
-export default function Calendar(){
-    //constant variable
-    const classes = useStyles();
-    const history = useHistory();
-    const timeclock = Array.from(Array(24).keys());
-    //state loading
-    const [loading,setLoading] = useState(true)
-    const [loadCalendar,setLoadCalendar] = useState(true);
-    const [loadEvent,setLoadEvent] = useState(true);
-    const [loadingSearch,setLoadingSearch] = useState(false);
-
-    const [dataCalendar,setDataCalendar] = useState([]);
-    const [events,setEvents] = useState([])
-    const [listEvents,setListEvents] = useState([]);
-    const [foundedUser, setFoundedUser] = useState([])
-
-    const [date,setDate] = useState({day: new Date().getDate(),month: new Date().getMonth()+1, year: new Date().getFullYear()});
-    const [listEmail,setListEmail] = useState([]);
-    const [listName,setListName] = useState([]);
-    const [title,setTitle] = useState("");
-    const [des,setDesc] = useState("");
-    const [type,setType] = useState("Công việc");
-    const [startDay,setStartDay] = useState({day: new Date().getDate(), UNIX_day: (new Date().getTime()/1000).toFixed(0)})
-    const [endDay,setEndDay] = useState({day: new Date().getDate(), UNIX_day: (new Date().getTime()/1000).toFixed(0)})
-    const [color,setColor] = useState("#FFFFFF")
-    const [url,setUrl] = useState("");
-    const [noti,setNoti] = useState((new Date().getTime()/1000).toFixed(0));
-    const [selectedDay,setSelecteday] = useState(new Date().getDate());
-    const [datePost,setDatePost] = useState(new Date());
-    const [eventID,setEventID] = useState(null);
-    const [fullday,setFullDay] = useState(new Date().toDateString())
-    const [popup,setPopUp] = useState(false);
-    const [search,setSearch] = useState("");
-
-    const [confirmDialog,setConfirmDialog] = useState({isOpen:false, title:"",subTitle:""})  
-    //useEffect call
-    useEffect(()=>{
-        getCalendar();
-    },[date.month,date.year])
-    //API
-
-    const getCalendar = async() => {
-        if (checkTokenExpired()) {
-            localStorage.clear()
-            history.replace("/");
-            return null
-        }
-        setLoadCalendar(true);
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-
-        var urlencoded = new URLSearchParams();
-        urlencoded.append("year", date.year);
-        urlencoded.append("month", date.month);
-
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: urlencoded,
-            redirect: 'follow'
-        };
-
-        fetch("https://hcmusemu.herokuapp.com/calendar/getthismonthwithout", requestOptions)
-        .then((response) => {
-            const statusCode = response.status;
-            const dataRes = response.json();
-            return Promise.all([statusCode, dataRes]);
-          })
-          .then(([statusCode, dataRes]) => {
-              if (statusCode  === 200){
-                    setDataCalendar(dataRes);
-                    filterCalendar();
-                }
-                setLoadCalendar(false);
-                setLoading(false);
-            })
-            .catch(error => console.log('error', error));
-    }
-
-    const deleteEventAPI = async(id) =>{
-        if (checkTokenExpired()) {
-            localStorage.clear()
-            history.replace("/");
-            return null
-            }
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
-        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-
-        var urlencoded = new URLSearchParams();
-        urlencoded.append("id", id);
-
-        var requestOptions = {
-            method: 'DELETE',
-            headers: myHeaders,
-            body: urlencoded,
-            redirect: 'follow'
-        };
-
-        await fetch("https://hcmusemu.herokuapp.com/calendar/delete", requestOptions)
-            .then(response => response.text())
-            .then()
-            .catch(error => console.log('error', error));
-    }
-    const addEventAPI = async () => {
-        if (checkTokenExpired()) {
-            localStorage.clear()
-            history.replace("/");
-            return null
-            }
-        setPopUp(false);
-        var myHeaders = new Headers();
-        myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
-        myHeaders.append("Content-Type", "application/json");
-        var raw = JSON.stringify({
-            "Title": title,
-            "TypeEvent": type,
-            "year": datePost.getFullYear(),
-            "month": datePost.getMonth()+1,
-            "day": datePost.getDate(),
-            "StartHour": startDay.UNIX_day,
-            "EndHour": endDay.UNIX_day,
-            "desciptionText": des,
-            "url": url,
-            "UnderLine": false,
-            "Italic": false,
-            "Bold": false,
-            "Color": color,
-            "listguestEmail": listEmail,
-            "listguestName": listName,
-            "Notification": noti
-        });
-        console.log(raw)
-        var requestOptions = {
-            method: 'POST',
-            headers: myHeaders,
-            body: raw,
-            redirect: 'follow'
-        };
-
-        await fetch("https://hcmusemu.herokuapp.com/calendar/post", requestOptions)
-        .then((response) => {
-            const statusCode = response.status;
-            const dataRes = response.json();
-            return Promise.all([statusCode, dataRes]);
-          })
-          .then(([statusCode, dataRes]) => { 
-              console.log(statusCode,dataRes)
-            })
-            .catch(error => console.log('error', error));
-
-        getCalendar();
-    }
-
-    const searchUserAPI = async() => {
-        setLoadingSearch(true);
-        if (checkTokenExpired()) {
-          localStorage.clear()
-          history.replace("/");
-          return null
-          }
-          var myHeaders = new Headers();
-          myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
-          myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-          var urlencoded = new URLSearchParams();
-          urlencoded.append("username", search);
-    
-          var requestOptions = {
-              method: 'POST',
-              headers: myHeaders,
-              body: urlencoded,
-              redirect: 'follow'
-          };
-    
-          await fetch("https://hcmusemu.herokuapp.com/profile/findname", requestOptions)
-              .then(response => response.json())
-              .then(result => {
-                  setFoundedUser(result);
-                  setLoadingSearch(false);
-              })
-              .catch(error => console.log('error', error));
-      }
-    //function
-    const handleSearch = () => {
-        if (search !== "" || search !== null){
-            searchUserAPI()
-        }
-    }
-    const convertAddingDate = () => {
-        var fullday = new Date(this.state.add_date);
-        this.setState({
-            add_day: fullday.getDate(),
-            add_month: fullday.getMonth() + 1,
-            add_year: fullday.getFullYear(),
-            add_startUNIX: this.toTimestamp(this.state.add_fulldate + " " + this.state.add_start+":00:00"),
-            add_endUNIX: this.toTimestamp(this.state.add_fulldate + " " + this.state.add_end+":00:00")
-        })
-    }
-
-    const convertTimestamp = (timestamp) => {
-        var d = new Date(timestamp * 1000),	
-            hh = d.getHours(),
-            h = hh,
-            min = ('0' + d.getMinutes()).slice(-2),		
-            ampm = 'AM',
-            time;
-
-        if (hh > 12) {
-            h = hh - 12;
-            ampm = 'PM';
-        } else if (hh === 12) {
-            h = 12;
-            ampm = 'PM';
-        } else if (hh === 0) {
-            h = 12;
-        }
-        time = h + ':' + min + ' ' + ampm;
-
-        return time;
-    }
-
-    const filterCalendar = () => {
-        setLoadEvent(true);
-        let temp = Array.from({ length: 31 }, () => "");
-        let listevent = Array.from({ length: 31 }, () => [""]);
-
-
-        if (dataCalendar.length !== undefined || dataCalendar.length > 0){
-        dataCalendar.forEach((value, index) => {
-
-            if (value.duedate !== undefined) {
-                let newevent;
-                newevent = {
-                    title: value.decription,
-                    time: convertTimestamp(value.duedate),
-                    id: "",
-                }
-                temp[convertTime(value.duedate)] = "black";
-                if (listevent[convertTime(value.duedate)][0] === "") {
-                    listevent[convertTime(value.duedate)][0] = newevent;
-                }
-                else {
-                    listevent[convertTime(value.duedate)].push(newevent);
-                }
-
-            }
-
-            if (value.Date !== undefined) {
-                let newevent;
-                newevent = {
-                    title: value.Title,
-                    time: convertTimestamp(value.StartHour),
-                    id: value._id,
-                    value: value
-                }
-
-                temp[value.Date.day] = value.Color;
-                if (listevent[value.Date.day][0] === "") {
-                    listevent[value.Date.day][0] = newevent;
-                }
-                else {
-                    listevent[value.Date.day].push(newevent);
-                }
-            }
-        });
-      }
-        setEvents(temp);
-        setListEvents(listevent);
-        setLoadEvent(false)
-    }
-
-    const convertTime = (UNIX_timestamp) => {
-        var a = new Date(UNIX_timestamp * 1000);
-        var date = a.getDate();
-        return date;
-    }
-
-    const setSelectedDayValue = async (value) => {
-        await setLoadEvent(true);
-        setSelecteday(value);
-        //filterCalendar();
-    }
-
-    const getDayOfWeek = () => {
-        var now = new Date(date.year, date.month - 1, 1, 0, 0, 0);
-
-        var days = [6, 0, 1, 2, 3, 4, 5];
-
-        var day = days[now.getDay()];
-
-        return day;
-    }
-
-    const changeMonth = async (i) => {
-        let month = date.month += i; 
-        let year = date.year;
-        if (month > 12){ 
-            month = 1;
-            year += 1;
-        }
-        if (month < 1){
-            month = 12;
-            year -= 1;
-        }
-        await setDate({month: month,year: year,day: 1});
-        await setSelecteday(1);
-    }
-
-    const selectedEventClick = (index) => {
-
-        let viewevent = listEvents[selectedDay][index]
-        const date = new Date(viewevent.value.Date.month + "/" + viewevent.value.Date.day + "/" + viewevent.value.Date.year)
-        setTitle(viewevent.value.Title);
-        setDatePost(date);
-        setStartDay({day:new Date(viewevent.value.StartHour * 1000).getHours()})
-        setEndDay({day: new Date(viewevent.value.EndHour * 1000).getHours()})
-        setDesc(viewevent.value.Decription.text)
-        setColor(viewevent.value.Color);
-        setEventID(viewevent.value._id);
-        setPopUp(true);
-    }
-
-    
-    const toTimestamp = (strDate) => {
-        var datum = new Date(strDate).getTime();
-        return datum / 1000;
-    }
-
-    const removeEvent = (id) =>{
-        setConfirmDialog({
-              ...confirmDialog,
-              isOpen: false
-        })
-        deleteEventAPI(id)
-       
-    }
-
-    const addUser = (user) =>{
-        let user_list = [...listName];
-        let mail_list = [...listEmail];
-        const includes = (a, v) => a.indexOf(v) !== -1
-        if (includes(mail_list,user) === true){
-             alert("Người dùng này đã được thêm vào danh sách");
-        }
-        else{
-             user_list.push(user.HoTen);
-             mail_list.push(user.Email);
-             setListName(user_list);
-             setListEmail(mail_list);
-        }
-    }
-
-    const removeAddedUser = async(user)=>{
-        let user_list = [...listName];
-        let mail_list = [...listEmail];
-        let index = mail_list.indexOf(user);
-        await index !== -1 && user_list.splice(index , 1)
-        await index !== -1 && mail_list.splice(index , 1)
-        await setListEmail(mail_list);
-        await setListName(user_list);
-
-    }
-    //component
-
-    
-    const renderFoundedUser = () => {
-        if (foundedUser.length > 0){
-        return(
-            <div>
-                {foundedUser.map((user,index) => {
-                return( 
-                <div key={index}  onClick={()=>{addUser(user);setSearch("")}}>
-                    <Box border={1} borderColor="red" textAlign="center" className={classes.search_user}>
-                        <div>{user.HoTen}</div>
-                        <div>({user.Email})</div>
-                    </Box>
-                </div>
-                )})}         
-            </div>
-           
-        )
-
-        }
-        else{
-            return null;
-        }
-    }
-
-    const renderTypeWork = () => {
-        let TypeEvent = ["Công việc","Cá nhân", "Gia đình", "Khác"];
-        let TypeEventPicker = TypeEvent.map((value) => {
-           return(
-            <ListItem value={value}>{value}</ListItem>
-           )
-        })
-       
-        return TypeEventPicker;
-    }
-
-   const renderClockPickerStart = () => {
-        var timepicker = timeclock.map((num) => {
-            if (num === 0) {
-                return <ListItem  value={num}>12 AM</ListItem>
-            }
-            else if (num === 12) {
-                return <ListItem value={num}>12 PM</ListItem>
-            }
-            else if (num > 12) {
-                return <ListItem value={num}>{num - 12} PM</ListItem>
-            }
-
-            else return <ListItem value={num}>{num} AM</ListItem>
-        })
-       
-        return timepicker;
-    }
-
-    const renderClockPickerEnd = () => {
-        var timepicker = timeclock.map((num) => {
-            if (num === 0) {
-                return <ListItem disabled={num > startDay.day ? false : true} value={num}>12 AM</ListItem>
-            }
-            else if (num === 12) {
-                return <ListItem disabled={num > startDay.day ? false : true } value={num}>12 PM</ListItem>
-            }
-            else if (num > 12) {
-                return <ListItem disabled={num > startDay.day ? false : true } value={num}>{num - 12} PM</ListItem>
-            }
-
-            else 
-                return <ListItem disabled={num > startDay.day ? false : true } value={num}>{num} AM</ListItem>
-        })
-       
-        return timepicker;
-    }
-
-    const renderHidden = () =>{
-        return(
-            <div>
-                <br/>
-                {renderAdderUser()}
-                <div className={classes.popup_event__color}>
-                    <br/>
-                    
-                    <Typography variant="h6"><ColorLensIcon/>Màu đánh dấu</Typography>
-                    <CirclePicker 
-                        color={color} 
-                        width="30vw" 
-                        onChangeComplete={(color)=>{setColor(color.hex)}} 
-                        circleSize={28}
-                    />
-                </div>
-                <br/>
-                <div className= {classes.popup_event__btn_box}>
-                    <Button className={classes.popup_event__btn_add} onClick={()=>addEventAPI()}>Thêm thông báo</Button>
-                    <Button className={classes.popup_event__btn_cancel} onClick={()=>{setPopUp(false);setListEmail([]);setListName([])}}>Hủy</Button>
-                </div>
-            </div>
-        )
-    }
-
-    const renderAdderUser = () =>{
-        if (listEmail.length > 0 || listName > 0){
-            return(
-                <Box fullWidth style={{display:"block",borderRadius:"10px"}} multiline border={1}>
-                    {listEmail.map((item,index)=>{
-                        return(
-                            <Box key={index} border={1} style={{margin:"2% 1% 2% 1%",borderRadius:"5px",display: "inline-block", height:"4vh"}}>
-                                {item} 
-                                <IconButton onClick={()=>removeAddedUser(item)} style={{width: "4vh", height: "4vh"}}>
-                                    <ClearIcon fontSize="small"/>
-                                </IconButton>
-                            </Box>
-                            
-                        )
-                    }
-                    )}
-                </Box>
-            )
-        }
-    }
-    const  popupAddEvent = () => {
-        if (popup === true) {
-            return (
-                <div className={classes.calendar_page__popup_event}>
-                    <div>
-                        <IconButton onClick={()=>{setPopUp(false);setListEmail([]);setListName([])}} style={{float: "right",backgroundColor:"red"}}><ClearIcon color="white"/></IconButton>
-                        <Typography variant="h6"> <TitleIcon verticalAlign="center"/>Tiêu đề</Typography>
-                        <br/>
-                        <TextField 
-                            maxHeight="10vh"
-                            multiline
-                            variant="outlined"
-                            fullWidth 
-                            placeholder="Thêm tiêu đề" 
-                            onChange={(e)=>setTitle(e.target.value)} 
-                            name="add_title" 
-                            value={title}
-
-                        />
-                    </div>
-                    <br/>
-                    <div style={{ display: "flex" }}>
-                        <Typography variant="h6"> <CategoryIcon/> Xếp loại lịch hẹn </Typography>
-                        &nbsp; &nbsp;&nbsp;
-                        <Select 
-                            onChange={(e)=>setType(e.target.value)} 
-                            value={type}
-                            >
-                            {renderTypeWork()}
-                        </Select>
-                    </div>
-                    <DatePicker 
-                        dateFormat="dd/MM/yyyy" 
-                        placeholderText="Ngày lên lịch" 
-                        locale="vi" 
-                        selected={datePost} 
-                        onChange={(date) => {
-                           setDatePost(date);
-                           setFullDay(date.toDateString());
-                        }} />
-                    <div className= {classes.event_clock}>
-                        <Typography variant="h6"><TimelapseIcon verticalAlign="center"/>Thời gian:&nbsp;&nbsp;&nbsp;</Typography>
-                        <br/>
-                        <Typography>Từ:&nbsp;&nbsp;&nbsp;</Typography>
-                        <Select 
-                            borderRadius="50%" 
-                            className= {classes.event_clock__clock}
-                            name="add_start" 
-                            onChange={(e)=>{setStartDay({day: e.target.value, UNIX_day: toTimestamp(fullday + " " + e.target.value + ":00:00") })}} 
-                            value={startDay.day}>
-                            {renderClockPickerStart()}
-                        </Select>
-                        <Typography>Đến:&nbsp;&nbsp;&nbsp;</Typography>
-                        <Select 
-                            borderRadius="50%" 
-                            className= {classes.event_clock__clock}
-                            name="add_end" 
-                            onChange={(e)=>{setEndDay({day: e.target.value, UNIX_day: toTimestamp(fullday + " " + e.target.value + ":00:00") })}}  
-                            value={endDay.day}>
-                            {renderClockPickerEnd()}
-                        </Select>
-                    </div>
-                    <br/>
-                    <div>
-                        <Typography variant="h6"> <DescriptionIcon verticalAlign="center"/>Mô tả lịch hẹn</Typography>
-                        <br/>
-                        <TextField 
-                            multiline
-                            maxHeight="10vh"
-                            variant = "outlined"
-                            fullWidth
-                            placeholder="Thêm nội dung" 
-                            onChange={(e)=>setDesc(e.target.value)} 
-                            name="add_desc" 
-                            value={des}
-                        />
-                    </div>
-                    <div>
-                       
-                        <Typography variant="h6"> <LinkIcon verticalAlign="center"/>Link</Typography>
-                        <TextField
-                            multiline
-                            variant="outlined"
-                            fullWidth
-                            placeholder="Thêm url tuỳ chọn" 
-                            onChange={(e)=>setUrl(e.target.value)} 
-                            name="add_url" 
-                            value={url}
-                        />
-                    </div>
-                    <div>
-                        <Typography variant="h6"><PersonAddIcon/> Thêm người dùng</Typography>
-                        <br/>
-                        <TextField  
-                            variant="outlined"
-                            fullWidth
-                            placeholder="Thêm người dùng" 
-                            onChange={(e)=>setSearch(e.target.value)}
-                            onKeyDown={handleSearch}
-                            name="add_user_list"
-                            InputProps={{
-                                endAdornment: (
-                                  <InputAdornment position="end" alignItems="center">
-                                      {search.length > 0 ? 
-                                        <IconButton onClick={()=>setSearch("")}>
-                                            <ClearIcon style={{borderRadius:"50%"}}/>
-                                        </IconButton> 
-                                        : 
-                                        null}
-                                  </InputAdornment>
-                                ),
-                              }}
-                        />
-                        {search.length > 0 ? renderFoundedUser(): renderHidden() }
-                        <br/>
-                        <br/>
-                    </div>
-                 
-                </div>
-            )
-        }
-    }
-
-    const renderCalendar = () => {
-        if (loadCalendar === false) {
-          console.log(date);
-          let daysofmonth = new Date(date.year, date.month, 0).getDate();
-          let ascen = Array.from({ length: daysofmonth }, (_, i) => i + 1);
-          let dow = getDayOfWeek()
-          let temp = Array.from({ length: dow }, () => "");
-          var numbers = temp.concat(ascen)
-          const listItems = numbers.map((number) => {
-              if (number === "")
-                  return(<li></li>)
-              else if (events[number] !== "") {
-                  return(
-                    <li className={classes.calendar_page__days_li} key={number} type="button" value={number} onClick={(e) => setSelectedDayValue(e.currentTarget.value)}>
-                        <div className={classes.days_li__color_event} style={{ backgroundColor: events[number], color: "white" }} >
-                          {number}
-                        </div>
-                    </li>)
-              }
-              return(
-                <li className={classes.calendar_page__days_li} key={number} type="button" value={number} onClick={(e) => setSelectedDayValue(e.currentTarget.value)}>
-                    <span className={classes.days_li__color_event}>
-                        {number}
-                    </span>
-                </li>)
-          });
-          return listItems;
-      }}
-    
-    const  renderSchedule = () => {
-        return(
-        <div className={classes.calendar_page__schedule} >
-            <div className={classes.calendar_button}>
-                <div className={classes.calendar_page__schedule__date}>
-                    {date.day + "/" + date.month + "/" + date.year}
-                </div>
-                <Button className={classes.popup_event__btn_add} onClick={()=>setPopUp(true)}>
-                    <i className="fa fa-plus" >
-                    </i>
-                </Button>
-            </div>
-            <div className={classes.calendar_page__schedule__event} id="style-3">
-                <table>
-                    <colgroup>
-                        <col span="1" style={{ width: "22%" }} />
-                        <col span="1" style={{ width: "1%" }} />
-                        <col span="1" style={{ width: "22%" }} />
-                        <col span="1" style={{ width: "85%" }} />
-                        <col span="1" style={{ width: "5%" }} />
-                    </colgroup>
-                    <tbody>
-                        {renderSelectedDay()}
-                    </tbody>
-                </table>
-            </div>
-            {/*this.viewDetailEvent()*/}
-        </div>
-        )}
-    
-    const renderSelectedDay = () => {
-            if (loadCalendar === false && loadEvent === false) {
-                var listE = listEvents[selectedDay].map((item, index) => {
-                    if (item === "")
-                        return null
-                    if (item.id !== ""){ 
-                        return(
-                        <tr style={{'background-color': item.value.Color}}>
-                            <td className= {classes.calendar_page__schedule__time} onClick={() => selectedEventClick(index)}>
-                                {item.value.StartHour != null ? convertTimestamp(item.value.StartHour): "12 AM"}
-                            </td>
-                            <td>
-                                {item === "" ? "" : "-"}
-                            </td>
-                            <td className={classes.calendar_page__schedule__time} onClick={() => selectedEventClick(index)}>
-                                {item.value.EndHour != null ? convertTimestamp(item.value.EndHour): "11 PM"}
-                            </td>
-                            <td onClick={() => selectedEventClick(index)}>
-                                {item.title}
-                            </td>
-                            <Button onClick={() => { setConfirmDialog({
-                                isOpen: true,
-                                title: 'Bạn muốn xoá sự kiện này chứ',
-                                subTitle: "Giao tác không thể hoàn",
-                                onConfirm: () => { removeEvent(item.id); setConfirmDialog({isOpen: false,});getCalendar();}
-                            })}}>
-                                <i className={clsx(classes.calendar_page__schedule__remove,"fa","fa-trash")}>
-                                </i>
-                            </Button>
-                        </tr>
-                        )
-                    }
-                    else
-                        return <tr style={{'background-color': item.value.Color}} >
-                           <td className={classes.calendar_page__schedule__time}>{item.value.StartHour != null ? convertTimestamp(item.value.StartHour): ""}</td>
-                           <td>{item === "" ? "" : "-"}</td>
-                           <td className={classes.calendar_page__schedule__time}>{item.value.EndHour != null ? convertTimestamp(item.value.EndHour): ""}</td>
-                           <td>{item.title}</td>
-                            <td ></td>
-                        </tr>
-                })
-                return listE;
-            }
-    
-    }
-
-    
-
-    //render
-    if (loading === false)
-            return (
-                <div style={{marginLeft: 10}}>
-                    <NavBar />
-                    <Toolbar/>
-                    <div className={classes.calendar_page}>
-                        <div className={classes.calendar_page__calendar}>
-                            <div className={classes.calendar_page__calendar__title}>LỊCH CÁ NHÂN</div>
-                            <div className={classes.calendar_page__calendar__picker}>
-                                <div className={classes.calendar_page__calendar__picker_i} onClick={() => changeMonth(-1)}>
-                                    <ArrowBackIcon/>
-                                </div>
-                                <div>THÁNG {date.month}</div>
-                                <div className={classes.calendar_page__calendar__picker_i} onClick={() => changeMonth(1)}>
-                                   <ArrowForwardIcon/>
-                                </div>
-                            </div>
-                            <hr />
-                            <ul className={classes.calendar_page__dayofweek}>
-                                <li className={classes.calendar_page__dayofweek_li} key="Mon">Hai</li>
-                                <li className={classes.calendar_page__dayofweek_li} key="Tue">Ba</li>
-                                <li className={classes.calendar_page__dayofweek_li} key="Wed">Tư</li>
-                                <li className={classes.calendar_page__dayofweek_li} key="Thu">Năm</li>
-                                <li className={classes.calendar_page__dayofweek_li} key="Fri">Sáu</li>
-                                <li className={classes.calendar_page__dayofweek_li} key="Sar">Bảy</li>
-                                <li className={classes.calendar_page__dayofweek_li} key="Sun">Chủ Nhật</li>
-                            </ul>
-                            <ul className={clsx(classes.calendar_page_ul,classes.days)}>
-                                {renderCalendar()}
-                            </ul>
-                        </div>
-                        {renderSchedule()}
-                    </div>
-                    <ConfirmDialog
-                        confirmDialog={confirmDialog}
-                        setConfirmDialog={setConfirmDialog}
-                    />
-                    {popupAddEvent()}
-                </div>
-            )
-    else{
-    return(
-        <div className={classes.root}>
-                <NavBar/>
-                <LoadingScreen/>
-        </div>
-    )}
 }
