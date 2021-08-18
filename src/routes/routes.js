@@ -21,12 +21,15 @@ import Reset from "../pages/Authen/ResetPW"
 import Score from "../pages/Scores/Score"
 import Courses from '../pages/Courses/Courses';
 import {CssBaseline } from "@material-ui/core";
-
+import checkTokenExpired from '../ValidAccess/AuthToken';
+import ConnectSocket from '../Hooks/socket';
 class ReactRouter extends Component {
   render() {
       return (
         <BrowserRouter>
+         {/*!checkTokenExpired() ? <ConnectSocket /> : null*/}
         <Route
+        
               exact
               path="/"
               render={() =>

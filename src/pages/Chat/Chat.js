@@ -220,7 +220,7 @@ function Chat() {
   const divRef = useRef(null);
 
 
-  const socket = io.connect('/');
+  const [socket,setSocket] = useState(io("https://hcmusemu.herokuapp.com", { transports: ['websocket'] })); 
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -272,7 +272,7 @@ function Chat() {
   useEffect(() => {
       if (search === "")
           setLoadingSearch(0)
-  }, [search])
+  })
 
   useEffect(() => {
       if (usermessage !== [""]) {
@@ -596,15 +596,10 @@ function Chat() {
             </div>
           );
       }
-      return <div className={classes.listfriend}>
-          <div>
-              {value === 0 && Messages()}
-              {value === 1 && renderAwaitUser() }
-          </div>
-      </div>;
+      return;
   }
 
-
+  console.log(search);
   return (
     <div className = {classes.root}> 
         <NavBar/>
@@ -633,6 +628,7 @@ function Chat() {
                           }}
                         />
                     </Box>
+                    {search.length > 0 && renderFoundedUser()}
                     <br/>
                     <Tabs
                               variant="fullWidth"
@@ -646,7 +642,12 @@ function Chat() {
                             <Tab fullWidth label="Tin nhắn"/>
                             <Tab fullWidth label="Tin nhắn chờ"/>
                       </Tabs>
-                    {search.length > 0 && renderFoundedUser()}
+                      <div className={classes.listfriend}>
+                        <div>
+                            {value === 0 && Messages()}
+                            {value === 1 && renderAwaitUser() }
+                        </div>
+                    </div>;
                 </div>
                  
                 <div className={classes.wrap__message_box}>

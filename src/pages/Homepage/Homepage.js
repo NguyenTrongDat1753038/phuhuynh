@@ -91,7 +91,6 @@ function Homepage() {
   TenKhoa: "Khoa Địa chất",
   Website: "https://phys.hcmus.edu.vn/",
   Images: "https://www.hcmus.edu.vn/images/2020/04/07/bn2.jpg"}]);
-  //console.log(localStorage.getItem("token"));
  
   const getNewsUniversity = async() => {
     if (checkTokenExpired()) {
@@ -121,8 +120,7 @@ function Homepage() {
               setNewsUni(dataRes.slice(0,5));
             }
             else if (statusCode === 401){
-              //localStorage.clear()
-              //history.replace("/");
+              
               return;
             }
             setLoadUni(!loaduni)
@@ -194,8 +192,6 @@ function Homepage() {
                setInfo(dataRes);
               }   
               else if (statusCode === 401){
-                //localStorage.clear()
-                //history.replace("/");
                 return;
               }
               setLoading(!loading);

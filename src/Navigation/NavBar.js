@@ -12,7 +12,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MessageIcon from '@material-ui/icons/Message';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
-//import NotificationsIcon from '../images/notification.jpg';
 import {useHistory} from "react-router-dom"
 import {List,Toolbar,Typography,ListItem,ListItemIcon,IconButton,ListItemText,Menu,Badge,Hidden,Drawer,Divider,CssBaseline,AppBar} from "@material-ui/core"
 import ScoreIcon from '@material-ui/icons/Score';
@@ -157,8 +156,7 @@ function NavBar() {
            setUserInfo(dataRes)
           }
           else if (statusCode === 401){
-            //localStorage.clear()
-            //history.replace("/");
+            
             return null
           }
         })
