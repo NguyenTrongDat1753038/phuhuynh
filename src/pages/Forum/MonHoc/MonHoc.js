@@ -229,7 +229,7 @@ export default function MonHoc(props)
         getUserEmail();
         getAllCoursePosts(selectedCourse);
       }
-    })
+    },[])
     useEffect(() => {
         getAllCourses();
         return()=>{

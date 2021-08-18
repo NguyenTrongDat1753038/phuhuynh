@@ -157,9 +157,9 @@ export default function Khoa(props)
         await fetch("https://hcmusemu.herokuapp.com/forum/view", requestOptions)
             .then(response => {return response.json()})
             .then((result)=>{
-              result = result.filter(forum => forum.scope == 'f');
-              if (self == "self"){
-                result = result.filter(forum => forum.EmailOwn == userMail);
+              result = result.filter(forum => forum.scope === 'f');
+              if (self ==="self"){
+                result = result.filter(forum => forum.EmailOwn === userMail);
               }
               let data = [];
               for (var i=0;i< result.length;i++){
@@ -208,7 +208,7 @@ export default function Khoa(props)
     
     }
     const updateNumberLike = (id,type) => {
-      if (type==1){
+      if (type===1){
           var index = forumPosts.findIndex(x=> x.ID === id);
           let g = forumPosts[index]
           g['like']-=1

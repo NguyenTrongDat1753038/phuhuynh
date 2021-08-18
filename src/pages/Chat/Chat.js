@@ -1,12 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {makeStyles, Toolbar} from "@material-ui/core"
+import {makeStyles} from "@material-ui/core"
 import NavBar from "../../Navigation/NavBar"
-import { useSelector } from 'react-redux';
 import clsx from "clsx";
 import io from "socket.io-client";
-import { Tab,Tabs,Typography,Input,InputAdornment,TextField,IconButton,Box  } from '@material-ui/core';
+import { Tab,Tabs,InputAdornment,TextField,IconButton,Box  } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import LoadingScreen from "../../components/shared/LoadingScreen"
 import { useHistory } from 'react-router-dom';
 import checkTokenExpired from '../../ValidAccess/AuthToken';
 const useStyles = makeStyles((theme)=>({
@@ -221,6 +219,7 @@ function Chat() {
   const [avatar,setAvatar] = useState("");
   const divRef = useRef(null);
 
+
   const socket = io.connect('/');
 
   const handleChange = (event, newValue) => {
@@ -248,7 +247,7 @@ function Chat() {
     return () => {
         socket.off('Private-Message-To-Client');
     }
-  }, []);
+  });
 
   const getUserEmail = async()=>{
     if (checkTokenExpired()) {
