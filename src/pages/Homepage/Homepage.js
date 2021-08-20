@@ -115,7 +115,6 @@ function Homepage() {
             return Promise.all([statusCode, dataRes]);
           })
           .then(([statusCode, dataRes]) => {
-            console.log(statusCode,dataRes);
             if (statusCode === 200){
               setNewsUni(dataRes.slice(0,5));
             }
@@ -152,7 +151,6 @@ function Homepage() {
           return Promise.all([statusCode, dataRes]);
         })
         .then(([statusCode, dataRes]) => {
-            console.log(statusCode,dataRes);
             if (statusCode === 200){
                 setNewsFac(dataRes.slice(0,5)); 
                 setLoadFac(false);
@@ -187,7 +185,6 @@ function Homepage() {
             return Promise.all([statusCode, dataRes]);
           })
           .then(([statusCode, dataRes]) => {
-              console.log(statusCode,dataRes);
               if (statusCode === 200){
                setInfo(dataRes);
               }   

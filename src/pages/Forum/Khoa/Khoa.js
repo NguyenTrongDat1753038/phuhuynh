@@ -431,6 +431,7 @@ export default function Khoa(props)
     }
     const getComments = useCallback((forum) => {
       var myHeaders = new Headers();
+      myHeaders.append("Authorization", "bearer " + localStorage.getItem("token"));
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
       var urlencoded = new URLSearchParams();
@@ -498,7 +499,7 @@ export default function Khoa(props)
                       aria-label="Comment the post"
                       onClick= {() => Btn_ClickShowComment(item)}
                       >
-                      <CommentIcon/> {item.comment}
+                      <CommentIcon/>
                     </IconButton>
                    
                 </CardActions>

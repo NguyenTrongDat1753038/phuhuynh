@@ -21,6 +21,7 @@ import Reset from "../pages/Authen/ResetPW"
 import Score from "../pages/Scores/Score"
 import Courses from '../pages/Courses/Courses';
 import {CssBaseline } from "@material-ui/core";
+import Notifications from '../pages/Notifications/Notifications';
 import checkTokenExpired from '../ValidAccess/AuthToken';
 import ConnectSocket from '../Hooks/socket';
 class ReactRouter extends Component {
@@ -57,6 +58,7 @@ class ReactRouter extends Component {
             <Route exact path = "/score"> <Score/></Route>
             <Route exact path = "/course"><Courses/></Route>
             <Route exact path = "/course/:id" component={DetailCourse}/>
+            <Route exact path = "/notifications"><Notifications/></Route>
           </Switch>
     </BrowserRouter>
     
